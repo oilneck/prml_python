@@ -8,5 +8,3 @@ class Linear_NeuralNet(object):
     def Forward_propagation(x):
         z = layer1.fp(self.w1,x)
         return layer2.fp(self.w2,z)
-
-        
