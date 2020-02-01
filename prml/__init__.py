@@ -1,8 +1,10 @@
 from prml import (
-    fitting
+    fitting,
+    nn
 )
 
 
 __all__ = [
-    "fitting"
+    "fitting",
+    "nn"
 ]
