@@ -10,7 +10,7 @@ def multi_func(x,f_name='square'):
     elif f_name == 'heaviside':
         f = 0.5 * (np.sign(x) + 1)
     elif f_name == 'sinusoidal':
-        f = 0.5+0.5 * np.sin(train_x *np.pi)
+        f = 0.5+0.5 * np.sin(x * np.pi)
     elif f_name == 'absolute':
         f = np.abs(x)
     return f
