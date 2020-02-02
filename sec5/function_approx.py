@@ -36,6 +36,7 @@ plt.plot(test_x, test_y, 'r-')
 plt.ylim([-0.1, 1.1])
 plt.show()
 
+
 # Setting the data in hidden layer
 '''
 n_hidden = 4
