@@ -17,10 +17,10 @@ def multi_func(x,f_name='square'):
 
 # training data
 train_x = np.linspace(-1, 1, N).reshape(N, 1)
-train_y = multi_func(train_x,'heaviside')
+train_y = multi_func(train_x,'sinusoidal')
 
 # Construncting NeuralNet
-model = Linear_NeuralNet(2,4,1)
+model = Linear_NeuralNet(2,3,1)
 model.fit(train_x,train_y)
 Forward_propagation = np.vectorize(model.Forward_propagation)
 
