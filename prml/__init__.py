@@ -1,10 +1,12 @@
 from prml import (
     fitting,
-    nn
+    nn,
+    classifier
 )
 
 
 __all__ = [
     "fitting",
-    "nn"
+    "nn",
+    "classifier"
 ]
