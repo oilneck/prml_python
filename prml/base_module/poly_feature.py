@@ -13,9 +13,8 @@ class Poly_Feature(object):
         if train_x.ndim == 1:
             self.PHI = self.polynomial_feature(train_x)
         elif train_x.ndim >= 2:
-            col = train_x.shape[1]
-            X = np.zeros((train_x.shape[0],col*(self.M + 1)))
-            for m,idx in enumerate(np.arange(0,col*(self.M+1),col)):
-                X[:,idx:idx+col]=train_x**m
-            self.PHI = X[:,col-1:]
+            X = np.zeros((train_x.shape[0],1))
+            for m in range(self.M + 1):
+                X = np.append(X,train_x**m,axis=1)
+            self.PHI = X[:,train_x.shape[1]:]
         return self.PHI
