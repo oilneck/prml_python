@@ -12,7 +12,7 @@ class Poly_Feature(object):
     def transform(self,train_x:np.ndarray):
         if train_x.ndim == 1:
             self.PHI = self.polynomial_feature(train_x)
-        elif train_x.ndim >= 2:
+        else:
             X = np.zeros((train_x.shape[0],1))
             for m in range(self.M + 1):
                 X = np.append(X,train_x**m,axis=1)
