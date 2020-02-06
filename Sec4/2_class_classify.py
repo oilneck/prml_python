@@ -2,24 +2,26 @@ import numpy as np
 import matplotlib.pyplot as plt
 from classifier.least_squares_classifier import Least_Squares_Classifier
 from classifier.logistic_regression import Logistic_Regression
+from base_module.poly_feature import Poly_Feature
 
 N = 100  #the number of noise
 outlier = 20 # the number of outlier (<N)
 
-# Create the design_matrix
-def make_design_matrix(phi):
-    return np.hstack((np.ones(len(phi)).reshape(len(phi),1),phi))
+
 
 # Creating training data
 cov = [[2.5,1], [1,0.8]]
 cls1 = np.random.multivariate_normal([-2,2.5], cov, int(N/2))
 cls2 = np.vstack((np.random.multivariate_normal([1,-1], cov, int(N/2)-outlier),np.random.multivariate_normal([7,-6], [[0.5,0.2],[0.2,0.5]], outlier)))
-X_train = make_design_matrix(np.vstack((cls1,cls2)))
+# Create the design_matrix
+feature = Poly_Feature(1)
+X_train = feature.transform(np.vstack((cls1,cls2)))
+
 
 # Creating test data
 X,Y = np.meshgrid(np.linspace(-10,10,100),np.linspace(-10,10,100))
 test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
-X_test = make_design_matrix(test_x)
+X_test = feature.transform(test_x)
 
 
 #---------------------------------------Least Squares Method--------------------------------------------------

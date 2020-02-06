@@ -1,19 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from classifier.softmax_regression import Softmax_Regression
+from base_module.poly_feature import Poly_Feature
 N = 150  # The number of test data
 K = 3    # The number of class
 
-# Return the design_matrix -> OUTPUT:PHI
-def make_design_matrix(phi):
-    return np.vstack((np.ones(len(phi)),phi.T)).T
+
 
 #-------------------------Training Data--------------------------------------------------------
 cov = [[1.0,0.8], [0.8,1.0]]
 cls1 = np.random.multivariate_normal([-2,2], cov, int(N/K))
 cls2 = np.random.multivariate_normal([0,0], cov, int(N/K))
 cls3 = np.random.multivariate_normal([2,-2], cov, int(N/K))
-PHI_train = make_design_matrix(np.vstack((cls1,cls2,cls3)))
+feature = Poly_Feature(1)
+PHI_train = feature.transform(np.vstack((cls1,cls2,cls3)))
 #Creating Label Matrix T
 T_train = np.vstack(([[1,0,0]]*cls1.shape[0],[[0,1,0]]*cls2.shape[0],[[0,0,1]]*cls3.shape[0]))
 
@@ -22,7 +22,7 @@ x = np.arange(-10,10,0.01)
 y = np.arange(-10,10,0.01)
 X,Y = np.meshgrid(x,y)
 test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
-X_test = make_design_matrix(test_x)
+X_test = feature.transform(test_x)
 
 #-----------------------logistic regression-------------------------------------------------------
 model = Softmax_Regression()

@@ -1,7 +1,8 @@
 """This is a test program."""
 import numpy as np
 import matplotlib.pyplot as plt
-from prml.fitting.linear_regression import Linear_Regression
+from base_module.poly_feature import Poly_Feature
+
 M = 9
 noise_NUM = 10
 alpha = 5 * 10 ** (-3)
@@ -19,8 +20,8 @@ def make_basis(test_x):
     return np.array([test_x]*(M+1))**np.arange(0,M+1)
 
 def make_design_matrix(x_n,t_n):
-    model = Linear_Regression(degree=M)
-    PHI_T = model.create_feature_matrix(x_n,t_n).transpose()
+    feature = Poly_Feature(degree=M)
+    PHI_T = feature.transform(x_n).T
     S_inv = beta*np.dot(PHI_T,PHI_T.T) + alpha*np.eye(M+1,M+1)
     Desired_T =  np.dot(PHI_T,t_n)
     return PHI_T,np.linalg.inv(S_inv),Desired_T

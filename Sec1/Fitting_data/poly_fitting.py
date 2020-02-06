@@ -2,7 +2,7 @@
 # sys.path.append('../../')
 import numpy as np
 import matplotlib.pyplot as plt
-from prml.fitting.linear_regression import Linear_Regression
+from fitting.multiple_regression import Multiple_Regression
 F_size = 15
 noise_NUM = 10
 def func(x):
@@ -16,15 +16,14 @@ def generate_noise_data(func,noise_NUM,std_dev):
 
 x = np.arange(0, 1.01, 0.01)
 y = func(x)
-M_list = [0,1,3,20]
+M_list = [0,1,3,10]
 x_n,t_n = generate_noise_data(func,noise_NUM,0.3)
 for i, deg in enumerate(M_list,0):
     plt.subplot(2, 2, i+1)
-    model = Linear_Regression(degree=deg)
+    model = Multiple_Regression(degree=deg)
     model.fit(x_n,t_n)
-    Fit_y = np.poly1d(model.weight_vector)
     plt.plot(x,y,color='lime',label="$\sin(2\pi x)$")
-    plt.plot(x,Fit_y(x),color='red',label="Fitting")
+    plt.plot(x,model.predict(x),color='red',label="Fitting")
     plt.scatter(x_n,t_n,facecolor="none", edgecolor="b",label="noise")
     plt.text(0.7,0.8,"M={}".format(deg),fontsize=F_size)
     plt.xlim(-0.05, 1.05)
