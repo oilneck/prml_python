@@ -20,7 +20,7 @@ train_x = np.linspace(-1, 1, N).reshape(N, 1)
 train_y = multi_func(train_x,'sinusoidal')
 
 # Construncting NeuralNet
-model = Linear_NeuralNet(2,3,1)
+model = Linear_NeuralNet(1,3,1)
 model.fit(train_x,train_y)
 Forward_propagation = np.vectorize(model.Forward_propagation)
 
@@ -32,7 +32,7 @@ test_y = Forward_propagation(test_x)
 # Plotting training data
 plt.scatter(train_x, train_y,s=10,color='blue')
 
-# Plotting output data in Neural Network model
+# Plotting output data in NN model
 plt.plot(test_x, test_y, 'r-')
 plt.ylim([-0.1, 1.1])
 plt.show()

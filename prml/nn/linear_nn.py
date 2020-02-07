@@ -1,8 +1,8 @@
 import numpy as np
 from .setting_layer import Linear_Layer, Tanh_Layer
 class Linear_NeuralNet(object):
-    def __init__(self,NUM_INPUT:int=2,NUM_HIDDEN:int=3,NUM_OUTPUT:int=1):
-        self.n_input = NUM_INPUT
+    def __init__(self,NUM_INPUT:int=1,NUM_HIDDEN:int=3,NUM_OUTPUT:int=1):
+        self.n_input = NUM_INPUT + 1
         self.n_hidden = NUM_HIDDEN
         self.n_output = NUM_OUTPUT
         self.w1 = np.random.random((self.n_hidden,self.n_input))

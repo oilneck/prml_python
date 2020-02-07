@@ -7,7 +7,7 @@ K = 3    # The number of class
 
 
 
-#-------------------------Training Data--------------------------------------------------------
+'''-------Training Data------'''
 cov = [[1.0,0.8], [0.8,1.0]]
 cls1 = np.random.multivariate_normal([-2,2], cov, int(N/K))
 cls2 = np.random.multivariate_normal([0,0], cov, int(N/K))
@@ -17,14 +17,14 @@ PHI_train = feature.transform(np.vstack((cls1,cls2,cls3)))
 #Creating Label Matrix T
 T_train = np.vstack(([[1,0,0]]*cls1.shape[0],[[0,1,0]]*cls2.shape[0],[[0,0,1]]*cls3.shape[0]))
 
-#-------------------------Test Data-------------------------------------------------------------
+'''----------Test Data------------'''
 x = np.arange(-10,10,0.01)
 y = np.arange(-10,10,0.01)
 X,Y = np.meshgrid(x,y)
 test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 X_test = feature.transform(test_x)
 
-#-----------------------logistic regression-------------------------------------------------------
+'''-------logistic regression-------'''
 model = Softmax_Regression()
 model.fit(PHI_train,T_train)
 Z = model.predict(X_test)
