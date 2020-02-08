@@ -24,7 +24,7 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 X_test = feature.transform(test_x)
 
 
-'''----------Least Squares Method----------'''
+'''-----Least Squares Method-----'''
 #1-of-K encoding
 Teacher_T_matrix = np.vstack(([[1,0]]*cls1.shape[0],[[0,1]]*cls2.shape[0]))
 least_squares = Least_Squares_Classifier()
@@ -32,7 +32,7 @@ least_squares.fit(X_train,Teacher_T_matrix)
 z_ls = least_squares.predict(X_test)
 
 
-'''------------logistic regression-------------'''
+'''-----logistic regression-----'''
 #NOTICE: train_t is not 1-of-K encoding
 train_t = np.hstack((np.ones(cls1.shape[0]),np.zeros(cls2.shape[0])))
 logistic_regression = Logistic_Regression()
