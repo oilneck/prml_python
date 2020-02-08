@@ -1,7 +1,8 @@
 # Pattern Recognition and Machine Learning (PRML)
 These are codes implementing some algorithms introduced in [ Pattern Recognition and Machine Learning ] (Author: C.M.Bishop). Python language used for these implementation.
 ## Required packages
-1 . python 3
-2 . numpy
-3 . matplotlib
-
+- python 3
+- numpy
+- matplotlib
+### NOTICE
+You need to set PYTHONPATH to the directory where you want to import the module.
