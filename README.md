@@ -10,7 +10,18 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 |:---:|:---:|:---:|
 |sec.1 : bayesian fitting|sec.4 : logistic regression|sec.5 : neural network|
 ## Directory Structure
-
+├── pearkes
+│   ├── gethub
+│   ├── tugboat
+│   └── jack.ly
+├── mitchellh
+│   └── vagrant
+├── amadeus
+│   └── html7
+├── someorg
+│   └── bigproject
+└── someotherorg
+    └── biggerproject
 ### NOTICE
 You need to set PYTHONPATH to the directory [prml] where you want to import the module.
 
