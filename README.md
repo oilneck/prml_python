@@ -9,5 +9,5 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 You need to set PYTHONPATH to the directory [prml] where you want to import the module.
 
 ## Execution example
-
+https://github.com/oilneck/prml_python/files/4177127/NN_binary_classification.pdf
 
