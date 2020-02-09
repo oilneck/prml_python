@@ -6,7 +6,7 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 - pandas
 - matplotlib
 ## Execution example
-![NN](https://github.com/oilneck/prml_python/files/4177127/NN_binary_classification.pdf)
+![NN_binary_classification](https://user-images.githubusercontent.com/60212785/74105498-b6fbe200-4ba1-11ea-9b99-879ecac3d67c.png)
 ### NOTICE
 You need to set PYTHONPATH to the directory [prml] where you want to import the module.
 
