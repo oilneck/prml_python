@@ -7,7 +7,7 @@ def func(x):
 #Generating Noise data
 def generate_noise_data(func,noise_NUM,std_dev):
     #noise_NUM:sample size, std_dev:standard deviation
-    x_n = np.linspace(0,1,noise_NUM)#linspace(start,stop,Deivision number)
+    x_n = np.linspace(0,1,noise_NUM)
     t_n = func(x_n)+ np.random.normal(scale=std_dev,size=noise_NUM)
     return x_n,t_n
 
