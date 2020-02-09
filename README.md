@@ -10,20 +10,6 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 |:---:|:---:|:---:|
 |sec.1 : bayesian fitting|sec.4 : logistic regression|sec.5 : neural network|
 ## Directory Structure
-リポジトリTOP
-│
-├ README.md .. 目次を書く
-│
-├ ○○.md
-├ ○○.md
-├ ○○.md
-│
-├ 第１章 .. フォルダを作成
-│　├ ○○.md
-│　├ ○○.md
-│　└ ○○.md
-│
-├ 第２章 .. フォルダを作成
 
 ### NOTICE
 You need to set PYTHONPATH to the directory [prml] where you want to import the module.
