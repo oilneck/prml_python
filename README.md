@@ -14,6 +14,10 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 </tr>
 </table>
 
+|<img src="https://user-images.githubusercontent.com/60212785/74105720-b1070080-4ba3-11ea-90b3-e56cb9769cf4.png" width="250px" alt="section1">|ドラッグ&ドロップ|
+|---|---|
+|テキスト|テキスト|
+
 ### NOTICE
 You need to set PYTHONPATH to the directory [prml] where you want to import the module.
 
