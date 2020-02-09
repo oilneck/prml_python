@@ -5,5 +5,9 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 - numpy
 - pandas
 - matplotlib
-### NOTICE
+### Usage
 You need to set PYTHONPATH to the directory [prml] where you want to import the module.
+
+## Execution example
+
+
