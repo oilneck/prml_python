@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from fitting.bayesian_regression import Bayesian_Regression
 from base_module.poly_feature import Poly_Feature
+
 Font_size = 15
 M = 15
 feature = Poly_Feature(M)
