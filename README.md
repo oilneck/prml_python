@@ -3,6 +3,7 @@ These are codes implementing some algorithms introduced in [ Pattern Recognition
 ## Required packages
 - python 3
 - numpy
+- pandas
 - matplotlib
 ### NOTICE
 You need to set PYTHONPATH to the directory [prml] where you want to import the module.
