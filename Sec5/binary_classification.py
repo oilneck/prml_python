@@ -30,7 +30,7 @@ for n in range(len(labels)):
 
 # plot the test data
 plt.contourf(X, Y, Z.reshape(X.shape), levels=np.linspace(0, 1, 11), alpha=0.2,cmap='jet')
-
+plt.colorbar()
 # axis setting
 plt.xlim(-1, 1)
 plt.ylim(-1, 1)
