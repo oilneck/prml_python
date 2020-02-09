@@ -18,8 +18,8 @@ class Logistic_Regression(object):
 
     def fit(self,train_PHI,train_t):
         w = np.ones(np.size(train_PHI,1)) * 0.0001
-        while True:
-            w_new = self.make_NEW_weight(train_PHI,train_t,w)   # Updating weight vector
+        while True: # Updating weight vector
+            w_new = self.make_NEW_weight(train_PHI,train_t,w)   
             if np.allclose(w, w_new,rtol=0.01): break
             w = w_new
         self.w = w
