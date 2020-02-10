@@ -23,3 +23,11 @@ class Sigmoid_Layer(object):
         return self.output
     def activation_derivative(self):
         return self.output * (1 - self.output)
+
+class ReLU_Layer(object):
+
+    def fp(self,W,x):
+        self.output = np.dot(W,x).clip(min=0)
+        return self.output
+    def activation_derivative(self):
+        return  (self.output > 0).astype(float)
