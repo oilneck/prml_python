@@ -23,7 +23,7 @@ test_x = np.arange(0, 1.01, 0.01)
 test_y = func(test_x)
 
 
-'''----------------Bayesian Regression------------------------'''
+'''----Bayesian Regression----'''
 model = Bayesian_Regression(degree=M,alpha=5*10**(-3),beta=11.1)
 model.fit(train_x,train_y)
 y_mean,y_std = model.predict(test_x,get_std=True)
