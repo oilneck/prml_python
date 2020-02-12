@@ -18,9 +18,8 @@ def rmse(a,b):
 
 def func(x):
     return np.sin(2 * np.pi * x)
-#Generating Noise data
+
 def generate_noise_data(func,noise_NUM,std_dev):
-    #noise_NUM:sample size, std_dev:standard deviation
     x_n = np.linspace(0,1,noise_NUM)
     t_n = func(x_n) + np.random.normal(scale=std_dev,size=noise_NUM)
     return x_n,t_n
@@ -34,11 +33,9 @@ for M in M_list:
     weight_list = np.polyfit(train_data.x.values,train_data.t.values,M)
     RMSE_train.append(rmse(np.polyval(weight_list,np.array(train_data.x)),train_data.t))
     RMSE_test.append(rmse(np.polyval(weight_list,np.array(test_data.x)),test_data.t))
-    #:y=polyval(weight_coefficient,x) <= weight_coefficient=polyfit(sample_x,sample_y)
 
-# x=np.arange(0,1,0.01)
-# plt.plot(x,np.polyval(weight_list,x))
-# plt.scatter(train_data.x,train_data.t,marker='o',color='blue',label="noise")
+
+
 plt.plot(M_list,RMSE_train,label='Training data',color='blue')
 plt.plot(M_list,RMSE_train,color='none',marker='o',markeredgecolor='blue',markersize=8,linewidth=0)
 plt.plot(M_list,RMSE_test,label='Test data',color='red')
