@@ -24,8 +24,8 @@ class Linear_NeuralNet(object):
         for loop in range(n_iter):
             for n in range(len(xlist)):
                 del_1,del_2 = np.array(self.Back_propagation(xlist[n],tlist[n,:]))
-                self.w1 -= learning_rate * (del_1.reshape(self.n_hidden,1) @ np.insert(xlist[n],0,1).reshape(1,self.n_input))
-                self.w2 -= learning_rate * (del_2.reshape(self.n_output,1) @ self.layer1.output.reshape(1,self.n_hidden))
+                self.w1 -= learning_rate * np.outer(del_1,np.insert(xlist[n],0,1))
+                self.w2 -= learning_rate * np.outer(del_2,self.layer1.output)
 
     def get_hidden_output(self,test_x):
         test_z = np.zeros((len(test_x),self.n_hidden))
