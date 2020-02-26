@@ -5,7 +5,7 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 - numpy
 - pandas
 - matplotlib
-## Instllation
+## Installation
 1. Download the file to a local folder (e.g. ~/prml_python/) by running:  
 ```console
 git clone https://github.com/oilneck/prml_python.git
