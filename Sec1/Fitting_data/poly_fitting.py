@@ -1,5 +1,3 @@
-# import sys
-# sys.path.append('../../')
 import numpy as np
 import matplotlib.pyplot as plt
 from fitting.multiple_regression import Multiple_Regression
