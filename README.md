@@ -7,7 +7,9 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 - matplotlib
 ## Instllation
 1. Download the file to a local folder (e.g. ~/prml_python/) by running:  
-<span style="color:blue">git clone https://github.com/oilneck/prml_python.git</span>
+```console
+git clone https://github.com/PRML/PRMLT.git
+```
 
 2. Run Python and change your directory (~/prml_python/), then run the init.py script.  
 
