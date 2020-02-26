@@ -1,5 +1,5 @@
 # PRML
-These are codes implementing some algorithms introduced in  "Pattern Recognition and Machine Learning" (Author: C.M.Bishop). Python language used for these implementation.
+These are codes implementing some algorithms introduced in  "Pattern Recognition and Machine Learning" (Author: [C.M.Bishop](https://www.microsoft.com/en-us/research/people/cmbishop/?from=http%3A%2F%2Fresearch.microsoft.com%2Fen-us%2Fum%2Fpeople%2Fcmbishop%2Fprml%2F)). Python language used for these implementation.
 ## Required packages
 - python 3
 - numpy
