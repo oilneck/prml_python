@@ -11,7 +11,7 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 git clone https://github.com/oilneck/prml_python.git
 ```
 
-2. Run Python and change your directory (~/prml_python/), then run the init.py script.  
+2. Run Python and change your directory (~/prml_python/), then run the `init.py` script.  
 
 3. Run some demonstration files in Sec1~Sec5 folder.
 ## Execution example
