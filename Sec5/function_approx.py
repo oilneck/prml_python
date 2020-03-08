@@ -10,7 +10,7 @@ def multi_func(x,f_name='square'):
     elif f_name == 'heaviside':
         f = 0.5 * (np.sign(x) + 1)
     elif f_name == 'sinusoidal':
-        f = 0.5+0.5 * np.sin(x * np.pi)
+        f = 0.5 + 0.5 * np.sin(x * np.pi)
     elif f_name == 'absolute':
         f = np.abs(x)
     return f
@@ -22,11 +22,10 @@ train_y = multi_func(train_x,'sinusoidal')
 # Construncting NeuralNet
 model = Linear_NeuralNet(1,3,1)
 model.fit(train_x,train_y)
-Forward_propagation = np.vectorize(model.Forward_propagation)
 
 # test data
 test_x = np.arange(-1,1,0.01)
-test_y = Forward_propagation(test_x)
+test_y = model(test_x)
 
 
 # Plotting training data

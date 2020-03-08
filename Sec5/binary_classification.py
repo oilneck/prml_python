@@ -2,13 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from nn.classifier_nn import Classifier_NeuralNet
 
-def create_toy_data(sample:int=1000):
+def create_noise_data(sample:int=1000):
     x = np.random.uniform(-1., 1., size=(sample, 2))
     labels = (np.prod(x, axis=1) > 0).astype(np.float)
     return x, labels.reshape(-1, 1)
 
 # training dataset
-train_x, labels = create_toy_data()
+train_x, labels = create_noise_data()
 
 # test dataset
 X,Y = np.meshgrid(np.linspace(-1, 1, 100),np.linspace(-1, 1, 100))
