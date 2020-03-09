@@ -1,7 +1,6 @@
 """This is a test program for confirmation the RMSE."""
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error
 import pandas as pd
 
 F_size = 15
@@ -13,7 +12,7 @@ RMSE_train = []
 RMSE_test = []
 
 def rmse(a,b):
-    return np.sqrt(mean_squared_error(a,b))
+    return np.sqrt(np.mean(np.square(a - b)))
 
 
 def func(x):
