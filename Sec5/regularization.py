@@ -19,7 +19,7 @@ for n,M in enumerate([1,3,30]):
     model.set_train_data(train_x,train_y)
     model.fit()
     test_y = model(test_x)
-    plt.plot(test_x.ravel(),test_y.ravel(),color="r",zorder=1)
+    plt.plot(test_x,test_y,color="r",zorder=1)
     plt.scatter(train_x.ravel(), train_y.ravel(), marker="x", color="b",zorder=2,s=30)
     plt.annotate("M={}".format(M), (0.7, 0.5),fontsize=10)
     plt.xticks([0,1])
