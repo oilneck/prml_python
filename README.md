@@ -20,6 +20,8 @@ git clone https://github.com/oilneck/prml_python.git
 |sec.1 : bayesian fitting|sec.4 : logistic regression|sec.5 : neural network|
 ### NOTICE
 All sources in [~/prml_python/prml] are the module file. If you want to change certain parameters (ex. iteration number, activation function in each layer for Neural Network), check the files in that directory.
+### Wiki page
+[Wiki](https://github.com/oilneck/prml_python/wiki/Pattern-Recognition-and-Machine-Learning)
 
 
 
