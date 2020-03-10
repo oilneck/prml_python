@@ -1,5 +1,5 @@
 import numpy as np
-from base_module.poly_feature import Poly_Feature
+from base_module import Poly_Feature,Gaussian_Feature
 class Bayesian_Regression(object):
 
     def __init__(self,degree:int=9,alpha:float=0.005,beta:float=11):
