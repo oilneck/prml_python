@@ -21,12 +21,12 @@ git clone https://github.com/oilneck/prml_python.git
 ### NOTICE
 All sources in [~/prml_python/prml] are the module file. If you want to change certain parameters (ex. iteration number, activation function in each layer for Neural Network), check the files in that directory.
 ### External links
-
+<table class="table table-hover"></td>
 <tbody>
 <tr>
     <th>Wiki</th>
-  <td>[Wiki for prml algorithm](https://github.com/oilneck/prml_python/wiki/Pattern-Recognition-and-Machine-Learning)
-<table class="table table-hover"></td>
+  <td><a href="https://github.com/oilneck/prml_python/wiki/Pattern-Recognition-and-Machine-Learning">Wiki for prml algorithm</a>
+    </td>
 </tr>
 <tr>
   <th>Text</tx>
