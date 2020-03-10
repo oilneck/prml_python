@@ -24,16 +24,16 @@ test_x = np.arange(0, 1.01, 0.01)
 test_y = func(test_x)
 
 
-
+'''----Bayesian Regression----'''
 model = Bayesian_Regression(alpha=5e-3,beta=2.)
 model.feature = Gaussian_Feature(np.linspace(0, 1, 9), 0.1)
 
 fig = plt.figure(figsize=(8, 6))
-for i,n_data in enumerate([1,2,4,25],1):
-    model.fit(train_x[0:n_data],train_y[0:n_data])
+for i,noise_num in enumerate([1,2,4,25],1):
+    model.fit(train_x[0:noise_num],train_y[0:noise_num])
     y_mean,y_std = model.predict(test_x,get_std=True)
     ax = fig.add_subplot(2,2,i)
-    plt.scatter(train_x[0:n_data],train_y[0:n_data],facecolor="none", edgecolor="b",label="noise",s=50,linewidth=1.5,zorder=3)
+    plt.scatter(train_x[0:noise_num],train_y[0:noise_num],facecolor="none", edgecolor="b",label="noise",s=50,linewidth=1.5,zorder=3)
     plt.plot(test_x,test_y,color='limegreen',label="$\sin(2\pi x)$",zorder=1)
     plt.plot(test_x,y_mean,color='red',label="mean",zorder=2)
     plt.fill_between(test_x, y_mean + y_std, y_mean - y_std, facecolor='pink',alpha=0.4,label="std.")
@@ -43,6 +43,7 @@ for i,n_data in enumerate([1,2,4,25],1):
     plt.xticks([0,1])
     plt.yticks([-1,0,1])
 
+# config for drawing
 plt.subplots_adjust(right=0.75)
 plt.legend(bbox_to_anchor=(1.05, 0.5), loc='upper left', borderaxespad=0, fontsize=12)
 plt.tight_layout()
