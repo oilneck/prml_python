@@ -9,6 +9,8 @@ class Gaussian_Feature(object):
         return np.exp(-0.5 * np.square(x - mean) / self.var)
 
     def transform(self,train_x:np.ndarray):
+        if train_x.ndim == 1:
+            train_x = train_x.reshape(len(train_x),1)
         X = np.ones((train_x.shape[0],1))
         for m in self.mean:
             X = np.append(X,self.gauss_function(train_x,m),axis=1)
