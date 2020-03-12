@@ -49,11 +49,11 @@ class Scaled_CG(object):
                     beta = (np.dot(r,r) - np.dot(r,origin_r))/mu
                     p = r + beta * p
                 if DELTA >= 0.75:
-                    lamda = lamda / 4
+                    lamda = np.clip(lamda / 4,1e-15,1e50)
                 else:
                     lamda_bar,success = lamda,False
             if DELTA < 0.25:
-                lamda = lamda + delta*(1-DELTA)/np.dot(p,p)
+                lamda = np.clip(lamda + delta*(1-DELTA)/np.dot(p,p),1e-15,1e50)
             if np.linalg.norm(r)==0:
                 return
         self.nn.setW(self.w)
