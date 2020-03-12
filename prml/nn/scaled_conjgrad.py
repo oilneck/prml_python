@@ -10,11 +10,12 @@ class Scaled_CG(object):
     def __call__(self,x:np.array):
         return np.vectorize(self.nn.Forward_propagation)(x)
 
-    def set_train_data(self,x,t):
+    def set_train_data(self,x:np.array,t:np.array):
         self.nn.xlist = x
         self.nn.tlist = t
 
-    def fit(self,n_iter:int=500,n_reset:int=50):
+    def fit(self,train_x:np.array,train_y:np.array,n_iter:int=500,n_reset:int=50):
+        self.set_train_data(train_x,train_y)
         lamda,lamda_bar =1,0
         nablaE,E = self.nn.gradE(self.w)
         origin_E = E
