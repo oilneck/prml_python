@@ -14,7 +14,7 @@ class Scaled_CG(object):
         self.nn.xlist = x
         self.nn.tlist = t
 
-    def fit(self,train_x:np.array,train_y:np.array,n_iter:int=500,n_reset:int=50):
+    def fit(self,train_x:np.array,train_y:np.array,n_iter:int=1000,n_reset:int=100):
         self.set_train_data(train_x,train_y)
         lamda,lamda_bar =1,0
         nablaE,E = self.nn.gradE(self.w)
