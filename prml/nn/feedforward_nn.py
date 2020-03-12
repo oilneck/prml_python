@@ -7,6 +7,7 @@ class Feed_Forward(Linear_NeuralNet):
         super().__init__(NUM_INPUT,NUM_HIDDEN,NUM_OUTPUT)
         self.xlist = None
         self.tlist = None
+        self.hyper_param = 0 #Regularization parameter
 
     def gradE(self,w):
         self.setW(w)
@@ -18,7 +19,7 @@ class Feed_Forward(Linear_NeuralNet):
             gradw2 = np.outer(del_2,self.layer1.output)
             E += 0.5 * np.dot(del_2,del_2)
             gradE += np.hstack((gradw1.ravel(),gradw2.ravel()))
-        return gradE,E
+        return gradE + self.hyper_param * w, E + 0.5 * self.hyper_param * np.dot(w,w)
 
     def setW(self,w):
         self.w1 = w[0:self.n_input * self.n_hidden].reshape(self.n_hidden,self.n_input)

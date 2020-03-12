@@ -2,10 +2,11 @@ import numpy as np
 from .feedforward_nn import Feed_Forward
 class Scaled_CG(object):
 
-    def __init__(self,NUM_INPUT:int=1,NUM_HIDDEN:int=3,NUM_OUTPUT:int=1):
+    def __init__(self,NUM_INPUT:int=1,NUM_HIDDEN:int=3,NUM_OUTPUT:int=1,alpha:float=0):
         self.nn = Feed_Forward(NUM_INPUT,NUM_HIDDEN,NUM_OUTPUT)
         self.sigma0 = 1e-4
         self.w = self.nn.getW()
+        self.nn.hyper_param = alpha
 
     def __call__(self,x:np.array):
         return np.vectorize(self.nn.Forward_propagation)(x)
