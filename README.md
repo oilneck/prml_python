@@ -19,9 +19,16 @@ git clone https://github.com/oilneck/prml_python.git
 |<img src="https://user-images.githubusercontent.com/60212785/74105720-b1070080-4ba3-11ea-90b3-e56cb9769cf4.png" width="250px" alt="section1">|<img src="https://user-images.githubusercontent.com/60212785/74105786-41dddc00-4ba4-11ea-9c01-ebb161f89986.png" width="210px">|<img src="https://user-images.githubusercontent.com/60212785/74105498-b6fbe200-4ba1-11ea-9b99-879ecac3d67c.png" width="250px">|
 |:---:|:---:|:---:|
 |sec.1 : bayesian fitting|sec.4 : logistic regression|sec.5 : neural network|
+
+## Jupyter Notebook files
+- <a href="https://github.com/oilneck/prml_python/blob/master/Notebook/section1.ipynb">sec.1 : Introduction</a>
+- <a href="https://github.com/oilneck/prml_python/blob/master/Notebook/section3.ipynb">sec.3 : Linear Models for Regression </a>
+- <a href="https://github.com/oilneck/prml_python/blob/master/Notebook/section4.ipynb">sec.4 : Linear Models for Classification </a>
+- <a href="https://github.com/oilneck/prml_python/blob/master/Notebook/section5.ipynb">sec.5 : Neural Networks </a>
+
 ### NOTICE
 All sources in [~/prml_python/prml] are the module file. If you want to change certain parameters (ex. iteration number, activation function in each layer for Neural Network), check the files in that directory.
-### External links
+## External links
 <table class="table table-hover"></td>
 <tbody>
 <tr>
