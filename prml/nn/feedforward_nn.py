@@ -1,10 +1,10 @@
 import numpy as np
-from .linear_nn import Linear_NeuralNet
-from .setting_layer import *
-class Feed_Forward(Linear_NeuralNet):
+from nn.regression.neural_network import Neural_Network
+class Feed_Forward(Neural_Network):
 
     def __init__(self,NUM_INPUT:int=1,NUM_HIDDEN:int=3,NUM_OUTPUT:int=1):
         super().__init__(NUM_INPUT,NUM_HIDDEN,NUM_OUTPUT)
+        self.add()
         self.xlist = None
         self.tlist = None
         self.hyper_param = 0 #Regularization parameter
