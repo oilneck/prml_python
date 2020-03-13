@@ -16,7 +16,7 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 
 '''-----Classification by Neural Network------'''
 model = Classifier_NeuralNet(2,4,1)
-model.fit(train_x,labels,n_iter=1000,learning_rate=0.01)
+model.fit(train_x,labels,n_iter=100,learning_rate=0.01)
 Z = model.predict(test_x)
 
 
