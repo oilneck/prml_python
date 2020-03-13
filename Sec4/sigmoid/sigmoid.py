@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
+from base_module.sigmoid_feature import Sigmoid_Feature
+
 F_size = 15
-sigmoid = lambda x: 1 / (1+np.exp(-x))
+feature = Sigmoid_Feature(mean=[0.],std=1.)
 x = np.arange(-10, 10, 0.01)
-y = sigmoid(x)
+y = feature.transform(x)[:,1]
 plt.close()
 plt.axvline(x=0, ymin=0, ymax=1, linewidth=1,linestyle='--',color = 'k')
 plt.axhline(y=0.5,xmin=-10,xmax=10,linewidth=1,linestyle='--',color = 'k')
