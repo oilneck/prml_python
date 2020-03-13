@@ -4,6 +4,7 @@ These are codes implementing some algorithms introduced in  "Pattern Recognition
 - python 3
 - numpy
 - pandas
+- scipy
 - matplotlib
 ## Installation
 1. Download the file to a local folder (e.g. ~/prml_python/) by executing:  
@@ -35,7 +36,3 @@ All sources in [~/prml_python/prml] are the module file. If you want to change c
   </tr>
 </tbody>
 </table>
-
-
-
-
