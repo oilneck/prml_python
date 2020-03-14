@@ -10,7 +10,8 @@ def pdf(z):
     return gaussian_pdf * sigmoid_pdf
 
 
-z = np.linspace(-2,4,100)
+
+z = np.linspace(-2,20,470)
 nomalize_facter = integrate.quad(pdf, -np.inf, np.inf)[0]
 pz = pdf(z) / nomalize_facter
 
@@ -25,11 +26,17 @@ plt.subplot(1,2,1)
 plt.fill_between(z,pz,color='#e5cf5c')
 plt.plot(z,qz,color='r',linewidth=1)
 plt.xlim(-2,4)
+plt.ylim(0,0.8)
+plt.yticks(np.arange(0,1,0.2))
 
 plt.subplot(1,2,2)
 plt.plot(z,-np.log(pz),color='#e5cf5c',linewidth=1)
 plt.plot(z,-np.log(qz),color='r',linewidth=1)
 plt.xlim(-2,4)
+plt.ylim(0,40)
+plt.yticks(np.arange(0,41,10))
+plt.tick_params(left=True, right=True)
+
 
 plt.tight_layout()
 plt.show()
