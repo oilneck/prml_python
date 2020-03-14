@@ -21,10 +21,10 @@ git clone https://github.com/oilneck/prml_python.git
 |sec.1 : bayesian fitting|sec.4 : logistic regression|sec.5 : neural network|
 
 ## Jupyter Notebook files
-- <a href="https://github.com/oilneck/prml_python/blob/master/Notebook/section1.ipynb">sec.1 : Introduction</a>
-- <a href="https://github.com/oilneck/prml_python/blob/master/Notebook/section3.ipynb">sec.3 : Linear Models for Regression </a>
-- <a href="https://github.com/oilneck/prml_python/blob/master/Notebook/section4.ipynb">sec.4 : Linear Models for Classification </a>
-- <a href="https://github.com/oilneck/prml_python/blob/master/Notebook/section5.ipynb">sec.5 : Neural Networks </a>
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section1.ipynb">sec.1 : Introduction</a>
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section3.ipynb">sec.3 : Linear Models for Regression </a>
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section4.ipynb">sec.4 : Linear Models for Classification </a>
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section5.ipynb">sec.5 : Neural Networks </a>
 
 ### NOTICE
 All sources in [~/prml_python/prml] are the module file. If you want to change certain parameters (ex. iteration number, activation function in each layer for Neural Network), check the files in that directory.
