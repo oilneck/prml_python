@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from base_module.sigmoid_feature import Sigmoid_Feature
 from scipy.special import erf
-%matplotlib inline
+
 
 F_size = 15
 
