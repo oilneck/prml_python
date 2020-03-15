@@ -1,15 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from fitting.bayesian_regression import Bayesian_Regression
-from base_module.poly_feature import Poly_Feature
+from base_module import *
 
 Font_size = 15
-M = 15
-feature = Poly_Feature(M)
+M = 20
+feature = Gaussian_Feature(np.linspace(-1.,1.,M),0.1)
 
 
 def kernel_function(train_x,test_x):
     model = Bayesian_Regression(degree=M,beta=5)
+    model.feature = feature
     model.fit(test_x,np.zeros(len(test_x)))
     phi1 = feature.transform(train_x)
     phi2 = feature.transform(test_x)
@@ -24,7 +25,9 @@ y = kernel_function(train_x,x)
 
 #plotting kernel function
 plt.close('all')
-plt.plot(x,y,color='b')
+fig = plt.figure(figsize=(7,3))
+ax = fig.add_subplot(1,2,1)
+ax.plot(x,y,color='b')
 plt.xlabel(r"$x$",fontsize=Font_size)
 plt.ylabel(r"$k(0,x)$",fontsize=Font_size)
 plt.xticks([-1,0,1],fontsize=Font_size)
@@ -33,5 +36,17 @@ plt.xlim(-1,1)
 plt.ylim(-0.01,0.04)
 plt.hlines([0], -1, 1, "black", linestyles='dotted',linewidth=1)
 plt.text(0,0,r"$\times$", size = 20, color = "red",horizontalalignment="center", verticalalignment='center')
+
+# drawing kernel 2D function
+X,Y = np.meshgrid(np.linspace(-1.1,1.1,100),np.linspace(-1.1,1.1,100))
+Z = kernel_function(X.ravel(),Y.ravel())
+ax = fig.add_subplot(1,2,2)
+ax.contourf(X,Y,Z.reshape(X.shape),levels=np.linspace(min(Z),max(Z)/2.7,200),cmap='jet')
+ax.tick_params(labelbottom=False,labelleft=False,labelright=False,labeltop=False)
+ax.set_aspect('equal')
+plt.xlabel(r"$k(x,x')$",fontsize=Font_size)
+plt.xlim(-1.,1.)
+plt.ylim(-1.,1.)
+plt.subplots_adjust(wspace=1.5)
 plt.tight_layout()
 plt.show()
