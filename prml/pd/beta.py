@@ -12,8 +12,9 @@ class Beta(object):
 
     def draw(self,sample_size:int=1000):
         return np.random.beta(self.a, self.b, size=(sample_size,))
-        
+
 
     def pdf(self,mu):
+        np.seterr(divide='ignore')
         coef = gamma(self.a + self.b) / (gamma(self.a) * gamma(self.b))
         return coef * np.power(mu,self.a - 1) * np.power(1 - mu,self.b - 1)
