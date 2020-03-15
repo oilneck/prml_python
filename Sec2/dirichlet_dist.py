@@ -19,4 +19,5 @@ for i,alpha in enumerate([0.1,1,10],1):
     Z = prob.pdf(mesh_data)
     ax.plot_surface(X,Y, Z.reshape(X.shape),cmap='rainbow')
     ax.tick_params(labelbottom=False,labelleft=False,labelright=False,labeltop=False)
+    ax.view_init(elev=40, azim=250)
 plt.show()
