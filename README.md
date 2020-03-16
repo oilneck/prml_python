@@ -22,6 +22,7 @@ git clone https://github.com/oilneck/prml_python.git
 
 ## Jupyter Notebook files
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section1.ipynb">sec.1 : Introduction</a>
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section2.ipynb">sec.2 : Probability distributions </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section3.ipynb">sec.3 : Linear Models for Regression </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section4.ipynb">sec.4 : Linear Models for Classification </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section5.ipynb">sec.5 : Neural Networks </a>
