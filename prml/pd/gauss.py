@@ -8,6 +8,7 @@ class Gauss(object):
     def __init__(self,mu:float=0.,var:float=1.):
         self.mu = mu
         self.var = var
+        self.bayes_fixed_var = var
 
     def set_mu(self,mu):
         if isinstance(mu,(int,float,np.number)):
@@ -29,6 +30,7 @@ class Gauss(object):
         else:
             self.var = None
 
+
     def draw(self,sample_size:int=1000):
         return np.random.normal(loc=self.mu,scale=np.sqrt(self.var),size=(sample_size,))
 
@@ -37,3 +39,11 @@ class Gauss(object):
         norm_factor = 1 / np.sqrt(2 * np.pi * self.var)
         z = (x - self.mu) / np.sqrt(self.var)
         return norm_factor * np.exp(-0.5 * z ** 2)
+
+    def mu_fit(self,train_x:np.ndarray):
+        '''Variance known & Average unknown'''
+        N = len(train_x)
+        mu_ML = np.mean(train_x,0)
+        denom = N * self.var + self.bayes_fixed_var
+        self.mu = (self.bayes_fixed_var * self.mu + N * self.var * mu_ML) / denom
+        self.var = (self.bayes_fixed_var * self.var) / denom
