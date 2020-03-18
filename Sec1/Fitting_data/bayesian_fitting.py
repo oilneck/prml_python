@@ -17,16 +17,19 @@ def generate_noise_data(func,noise_NUM,std_dev):
 
 # Create the training data
 train_x,train_y = generate_noise_data(func,noise_NUM,0.2)
+feature = Poly_Feature(M)
+X_train = feature.transform(train_x)
 
 # Create the test data
 test_x = np.arange(0, 1.01, 0.01)
 test_y = func(test_x)
+X_test = feature.transform(test_x)
 
 
 '''----Bayesian Regression----'''
-model = Bayesian_Regression(degree=M,alpha=5*10**(-3),beta=11.1)
-model.fit(train_x,train_y)
-y_mean,y_std = model.predict(test_x,get_std=True)
+model = Bayesian_Regression(alpha=5*10**(-3),beta=11.1)
+model.fit(X_train,train_y)
+y_mean,y_std = model.predict(X_test,get_std=True)
 
 
 # plot the test data
