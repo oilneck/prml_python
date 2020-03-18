@@ -17,6 +17,7 @@ class Students_t(object):
         return np.random.standard_t(self.df,size=sample_size)
 
     def pdf(self,x):
+        self.df = np.clip(self.df,None,a_max=300)
         d = x - self.mu
         Del = self.tau * d ** 2
         coef = np.sqrt(self.tau / (np.pi * self.df)) * gamma(0.5 + 0.5 * self.df) / gamma(0.5 * self.df)
