@@ -25,6 +25,7 @@ plt.close()
 for i,lamda in enumerate([1e+2, np.e**(0.1), np.e**(-30)]):
     fig = plt.figure(figsize=(8, 3.))
     ax = fig.add_subplot(1,2,1)
+    ax.annotate(r"$\log \,\lambda={:.2g}$".format(np.log(lamda)), xy=(0.5, 0.7),fontsize=12)
     predict_list = []
     for n in range(100):
         train_x,train_y = create_noise_data(func,25,0.25)
@@ -38,7 +39,6 @@ for i,lamda in enumerate([1e+2, np.e**(0.1), np.e**(-30)]):
         ax.set_ylim([-1.5,1.5])
         plt.xticks([0,1])
         plt.yticks([-1,0,1])
-        ax.annotate(r"$\log \,\lambda={:.2g}$".format(np.log(lamda)), xy=(0.5, 0.7),fontsize=12)
         predict_list.append(y_mean)
     ax = fig.add_subplot(1,2,2)
     ax.plot(test_x,test_y,color='lime')
