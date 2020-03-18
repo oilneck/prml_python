@@ -3,8 +3,7 @@ import matplotlib.pyplot as plt
 from base_module import Gaussian_Feature
 from fitting.bayesian_regression import Bayesian_Regression
 
-M = 8
-noise_NUM = 25
+M = 9
 
 
 def func(x):
@@ -17,21 +16,24 @@ def generate_noise_data(func,noise_NUM,std_dev):
     return x_n,t_n
 
 # Create the training data
-train_x,train_y = generate_noise_data(func,noise_NUM,0.2)
+train_x,train_y = generate_noise_data(func,25,0.2)
+feature = Gaussian_Feature(np.linspace(0, 1, M), 0.1)
+X_train = feature.transform(train_x)
 
 # Create the test data
 test_x = np.arange(0, 1.01, 0.01)
+X_test = feature.transform(test_x)
 test_y = func(test_x)
 
 
 '''----Bayesian Regression----'''
 model = Bayesian_Regression(alpha=5e-3,beta=2.)
-model.feature = Gaussian_Feature(np.linspace(0, 1, 9), 0.1)
+
 
 fig = plt.figure(figsize=(8, 6))
 for i,noise_num in enumerate([1,2,4,25],1):
-    model.fit(train_x[0:noise_num],train_y[0:noise_num])
-    y_mean,y_std = model.predict(test_x,get_std=True)
+    model.fit(X_train[0:noise_num,:],train_y[0:noise_num])
+    y_mean,y_std = model.predict(X_test,get_std=True)
     ax = fig.add_subplot(2,2,i)
     plt.scatter(train_x[0:noise_num],train_y[0:noise_num],facecolor="none", edgecolor="b",label="noise",s=50,linewidth=1.5,zorder=3)
     plt.plot(test_x,test_y,color='limegreen',label="$\sin(2\pi x)$",zorder=1)

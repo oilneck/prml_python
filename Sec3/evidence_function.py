@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from fitting.optimal_bayesian_regression import Optimal_Bayesian_Regression
+from base_module import *
 
 Font_size = 13
 noise_NUM = 30
@@ -24,16 +25,19 @@ model_List = []
 
 # parameter estimation
 for m in range(max_M+1):
-    model = Optimal_Bayesian_Regression(degree=m,alpha=100,beta=100)
-    model.fit(train_x,train_y)
-    evidence_List.append(model.evidence_function(train_x,train_y))
+    model = Optimal_Bayesian_Regression(alpha=100,beta=100)
+    feature = Poly_Feature(m)
+    X_train = feature.transform(train_x)
+    model.fit(X_train,train_y)
+    evidence_List.append(model.evidence_function(X_train,train_y))
     model_List.append(model)
 
 #----test data----
 deg_index = np.argmax(evidence_List)
 optimal_model = model_List[deg_index]
 test_x = np.linspace(0,20,100)
-y_mean,y_std = optimal_model.predict(test_x,get_std=True)
+X_test = Poly_Feature(deg_index).transform(test_x)
+y_mean,y_std = optimal_model.predict(X_test,get_std=True)
 
 
 

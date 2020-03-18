@@ -6,11 +6,12 @@ from base_module import *
 Font_size = 15
 M = 20
 feature = Gaussian_Feature(np.linspace(-1.,1.,M),0.1)
-model = Bayesian_Regression(degree=M,beta=10)
-model.feature = feature
+model = Bayesian_Regression(beta=10)
+
 
 def kernel_function(train_x,test_x):
-    model.fit(test_x,np.zeros(len(test_x)))
+    X_test = feature.transform(test_x)
+    model.fit(X_test,np.zeros(len(test_x)))
     phi1 = feature.transform(train_x)
     phi2 = feature.transform(test_x)
     return model.beta * np.sum(phi1 * (model.w_cov @ phi2.T).T,axis=1)
