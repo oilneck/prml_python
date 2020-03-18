@@ -12,7 +12,7 @@ class Bayesian_Regression(object):
 
     def fit(self,train_x:np.ndarray,t:np.ndarray):
         PHI = self.feature.transform(train_x)
-        S_inv = self.beta * (PHI.T @ PHI) + self.alpha * np.eye(self.M+1,self.M+1)
+        S_inv = self.beta * (PHI.T @ PHI) + self.alpha * np.eye(np.size(PHI,1),np.size(PHI,1))
         S = np.linalg.inv(S_inv)
         self.w_mean = self.beta * S @ PHI.T @ t
         self.w_cov = S
