@@ -9,11 +9,11 @@ class Bayesian_Logistic_Regression(Logistic_Regression):
         self.w_cov = None
 
     def make_derivative_info(self,PHI,t,w_old):
-        n_cls = np.size(PHI,1)
+        n_dim = np.size(PHI,1)
         y = self._sigmoid(PHI @ w_old)
         R = np.diag(y)
-        gradE = PHI.T @ (y - t) + self.alpha * np.eye(n_cls,n_cls) @ w_old
-        Hesse = PHI.T @ R @ PHI + self.alpha * np.eye(n_cls,n_cls)
+        gradE = PHI.T @ (y - t) + self.alpha * np.eye(n_dim,n_dim) @ w_old
+        Hesse = PHI.T @ R @ PHI + self.alpha * np.eye(n_dim,n_dim)
         return gradE, Hesse
 
     def fit(self,train_PHI:np.ndarray,train_t:np.ndarray,n_iter:int=100):
