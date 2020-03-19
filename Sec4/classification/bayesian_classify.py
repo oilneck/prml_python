@@ -4,8 +4,9 @@ from base_module import *
 from classifier import *
 
 def generate_noise_data(N):
-    cls1 = np.random.normal(size=int(N)).reshape(-1, 2) - 1
-    cls2 = np.random.normal(size=int(N)).reshape(-1, 2) + 1
+    cov = [[1.,0.8], [0.8,1.]]
+    cls1 = np.random.multivariate_normal([-0.5,1], cov, int(N))
+    cls2 = np.random.multivariate_normal([1,-0.5], cov, int(N))
     t = np.hstack((np.ones(cls1.shape[0]),np.zeros(cls2.shape[0])))
     return cls1, cls2, t
 
@@ -22,7 +23,7 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 X_test = feature.transform(test_x)
 
 '''bayesian logistic regression'''
-model = Bayesian_Logistic_Regression(alpha=0.1)
+model = Bayesian_Logistic_Regression(alpha=1e-3)
 model.fit(X_train,train_t)
 Z = model.predict(X_test)
 
@@ -32,6 +33,7 @@ plt.scatter(cls2.T[0],cls2.T[1], facecolor="none", edgecolor="b",label="class2",
 
 # plotting test data
 plt.contourf(X,Y, Z.reshape(X.shape), alpha=0.2, levels=np.linspace(0, 1, 5),cmap='jet')
-plt.xlim(-5,5)
-plt.ylim(-5,5)
+plt.colorbar()
+plt.xlim(-4.5,4.5)
+plt.ylim(-4.5,4.5)
 plt.show()
