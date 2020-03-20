@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from pd import *
 
 
-model = Gauss(mu=0.,var=0.1)
+model = Gaussian(mu=0.,var=0.1)
 x = np.linspace(-1,1,1000)
 plt.plot(x,model.pdf(x),color='k',label="N=0")
 
