@@ -14,7 +14,7 @@ conf_R = mu + sigma
 fill_x = np.arange(conf_L, conf_R, 0.01)
 
 '''Gaussian distribution'''
-prob = Gauss(mu, sigma ** 2)
+prob = Gaussian(mu, sigma ** 2)
 x = np.linspace(conf_L * 4, conf_R * 4, 1000)
 y = prob.pdf(x)
 
