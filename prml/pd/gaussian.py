@@ -1,6 +1,6 @@
 import numpy as np
 
-class Gauss(object):
+class Gaussian(object):
     '''
     p(x|mu,var)= (1 / sqrt(2*pi*var)) * exp(-0.5 * (x-mu)^2 / var)
     '''
