@@ -34,7 +34,7 @@ class Gaussian(object):
     def draw(self,sample_size:int=1000):
         return np.random.normal(loc=self.mu,scale=np.sqrt(self.var),size=(sample_size,))
 
-    def pdf(self,x):
+    def pdf(self,x:np.ndarray):
         np.seterr(divide='ignore')
         norm_factor = 1 / np.sqrt(2 * np.pi * self.var)
         z = (x - self.mu) / np.sqrt(self.var)
@@ -47,3 +47,10 @@ class Gaussian(object):
         denom = N * self.var + self.bayes_fixed_var
         self.mu = (self.bayes_fixed_var * self.mu + N * self.var * mu_ML) / denom
         self.var = (self.bayes_fixed_var * self.var) / denom
+
+    def fit(self,train_x:np.ndarray):
+        '''Variance unknown & Average unknown'''
+        N = len(train_x)
+        assert N > 1, 'There is only one sample'
+        self.mu = np.mean(train_x,axis = 0)
+        self.var = np.var(train_x,axis = 0) * N / (N - 1)
