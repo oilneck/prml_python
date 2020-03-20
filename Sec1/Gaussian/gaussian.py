@@ -1,32 +1,37 @@
 import numpy as np
-from scipy.stats import norm
+from pd import *
 import matplotlib.pyplot as plt
-F_size = 15
 
 # ave
-mu = 1
+mu = 0
+
 # std
-sigma = 10
+sigma = np.sqrt(10)
 
-# left-margin
-start = mu - sigma * 3
+# confidence interval
+conf_L = mu - sigma
+conf_R = mu + sigma
+fill_x = np.arange(conf_L, conf_R, 0.01)
 
-# right-margin
-end = mu + sigma * 3
+'''Gaussian distribution'''
+prob = Gauss(mu, sigma ** 2)
+x = np.linspace(conf_L * 4, conf_R * 4, 1000)
+y = prob.pdf(x)
 
-X = np.arange(start, end, 0.001)
-fill_X = np.arange(mu-sigma,mu+sigma,0.01)
-Y = norm.pdf(X, loc=mu, scale=sigma)
+
 # Plotting
-plt.yticks( [0,10] )
-#plt.xticks( [mu] )
-plt.xticks([mu-sigma,mu,mu+sigma],(r"$\mu-\sigma$",r"$\mu$",r"$\mu+\sigma$"),fontsize=F_size)
-plt.text(end,-0.005,r"$x$",fontsize=F_size)
-plt.text(mu-30,0.035,r"$\mathcal{N}(x|\mu,\sigma^2)$",fontsize=F_size)
-plt.fill_between(X,Y,where=X>mu-sigma, color='b', alpha=0.2)
-plt.fill_between(X,Y,where=X>mu+sigma, color='w', alpha=1)
-plt.axvline(x=mu, ymin=0, ymax=0.94, linewidth=1,linestyle='--',color = 'k')
-plt.axvline(x=mu-sigma, ymin=0, ymax=0.6, linewidth=1,linestyle='--',color = 'k')
-plt.axvline(x=mu+sigma, ymin=0, ymax=0.6, linewidth=1,linestyle='--',color = 'k')
-plt.plot(X, Y, color='red')
+fig = plt.figure(figsize=(6.2,4))
+ax = fig.add_subplot(111)
+ax.plot(x, y, color='red')
+plt.text(conf_L * 3.5, 0.8 * max(y), r"$\mathcal{N}(x|\mu,\sigma^2)$",fontsize=15)
+plt.fill_between(x, y, where = x > mu - sigma, color='b', alpha=0.2)
+plt.fill_between(x, y, where = x > mu + sigma, color='w', alpha=1)
+plt.vlines(x=mu, ymin=0, ymax=prob.pdf(mu), linewidth=1,linestyle='--',color = 'k')
+plt.vlines(x=conf_L, ymin=0, ymax=prob.pdf(conf_L), linewidth=1,linestyle='--',color = 'k')
+plt.vlines(x=conf_R, ymin=0, ymax=prob.pdf(conf_R), linewidth=1,linestyle='--',color = 'k')
+plt.xticks([conf_L * 4, conf_L, mu, conf_R, conf_R * 4],("",r"$\mu-\sigma$",r"$\mu$",r"$\mu+\sigma$","x"),fontsize=15)
+plt.yticks([0])
+plt.xlim(conf_L * 4, conf_R * 4)
+plt.ylim(0,max(y) + 0.01)
+plt.tight_layout()
 plt.show()
