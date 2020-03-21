@@ -37,5 +37,5 @@ hist = model.fit(
 score = model.evaluate(X_test, test_t, verbose=1)
 print("Accuracy rate = {0}".format(score[1]))
 
-#model.save("MNIST.h5")
+model.save("./model_data/MNIST.h5")
 #modle = load_model("MNIST.h5")

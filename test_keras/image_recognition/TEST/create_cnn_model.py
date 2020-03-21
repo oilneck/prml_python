@@ -53,4 +53,4 @@ score = model.evaluate(X_test, test_t, verbose=0)
 print("Accuracy rate = {0}".format(score[1]))
 
 # preserve model
-model.save("cnn_MNIST.h5")
+model.save("./model_data/cnn_MNIST.h5")
