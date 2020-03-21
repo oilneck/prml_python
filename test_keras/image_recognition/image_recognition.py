@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 # input data
-read_img = cv2.imread("./image_data/my_data/8.png")
+read_img = cv2.imread("./image_data/my_data/2.png")
 # get the center position
 height,width,channel = read_img.shape[:3]
 w_center = width//2
@@ -15,14 +15,14 @@ h_center = height//2
 trim_img = read_img[h_center-70:h_center+70, w_center-70:w_center+70]
 
 # BGR -> gray scale
-im = cv2.cvtColor(trim_img, cv2.COLOR_BGR2GRAY)
+gray = cv2.cvtColor(trim_img, cv2.COLOR_BGR2GRAY)
 # gray scale -> binary translation
-_, th = cv2.threshold(im, 0, 255, cv2.THRESH_OTSU)
+_, th = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU)
 # binary -> black & white inversion
 th = cv2.bitwise_not(th)
 # blur processing
 th = cv2.GaussianBlur(th,(9,9),0)
-# preserve as output data
+# save output data
 cv2.imwrite("./image_data/binary_data/test.jpg", th)
 
 # reading output data
@@ -35,7 +35,7 @@ for n in range(3):
 Xt = np.array(image)/255
 
 '''generate prediction data'''
-model = load_model("./TEST/cnn_MNIST.h5")
+model = load_model("./TEST/model_data/cnn_MNIST.h5")
 result = model.predict_classes(Xt)
 
 #----showing figure------
