@@ -42,5 +42,10 @@ All sources in [~/prml_python/prml] are the module file. If you want to change c
   <td align="center" valign="top"><a href="https://wixlabs-pdf-dev.appspot.com/assets/pdfjs/web/viewer.html?file=%2Fpdfproxy%3Finstance%3DsFTejjZZ3nYpDqVcvkkFMMVe7lfLGTHMEakrKNcdHBc.eyJpbnN0YW5jZUlkIjoiZWU1M2FhOTctZWJjMS00NjIwLTk5NDQtYWU3MjVmMjA0ZjM3IiwiYXBwRGVmSWQiOiIxM2VlMTBhMy1lY2I5LTdlZmYtNDI5OC1kMmY5ZjM0YWNmMGQiLCJtZXRhU2l0ZUlkIjoiM2EwMmU4ZTUtYzAzMS00ZTIxLWE3ZjItOTUyYzZmYzk2NTQ0Iiwic2lnbkRhdGUiOiIyMDIwLTAzLTEwVDEyOjMxOjQ5LjUwMloiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjI2Yjc4MDE0LTllYTktNGNlMi04MTllLTkyODM5MzMxN2IxYyIsImJpVG9rZW4iOiJkNDUxNDI3Mi0yYmYwLTA4MDEtM2ViNi0zYjVlMzBlOTJhNzMiLCJzaXRlT3duZXJJZCI6IjVkNTdjNjUwLTA1YTktNDFiNS1iMmFiLTEyNTkxMGE5Zjk4ZCJ9%26compId%3Dcomp-k7luz6mp%26url%3Dhttps%3A%2F%2Fdocs.wixstatic.com%2Fugd%2F5d57c6_a17e2152db5c4140a070805af46f87e1.pdf#page=1&links=true&originalFileName=RegularizationMethod_NN&locale=ja&allowDownload=false&allowPrinting=true">NeuralNetwork.pdf</a>
          </td>
   </tr>
+  <tr>
+  <th>Slide</tx>
+  <td align="center" valign="top"><a href="https://wixlabs-pdf-dev.appspot.com/assets/pdfjs/web/viewer.html?file=%2Fpdfproxy%3Finstance%3DnAtQJVl6b_8f6vNklZQi1dpTKDA1Z0NHZX_EcLmcdtY.eyJpbnN0YW5jZUlkIjoiZWU1M2FhOTctZWJjMS00NjIwLTk5NDQtYWU3MjVmMjA0ZjM3IiwiYXBwRGVmSWQiOiIxM2VlMTBhMy1lY2I5LTdlZmYtNDI5OC1kMmY5ZjM0YWNmMGQiLCJtZXRhU2l0ZUlkIjoiM2EwMmU4ZTUtYzAzMS00ZTIxLWE3ZjItOTUyYzZmYzk2NTQ0Iiwic2lnbkRhdGUiOiIyMDIwLTAzLTIxVDE5OjI5OjA2Ljc1NVoiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjI2Yjc4MDE0LTllYTktNGNlMi04MTllLTkyODM5MzMxN2IxYyIsImJpVG9rZW4iOiJkNDUxNDI3Mi0yYmYwLTA4MDEtM2ViNi0zYjVlMzBlOTJhNzMiLCJzaXRlT3duZXJJZCI6IjVkNTdjNjUwLTA1YTktNDFiNS1iMmFiLTEyNTkxMGE5Zjk4ZCJ9%26compId%3Dcomp-k8208f4w%26url%3Dhttps%3A%2F%2Fdocs.wixstatic.com%2Fugd%2F5d57c6_39e405e3617f4724a1869d4a9713e97b.pdf#page=1&links=true&originalFileName=image_recognition_nn&locale=en&allowDownload=true&allowPrinting=true">CNN.pdf</a>
+  </td>
+  </tr>
 </tbody>
 </table>
