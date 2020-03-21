@@ -1,0 +1,1 @@
+optimal size = 200 * 200 [px]
