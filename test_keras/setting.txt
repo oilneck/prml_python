@@ -1,0 +1,32 @@
+Environment settings for using keras & tensorflow
+
+The info. of version
+--------------------
+tensorflow:
+version = 1.12.0
+
+keras:
+version = 2.1.6 -tf
+
+python:
+version = 3.6.5
+
+---------------------
+
+Commands for building the environment 
+[ After installing anaconda3 ]
+
+0.open the shell (ex:cmd.exe)
+NOTICE:git-bash is not supported in 2020.3.
+------------------------------
+1.$ conda create -n my_keras python=3.6.5 anaconda
+2.$ conda activate my_keras
+3.$ pip install tensorflow==1.12.0
+------------------------------
+
+How to import keras
+------------------------------
+1.$ conda activate my_keras
+2.$ ipython
+3.$ from tensorflow.keras import ~
+
