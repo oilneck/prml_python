@@ -29,7 +29,7 @@ cv2.imwrite("./image_data/binary_data/test.jpg", th)
 test_img = cv2.imread("./image_data/binary_data/test.jpg")
 image = []
 for n in range(3):
-    # resize from (140,140) to (28,28) in RGB space
+    # resize from (140,140) to (28,28) in BGR space
     image.append(cv2.resize(test_img[:,:,n],(28, 28), cv2.INTER_CUBIC))
 # nomalization
 Xt = np.array(image)/255
@@ -49,6 +49,7 @@ plt.tick_params(labelbottom=False,labelleft=False)
 fig.text(0.74,0.65, "prediction",fontsize=20,transform=fig.transFigure)
 fig.text(0.8,(pos.y1 - pos.y0) / 2, "{0}".format(result[0]),fontsize=60,color='r')
 fig.text(0.05,0.5,"probability",rotation=90, size=15, verticalalignment='center')
+plt.tick_params(length=0)
 pred = model.predict(Xt)[0]
 for n in range(len(pred)):
     if n == np.argmax(pred):

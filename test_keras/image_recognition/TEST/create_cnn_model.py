@@ -62,17 +62,21 @@ hist = model.fit(X_train, train_t, batch_size=200, verbose=0,
 
 # evaluation
 score = model.evaluate(X_test, test_t, verbose=0)
-print("Accuracy rate = {0}".format(score[1]))
+print("\n Accuracy rate = {0}\n".format(score[1]))
 
 # plot the accuracy and loss
 fig = plt.figure(figsize=(10,4))
 ax = fig.add_subplot(1,2,1)
-ax.plot(hist.history['acc'],color='r')
+ax.plot(hist.history['acc'],color='r',label='training')
+ax.plot(hist.history['val_acc'],color='lime',label='validation')
+plt.legend(fontsize=15)
 plt.xlabel('epoch',fontsize=15)
 plt.title('model accuracy',fontsize=15)
 plt.xlim(0,20-1)
 ax = fig.add_subplot(1,2,2)
-ax.plot(hist.history['loss'],color='r')
+ax.plot(hist.history['loss'],color='r',label='training')
+ax.plot(hist.history['val_loss'],color='lime',label='validation')
+plt.legend(fontsize=15)
 plt.title('model loss',fontsize=15)
 plt.xlabel('epoch',fontsize=15)
 plt.xlim(0,20-1)
