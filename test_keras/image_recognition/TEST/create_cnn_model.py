@@ -4,6 +4,7 @@ from tensorflow.keras.layers import Conv2D, Reshape, MaxPooling2D, Dropout
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Constructing model
 model = Sequential()
@@ -63,5 +64,25 @@ hist = model.fit(X_train, train_t, batch_size=200, verbose=0,
 score = model.evaluate(X_test, test_t, verbose=0)
 print("Accuracy rate = {0}".format(score[1]))
 
-# preserve model
+# plot the accuracy and loss
+fig = plt.figure(figsize=(10,4))
+ax = fig.add_subplot(1,2,1)
+ax.plot(hist.history['acc'],color='r')
+plt.xlabel('epoch',fontsize=15)
+plt.title('model accuracy',fontsize=15)
+plt.xlim(0,20-1)
+ax = fig.add_subplot(1,2,2)
+ax.plot(hist.history['loss'],color='r')
+plt.title('model loss',fontsize=15)
+plt.xlabel('epoch',fontsize=15)
+plt.xlim(0,20-1)
+plt.tight_layout()
+plt.show()
+
+# save model
 model.save("./model_data/cnn_MNIST.h5")
+
+# save MNIST_history
+import json
+with open('./model_data/cnn_MNIST_hist.json','w') as f:
+    json.dump(hist.history, f)
