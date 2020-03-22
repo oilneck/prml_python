@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 # input data
-read_img = cv2.imread("./image_data/my_data/2.png")
+read_img = cv2.imread("./image_data/my_data/8.png")
 # get the center position
 height,width,channel = read_img.shape[:3]
 w_center = width//2
