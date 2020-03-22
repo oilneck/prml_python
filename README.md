@@ -27,7 +27,7 @@ git clone https://github.com/oilneck/prml_python.git
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section4.ipynb">sec.4 : Linear Models for Classification </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section5.ipynb">sec.5 : Neural Networks </a>
 
- Convolutional neural network with keras for image recognition
+ > Convolutional neural network with keras for image recognition
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/CNN_keras.ipynb"> Image Recognition </a>
 
 ### NOTICE
