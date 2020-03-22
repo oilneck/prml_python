@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 # input data
-read_img = cv2.imread("./image_data/my_data/8.png")
+read_img = cv2.imread("./image_data/my_data/test_image.png")
 # get the center position
 height,width,channel = read_img.shape[:3]
 w_center = width//2
@@ -39,12 +39,22 @@ model = load_model("./TEST/model_data/cnn_MNIST.h5")
 result = model.predict_classes(Xt)
 
 #----showing figure------
-fig = plt.figure(figsize=(7,3))
+fig = plt.figure(figsize=(8,4))
 ax = fig.add_subplot(111)
 # BGR -> RGB translation
 im_color = cv2.cvtColor(test_img, cv2.COLOR_BGR2RGB)
 plt.imshow(im_color)
-ax_pos = ax.get_position()
-fig.text(ax_pos.x1 - 0.15, ax_pos.y1 - 0.15, "prediction",fontsize=20)
-fig.text(ax_pos.x1 - 0.1, ax_pos.y1 - 0.55, "{0}".format(result[0]),fontsize=60,color='r')
+pos = ax.get_position()
+plt.tick_params(labelbottom=False,labelleft=False)
+fig.text(0.74,0.65, "prediction",fontsize=20,transform=fig.transFigure)
+fig.text(0.8,(pos.y1 - pos.y0) / 2, "{0}".format(result[0]),fontsize=60,color='r')
+fig.text(0.05,0.5,"probability",rotation=90, size=15, verticalalignment='center')
+pred = model.predict(Xt)[0]
+for n in range(len(pred)):
+    if n == np.argmax(pred):
+        c = 'r'
+    else:
+        c = 'k'
+    fig.text(0.1,0.93 - n * 0.1,
+    '{}:  {:.2g}'.format(n,np.round(pred[n],3)),size=15,color=c)
 plt.show()
