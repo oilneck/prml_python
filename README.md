@@ -21,7 +21,7 @@ git clone https://github.com/oilneck/prml_python.git
 |sec.1 : bayesian fitting|sec.4 : logistic regression|sec.5 : neural network|
 
 ## Jupyter Notebook files
-> The contents of prml
+> The contents of Pattern Recognition and Machine Learning
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section1.ipynb">sec.1 : Introduction</a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section2.ipynb">sec.2 : Probability distributions </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section3.ipynb">sec.3 : Linear Models for Regression </a>
