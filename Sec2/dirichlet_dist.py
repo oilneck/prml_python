@@ -7,7 +7,7 @@ from pd.dirichlet import Dirichlet
 '''triangle mesh grid (0,0)-(1,0)-(0,1)'''
 X_test = np.array([[0.01*a*0.01*(100-b) for a in range(1, 100)] for b in range(1, 100)])
 Y_test = np.array([[0.01*b] * 99 for b in range(1, 100)])
-mesh_data = np.array([X_test.ravel(),Y_test.ravel(),1-X_test.ravel()-Y_test.ravel()]).T
+mesh_data = np.array([X_test.ravel(),Y_test.ravel()]).T
 
 X = np.array([x + (0.5 - np.average(x)) for x in X_test])
 Y = Y_test * np.sqrt(3) / 2
