@@ -25,7 +25,7 @@ train_t = to_categorical(train_t)
 test_t = to_categorical(test_t)
 
 score = model.evaluate(X_test, test_t, verbose=0)
-print("\n Accuracy rate = {0}\n".format(score[1]))
+print("Accuracy rate = {0}".format(score[1]))
 #print("\n {}\n".format(model.summary()))
 
 
