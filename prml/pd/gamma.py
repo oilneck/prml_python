@@ -13,7 +13,7 @@ class Gamma(object):
     def norm_gamma(self,mu,x,mu0:float=0,beta:float=2):
         '''p(mu,x)=N(mu|mu_0,(beta * lambda)^(-1)) * Gam(x|a,b)'''
         np.seterr(divide='ignore')
-        var = 1 / (beta * x)
+        var = np.reciprocal((beta * x).astype(float))
         return norm.pdf(mu,mu0,var) * self.pdf(x)
 
 
@@ -22,6 +22,6 @@ class Gamma(object):
 
 
     def pdf(self,x):
-        np.seterr(divide='ignore') 
+        np.seterr(divide='ignore')
         coef = np.power(self.b,self.a) / gamma(self.a)
         return coef * np.power(x,self.a - 1) * np.exp(-self.b * x)
