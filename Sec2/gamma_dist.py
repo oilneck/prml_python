@@ -3,7 +3,7 @@ from pd import *
 import matplotlib.pyplot as plt
 
 x = np.linspace(0,2,100)
-fig = plt.figure(figsize=(9,2.))
+fig = plt.figure(figsize=(11.,3.))
 # plot gamma distribution
 for n,[a,b] in enumerate([[0.1,0.1],[1.,1.],[4.,6.]],1):
     prob = Gamma(a,b)
