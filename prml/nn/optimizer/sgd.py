@@ -27,8 +27,7 @@ class SGD(object):
         self.nn.xlist = x
         self.nn.tlist = t
 
-    @staticmethod
-    def _normalize(self,grad):
+    def normalize(self,grad):
         return grad / np.linalg.norm(grad)
 
     def update(self,x,t,w_old,**kwargs):
@@ -38,7 +37,7 @@ class SGD(object):
         max_norm = self.clipnorm
         for _ in range(1,self.n_iter):
             grad = self.nn.gradE(w_old)[0]
-            w_new = w_old - lr * max_norm * self._normalize(grad)
+            w_new = w_old - lr * max_norm * self.normalize(grad)
             if np.allclose(w_new,w_old):
                 break
             w_old = w_new

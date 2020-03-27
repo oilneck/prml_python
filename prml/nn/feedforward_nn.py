@@ -29,14 +29,16 @@ class Feed_Forward(Neural_Network):
             gradE += np.hstack((gradw1.ravel(),gradw2.ravel()))
         return gradE + self.hyper_param * w, E + 0.5 * self.hyper_param * np.dot(w,w)
 
-    def compile(self,optimizer:str='scg'):
-        from nn.optimizer import Scaled_CG,Adam,SGD
-        if optimizer == 'scg':
+    def optimizers(self,method:str='scg'):
+        from nn.optimizer import Scaled_CG,Adam,SGD,RMSprop
+        if method == 'scg':
             self.optim_routine = Scaled_CG(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
-        elif optimizer == 'adam':
-            self.optim_routine = Adam(self.n_input-1,self.n_hidden,self.n_output)
-        elif optimizer == 'sgd':
+        elif method == 'adam':
+            self.optim_routine = Adam(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+        elif method == 'sgd':
             self.optim_routine = SGD(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+        elif method == 'rmsprop':
+            self.optim_routine = RMSprop(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
         else:
             self.optim_routine = SGD(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
 
