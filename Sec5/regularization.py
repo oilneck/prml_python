@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from nn.scaled_conjgrad import Scaled_CG
+from nn.feedforward_nn import Feed_Forward
 
 def create_noise_data(Noise_NUM=10):
     x = np.linspace(0, 1, Noise_NUM)[:, None]
@@ -15,7 +15,8 @@ test_x = np.linspace(0,1,100)
 plt.figure(figsize=(10, 2.5))
 for i,(n_unit,hyper_param) in enumerate(zip([1,3,30,30],[0,0,0,0.01]),1):
     plt.subplot(1,4,i)
-    model = Scaled_CG(1,n_unit,1,alpha=hyper_param)
+    model = Feed_Forward(1,n_unit,1,alpha=hyper_param)
+    model.compile(optimizer = 'scg')
     model.fit(train_x,train_y)
     test_y = model(test_x)
     plt.plot(test_x,test_y,color="r",zorder=1)
