@@ -1,32 +1,46 @@
 import numpy as np
-from .feedforward_nn import Feed_Forward
+from nn.feedforward_nn import Feed_Forward
 class Scaled_CG(object):
 
-    def __init__(self,NUM_INPUT:int=1,NUM_HIDDEN:int=3,NUM_OUTPUT:int=1,alpha:float=0):
-        self.nn = Feed_Forward(NUM_INPUT,NUM_HIDDEN,NUM_OUTPUT)
-        self.sigma0 = 1e-4
-        self.w = self.nn.getW()
-        self.nn.hyper_param = alpha
+    def __init__(self,n_in,n_hid,n_out,reg_coe):
+        self.nn = Feed_Forward(n_in,n_hid,n_out,reg_coe)
 
-    def __call__(self,x:np.array):
-        return np.vectorize(self.nn.Forward_propagation)(x)
+
+    def set_param(self,param):
+        if 'n_reset' in param.keys():
+            self.n_reset = param['n_reset']
+        else:
+            self.n_reset = 100
+
+        if 'sigma_0' in param.keys():
+            self.sigma0 = param['sigma_0']
+        else:
+            self.sigma0 = 1e-4
+
+        if 'n_iter' in param.keys():
+            self.n_iter = param['n_iter']
+        else:
+            self.n_iter = 1000
+
 
     def set_train_data(self,x:np.array,t:np.array):
         self.nn.xlist = x
         self.nn.tlist = t
 
-    def fit(self,train_x:np.array,train_y:np.array,n_iter:int=1000,n_reset:int=100):
-        self.set_train_data(train_x,train_y)
-        lamda,lamda_bar =1,0
-        nablaE,E = self.nn.gradE(self.w)
+
+    def update(self,x,t,w_vec,**kwargs):
+        self.set_train_data(x,t)
+        self.set_param(kwargs)
+        lamda,lamda_bar = 1 , 0
+        nablaE,E = self.nn.gradE(w_vec)
         origin_E = E
         origin_nablaE = nablaE
         p,r = -nablaE,-nablaE
         success = True
-        for k in range(1,n_iter):
+        for k in range(1,self.n_iter):
             if success:
                 sigma = self.sigma0 / np.sqrt(np.dot(p,p))
-                delE,E = self.nn.gradE(self.w + sigma * p)
+                delE,E = self.nn.gradE(w_vec + sigma * p)
                 s = (delE - origin_nablaE) / sigma
                 delta = np.dot(p,s)
             delta = delta + (lamda-lamda_bar) * np.dot(p,p)
@@ -36,15 +50,15 @@ class Scaled_CG(object):
                 lamda = lamda_bar
             mu = np.dot(p,r)
             alpha = mu / delta
-            delE,E = self.nn.gradE(self.w + alpha * p)
+            delE,E = self.nn.gradE(w_vec + alpha * p)
             DELTA = 2 * delta * (origin_E - E) / mu**2
             if DELTA > 0:
                 origin_E,origin_nablaE,origin_r = E,delE,r
-                self.w = self.w + alpha * p
-                r = -self.nn.gradE(self.w)[0]
+                w_vec = w_vec + alpha * p
+                r = -self.nn.gradE(w_vec)[0]
                 lamda_bar,success = 0,True
                 k += 1
-                if divmod(k,n_reset)[1] == 0:
+                if divmod(k,self.n_reset)[1] == 0:
                     p = r
                 else:
                     beta = (np.dot(r,r) - np.dot(r,origin_r))/mu
@@ -57,4 +71,4 @@ class Scaled_CG(object):
                 lamda = np.clip(lamda + delta*(1-DELTA)/np.dot(p,p),1e-15,1e50)
             if np.linalg.norm(r)==0:
                 return
-        self.nn.setW(self.w)
+        return(w_vec)
