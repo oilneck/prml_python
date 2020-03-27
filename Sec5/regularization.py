@@ -12,12 +12,12 @@ train_x,train_y = create_noise_data()
 # create test data
 test_x = np.linspace(0,1,100)
 
-plt.figure(figsize=(10, 2.5))
-for i,(n_unit,hyper_param) in enumerate(zip([1,3,30,30],[0,0,0,0.01]),1):
+plt.figure(figsize=(12, 3))
+for i,(n_unit,hyper_param) in enumerate(zip([1,3,30,30],[0,0,0,1e-2]),1):
     plt.subplot(1,4,i)
-    model = Feed_Forward(1,n_unit,1,alpha=hyper_param)
-    model.optimizer(method = 'scg')
-    model.fit(train_x,train_y)
+    model = Feed_Forward(1,n_unit,1,alpha = hyper_param)
+    model.optimizer(method='scg')
+    model.fit(train_x,train_y,n_iter=1000)
     test_y = model(test_x)
     plt.plot(test_x,test_y,color="r",zorder=1)
     plt.scatter(train_x.ravel(), train_y.ravel(), marker="x", color="b",zorder=2,s=30)
