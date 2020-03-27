@@ -9,7 +9,6 @@ class Feed_Forward(Neural_Network):
         self.add()
         self.xlist = None
         self.tlist = None
-        self.optimizer = None
         self.hyper_param = alpha #Regularization
 
 
@@ -29,8 +28,8 @@ class Feed_Forward(Neural_Network):
             gradE += np.hstack((gradw1.ravel(),gradw2.ravel()))
         return gradE + self.hyper_param * w, E + 0.5 * self.hyper_param * np.dot(w,w)
 
-    def optimizers(self,method:str='scg'):
-        from nn.optimizer import Scaled_CG,Adam,SGD,RMSprop
+    def optimizer(self,method:str='scg'):
+        from nn.optimizers import Scaled_CG,Adam,SGD,RMSprop
         if method == 'scg':
             self.optim_routine = Scaled_CG(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
         elif method == 'adam':
