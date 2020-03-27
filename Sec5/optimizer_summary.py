@@ -28,7 +28,7 @@ ax.scatter(train_x, train_y,s=8,color=color_list[0],zorder=2)
 # Plotting output data
 lr_list = [0.2,0.01,0.2]
 for n,(routine,lr) in enumerate(zip(['SGD','RMSprop','Adam'],lr_list),1):
-    model.optimizers(method = routine.lower())
+    model.optimizer(method = routine.lower())
     model.fit(train_x,train_y,n_iter=1500,learning_rate=lr)
     y = model(x)
     ax.plot(x,y,color_list[n],zorder=3,label=routine,linewidth=2.3,alpha=0.8)

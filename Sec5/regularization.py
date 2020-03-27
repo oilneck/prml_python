@@ -16,7 +16,7 @@ plt.figure(figsize=(10, 2.5))
 for i,(n_unit,hyper_param) in enumerate(zip([1,3,30,30],[0,0,0,0.01]),1):
     plt.subplot(1,4,i)
     model = Feed_Forward(1,n_unit,1,alpha=hyper_param)
-    model.optimizers(method = 'scg')
+    model.optimizer(method = 'scg')
     model.fit(train_x,train_y)
     test_y = model(test_x)
     plt.plot(test_x,test_y,color="r",zorder=1)
