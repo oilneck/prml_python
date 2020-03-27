@@ -2,8 +2,8 @@ import numpy as np
 from nn.feedforward_nn import Feed_Forward
 class Scaled_CG(object):
 
-    def __init__(self,n_in,n_hid,n_out,reg_coe):
-        self.nn = Feed_Forward(n_in,n_hid,n_out,reg_coe)
+    def __init__(self,n_in,n_hid,n_out,regularization_coe):
+        self.nn = Feed_Forward(n_in,n_hid,n_out,regularization_coe)
 
 
     def set_param(self,param):
