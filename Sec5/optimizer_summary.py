@@ -19,17 +19,18 @@ model.add(['tanh','identity'])
 # test data
 x = np.arange(-1,1,0.01)
 
-
-
 # Plotting training data
-color_list = ['blue','orange','red']
-plt.scatter(train_x, train_y,s=10,color=color_list[0],zorder=3)
+color_list = ['blue','orange','lime','red']
+fig = plt.figure(figsize=(10,5))
+ax = fig.add_subplot(111)
+ax.scatter(train_x, train_y,s=8,color=color_list[0],zorder=2)
 
 # Plotting output data
-for n,routine in enumerate(['sgd','adam'],1):
-    model.compile(optimizer = routine)
-    model.fit(train_x,train_y,n_iter=2000,learning_rate=0.2)
+lr_list = [0.2,0.01,0.2]
+for n,(routine,lr) in enumerate(zip(['SGD','RMSprop','Adam'],lr_list),1):
+    model.optimizers(method = routine.lower())
+    model.fit(train_x,train_y,n_iter=1500,learning_rate=lr)
     y = model(x)
-    plt.plot(x,y,color_list[n],zorder=1,label=routine,linewidth=2)
+    ax.plot(x,y,color_list[n],zorder=3,label=routine,linewidth=2.3,alpha=0.8)
 plt.legend(fontsize=15)
 plt.show()
