@@ -1,28 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from nn.adam import Adam
-from nn.linear_nn import Linear_NeuralNet
+from nn.feedforward_nn import Feed_Forward
 
 N = 50 # The number of test data
 
-def multi_func(x,f_name='square'):
-    if f_name == 'square':
-        f = x**2
-    elif f_name == 'heaviside':
-        f = 0.5 * (np.sign(x) + 1)
-    elif f_name == 'sinusoidal':
-        f = 0.5 + 0.5 * np.sin(x * np.pi)
-    elif f_name == 'absolute':
-        f = np.abs(x)
-    return f
+def heaviside(x):
+    return 0.5 * (np.sign(x) + 1)
+
 
 # training data
 train_x = np.linspace(-1, 1, N).reshape(N, 1)
-train_y = multi_func(train_x,'heaviside')
+train_y = heaviside(train_x)
 
 # Construncting NeuralNet
-model = Linear_NeuralNet(1,3,1)
-model = Adam(1,3,1)
+model = Feed_Forward(1,3,1)
+model.compile(optimizer='adam')
 model.fit(train_x,train_y,learning_rate=0.3,n_iter=1500)
 
 # test data
