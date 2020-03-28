@@ -30,7 +30,7 @@ ax.scatter(train_x, train_y,s=25,color=color_list[0],linestyle=style_list[0],zor
 lr_list = [0.2,0.2,0.02,0.3,0.2]
 for n,(routine,lr) in enumerate(zip(['SGD','Momentum','RMSprop','Adagrad','Adam'],lr_list),1):
     model.optimizer(method = routine.lower())
-    model.fit(train_x,train_y,n_iter=2000,learning_rate=lr)
+    model.fit(train_x,train_y,n_iter=1500,learning_rate=lr)
     y = model(x)
     ax.plot(x,y,color_list[n],
             zorder=3,label=routine,
