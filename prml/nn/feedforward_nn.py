@@ -10,6 +10,7 @@ class Feed_Forward(Neural_Network):
         self.xlist = None
         self.tlist = None
         self.hyper_param = alpha #Regularization
+        self.init_w = self.getW()
 
 
     def __call__(self,x:np.array):
@@ -47,8 +48,8 @@ class Feed_Forward(Neural_Network):
             self.optim_routine = SGD(*unit)
 
     def fit(self,train_x:np.ndarray,train_y:np.ndarray,**param):
-        self.w = self.getW()
-        self.setW(self.optim_routine.update(train_x,train_y,self.w,**param))
+        weight_vect = self.getW()
+        self.setW(self.optim_routine.update(train_x,train_y,weight_vect,**param))
 
 
     def setW(self,w):
@@ -57,3 +58,6 @@ class Feed_Forward(Neural_Network):
 
     def getW(self):
         return np.hstack((self.w1.ravel(),self.w2.ravel()))
+
+    def clear(self):
+        self.setW(self.init_w)
