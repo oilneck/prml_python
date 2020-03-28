@@ -29,7 +29,7 @@ class Feed_Forward(Neural_Network):
         return gradE + self.hyper_param * w, E + 0.5 * self.hyper_param * np.dot(w,w)
 
     def optimizer(self,method:str='scg'):
-        from nn.optimizers import Scaled_CG,Adam,SGD,RMSprop
+        from nn.optimizers import Scaled_CG,Adam,SGD,RMSprop,Adagrad,Momentum
         if method == 'scg':
             self.optim_routine = Scaled_CG(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
         elif method == 'adam':
@@ -38,6 +38,10 @@ class Feed_Forward(Neural_Network):
             self.optim_routine = SGD(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
         elif method == 'rmsprop':
             self.optim_routine = RMSprop(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+        elif method == 'adagrad':
+            self.optim_routine = Adagrad(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+        elif method == 'momentum':
+            self.optim_routine = Momentum(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
         else:
             self.optim_routine = SGD(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
 
