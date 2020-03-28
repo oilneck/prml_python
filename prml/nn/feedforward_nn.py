@@ -28,22 +28,23 @@ class Feed_Forward(Neural_Network):
             gradE += np.hstack((gradw1.ravel(),gradw2.ravel()))
         return gradE + self.hyper_param * w, E + 0.5 * self.hyper_param * np.dot(w,w)
 
-    def optimizer(self,method:str='scg'):
+    def optimizer(self,method:str='sgd'):
+        unit = [self.n_input-1,self.n_hidden,self.n_output,self.hyper_param]
         from nn.optimizers import Scaled_CG,Adam,SGD,RMSprop,Adagrad,Momentum
         if method == 'scg':
-            self.optim_routine = Scaled_CG(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+            self.optim_routine = Scaled_CG(*unit)
         elif method == 'adam':
-            self.optim_routine = Adam(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+            self.optim_routine = Adam(*unit)
         elif method == 'sgd':
-            self.optim_routine = SGD(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+            self.optim_routine = SGD(*unit)
         elif method == 'rmsprop':
-            self.optim_routine = RMSprop(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+            self.optim_routine = RMSprop(*unit)
         elif method == 'adagrad':
-            self.optim_routine = Adagrad(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+            self.optim_routine = Adagrad(*unit)
         elif method == 'momentum':
-            self.optim_routine = Momentum(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+            self.optim_routine = Momentum(*unit)
         else:
-            self.optim_routine = SGD(self.n_input-1,self.n_hidden,self.n_output,self.hyper_param)
+            self.optim_routine = SGD(*unit)
 
     def fit(self,train_x:np.ndarray,train_y:np.ndarray,**param):
         self.w = self.getW()
