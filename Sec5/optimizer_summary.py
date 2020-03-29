@@ -9,7 +9,7 @@ def heaviside(x):
 
 
 # training data
-train_x = np.linspace(-1, 1, N).reshape(N, 1)
+train_x = np.linspace(-1, 1, N)
 train_y = heaviside(train_x)
 
 # Construncting NeuralNet
