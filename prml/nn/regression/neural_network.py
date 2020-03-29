@@ -39,8 +39,18 @@ class Neural_Network(object):
         return delta_1,delta_2
 
     def fit(self,xlist,tlist,n_iter:int=1000,learning_rate:float=0.1):
+        [xlist,tlist] = self.check_dim(xlist,tlist)
         for loop in range(n_iter):
             for n in range(len(xlist)):
                 del_1,del_2 = np.array(self.Back_propagation(xlist[n],tlist[n,:]))
                 self.w1 -= learning_rate * np.outer(del_1,np.insert(xlist[n],0,1))
                 self.w2 -= learning_rate * np.outer(del_2,self.layer1.output)
+
+    def check_dim(self,train_x,train_t):
+        if train_x.ndim == 1:
+            train_x = train_x.reshape(len(train_x),1)
+
+        if train_t.ndim == 1:
+            train_t = train_t.reshape(len(train_t),1)
+
+        return train_x,train_t
