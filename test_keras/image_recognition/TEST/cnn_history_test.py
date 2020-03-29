@@ -30,7 +30,7 @@ X_test = np.array(X_test)/255
 train_t = to_categorical(train_t)
 test_t = to_categorical(test_t)
 
-score = model.evaluate(X_test, test_t, verbose=0)
+score = model.evaluate(X_test, test_t, verbose=1)
 print("Accuracy rate = {0}".format(score[1]))
 #plot_model(model,to_file='cnn_model.png')
 #SVG(model_to_dot(model).create(prog='dot', format='svg'))
