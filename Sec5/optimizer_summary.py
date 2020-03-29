@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from nn.feedforward_nn import Feed_Forward
+from time import time
 
 N = 50 # The number of test data
 
@@ -29,6 +30,7 @@ ax.scatter(train_x, train_y,s=25,color=color_list[0],linestyle=style_list[0],zor
 # Plotting output data
 lr_list = [0.2,0.2,0.02,0.3,0.2]
 for n,(routine,lr) in enumerate(zip(['SGD','Momentum','RMSprop','Adagrad','Adam'],lr_list),1):
+    start = time()
     model.optimizer(method = routine.lower())
     model.fit(train_x,train_y,n_iter=1500,learning_rate=lr)
     y = model(x)
@@ -37,7 +39,11 @@ for n,(routine,lr) in enumerate(zip(['SGD','Momentum','RMSprop','Adagrad','Adam'
             linestyle=style_list[n],
             linewidth=2.3,alpha=0.8)
     model.clear()
+    comp = 'complete:{}'.format(routine)
+    print(comp + '{:.4g} s/process'.rjust(40-len(comp)).format(time()-start))
+plt.title('Function approx. for each optimization method',fontsize=20)
 plt.legend(fontsize=15)
 plt.xlim(-1,1)
 plt.xticks([-1,0,1])
+plt.yticks([0,0.5,1])
 plt.show()
