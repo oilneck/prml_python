@@ -65,5 +65,5 @@ class Feed_Forward(Neural_Network):
         self.setW(self.init_w)
 
     def predict(self,test_PHI:np.ndarray):
-        output = np.array( [self.Forward_propagation(test_PHI[n,:]) for n in range(len(test_PHI))] )
+        output = np.array( [self.Forward_propagation(test_PHI[n]) for n in range(len(test_PHI))] )
         return output

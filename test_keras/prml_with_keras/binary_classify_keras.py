@@ -22,11 +22,11 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 model = Sequential()
 model.add(Dense(4,input_dim=2,activation='tanh'))
 model.add(Dense(1,activation='sigmoid'))
-optimize_routine = Adagrad(lr=0.3)
+optimize_routine = Adam(lr=0.1)
 model.compile(optimizer=optimize_routine,loss=losses.mean_squared_error)
 
 # create prediction data
-model.fit(train_x,train_t,epochs=100,verbose=1)
+model.fit(train_x,train_t,epochs=100,verbose=1,batch_size=len(train_x))
 Z = model.predict(test_x)
 
 
