@@ -49,8 +49,9 @@ class Feed_Forward(Neural_Network):
             self.optim_routine = SGD(*unit)
 
     def fit(self,train_x:np.ndarray,train_y:np.ndarray,**param):
-        weight_vect = self.getW()
-        self.setW(self.optim_routine.update(train_x,train_y,weight_vect,**param))
+        self.optim_routine.set_train_data(train_x,train_y)
+        W = self.getW()
+        self.setW(self.optim_routine.update(W,**param))
 
 
     def setW(self,w):

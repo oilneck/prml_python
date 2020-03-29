@@ -30,11 +30,9 @@ class SGD(object):
     def normalize(self,grad):
         return grad * self.clipnorm / np.linalg.norm(grad)
 
-    def update(self,x,t,w,**kwargs):
-        self.set_train_data(x,t)
+    def update(self,w,**kwargs):
         self.set_param(kwargs)
         lr = self.learning_rate
-        max_norm = self.clipnorm
         for _ in range(1,self.n_iter):
             grad = self.nn.gradE(w)[0]
             w -= lr * self.normalize(grad)

@@ -34,8 +34,7 @@ class Momentum(object):
     def normalize(self,grad):
         return grad * self.clipnorm / np.linalg.norm(grad)
 
-    def update(self,x,t,w,**kwargs):
-        self.set_train_data(x,t)
+    def update(self,w,**kwargs):
         self.set_param(kwargs)
         gamma = self.gamma
         lr = self.learning_rate

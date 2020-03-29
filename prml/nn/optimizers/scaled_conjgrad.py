@@ -28,8 +28,7 @@ class Scaled_CG(object):
         self.nn.tlist = t
 
 
-    def update(self,x,t,w_vec,**kwargs):
-        self.set_train_data(x,t)
+    def update(self,w_vec,**kwargs):
         self.set_param(kwargs)
         lamda,lamda_bar = 1 , 0
         nablaE,E = self.nn.gradE(w_vec)

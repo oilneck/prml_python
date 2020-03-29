@@ -36,8 +36,7 @@ class Adam(object):
         self.nn.xlist = x
         self.nn.tlist = t
 
-    def update(self,x,t,w_vec,**kwargs):
-        self.set_train_data(x,t)
+    def update(self,w_vec,**kwargs):
         self.set_param(kwargs)
         beta_1,beta_2 = self.beta_1,self.beta_2
         epsilon = self.epsilon

@@ -26,8 +26,7 @@ class Adagrad(object):
         self.nn.xlist = x
         self.nn.tlist = t
 
-    def update(self,x,t,w,**kwargs):
-        self.set_train_data(x,t)
+    def update(self,w,**kwargs):
         self.set_param(kwargs)
         eps = self.epsilon
         lr = self.learning_rate
