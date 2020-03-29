@@ -19,6 +19,7 @@ class Feed_Forward(Neural_Network):
 
     def gradE(self,w):
         self.setW(w)
+        [self.xlist,self.tlist] = self.check_dim(self.xlist,self.tlist)
         E = 0
         gradE = np.zeros(self.getW().size)
         for n in range(len(self.xlist)):
