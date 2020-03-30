@@ -3,7 +3,8 @@ from prml import (
     nn,
     classifier,
     base_module,
-    pd
+    pd,
+    cnn_module
 )
 
 
@@ -12,5 +13,6 @@ __all__ = [
     "nn",
     "classifier",
     "base_module",
-    "pd"
+    "pd",
+    "cnn_module"
 ]
