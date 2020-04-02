@@ -10,7 +10,7 @@ def step_function(x):
 
 
 def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+    return 0.5 + 0.5 * np.tanh(0.5 * x)
 
 
 def sigmoid_grad(x):
@@ -28,5 +28,5 @@ def relu_grad(x):
 
 
 def softmax(x):
-    x = x - np.max(x, axis=-1, keepdims=True) 
+    x = x - np.max(x, axis=-1, keepdims=True)
     return np.exp(x) / np.sum(np.exp(x), axis=-1, keepdims=True)
