@@ -14,10 +14,13 @@ class Two_layer_net(object):
         self.params['b2'] = np.zeros(n_output)
 
         self.layers = OrderedDict()
-        self.layers['layer1'] = Tanh_Layer(self.params['W1'],self.params['b1'])
-        self.layers['layer2'] = Linear_Layer(self.params['W2'],self.params['b2'])
 
         self.cost_function = Sum_squared_error()
+
+    def add(self,layer:list=['tanh','linear']):
+        for n,key in enumerate(layer,1):
+            arg = [self.params['W'+str(n)],self.params['b'+str(n)]]
+            self.layers['layer'+str(n)] = eval(key.capitalize() + '_Layer' + '(*arg)')
 
     def predict(self,x):
         for layer in self.layers.values():

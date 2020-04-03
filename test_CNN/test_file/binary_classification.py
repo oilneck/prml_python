@@ -17,6 +17,7 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 
 # constructing NN
 model = Two_layer_net(2,3,1)
+model.add(['tanh','sigmoid'])
 optimizer = Adam(lr = 0.1)
 #---learning----
 for _ in range(int(1000)):

@@ -24,6 +24,7 @@ train_y = multi_func(train_x,'heaviside')
 
 # constructing NN
 model = Two_layer_net(1,4,1)
+model.add(['tanh','linear'])
 optimizer = Adam(lr = 0.1)
 #---learning----
 for _ in range(int(max_iter)):
