@@ -29,8 +29,8 @@ git clone https://github.com/oilneck/prml_python.git
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section5.ipynb">sec.5 : Neural Networks </a>
 
  > Deep learning and Convolutional neural network for image recognition
-- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_Deep_learning.ipynb"> Deep learning test </a> <div style="text-align: right;">【Without tensorflow tools】</div>
-- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_CNN_keras.ipynb"> Image recognition </a><div style="text-align: right;">【Using "keras" package】</div>
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_Deep_learning.ipynb"> Deep learning test </a> 【Without external tools "tensorflow"】
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_CNN_keras.ipynb"> Image recognition </a><div style="text-align: right;">【Using tensorflow package & "keras" modules】</div>
 
 ### NOTICE
 All sources in [~/prml_python/prml] are the module file. If you want to change certain parameters (ex. iteration number, activation function in each layer for Neural Network), check the files in that directory.
