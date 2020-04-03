@@ -9,12 +9,12 @@ class Affine(object):
         self.dW = None
         self.db = None
 
-    def forward(self,X):
+    def fp(self,X):
         self.X = X
         out = np.dot(X,self.W) + self.b
         return out
 
-    def backward(self,delta):
+    def bp(self,delta):
         dx = np.dot(delta, self.W.T)
         self.dW = np.dot(self.X.T, delta)
         self.db = np.sum(delta, axis=0)

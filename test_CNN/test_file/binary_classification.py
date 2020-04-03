@@ -9,7 +9,7 @@ def create_noise_data(sample:int=1000):
     return x, labels.reshape(-1, 1)
 
 # training dataset
-train_x, train_y = create_noise_data()
+train_x, labels = create_noise_data()
 
 # test dataset
 X,Y = np.meshgrid(np.linspace(-1, 1, 100),np.linspace(-1, 1, 100))
@@ -17,10 +17,10 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 
 # constructing NN
 model = Two_layer_net(2,3,1)
-optimizer = Adam(lr = 0.01)
+optimizer = Adam(lr = 0.1)
 #---learning----
 for _ in range(int(1000)):
-    grads = model.gradient(train_x,train_y)
+    grads = model.gradient(train_x,labels)
     optimizer.update(model.params, grads)
 
 
@@ -33,6 +33,7 @@ for n in range(len(labels)):
     plt.scatter(train_x[n, 0], train_x[n, 1], c=set_color[n],marker=set_marker[n],s=15)
 
 # plot the test data
+Z = model.predict(test_x)
 plt.contourf(X, Y, Z.reshape(X.shape), levels=np.linspace(0, 1, 11), alpha=0.2,cmap='jet')
 plt.colorbar()
 # axis setting

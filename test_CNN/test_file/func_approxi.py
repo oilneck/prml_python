@@ -4,7 +4,7 @@ from deepL_module.nn.two_layer_net import Two_layer_net
 from deepL_module.nn.optimizers import *
 
 N = 50 # sample
-max_iter = 2000
+max_iter = 5000
 
 
 def multi_func(x,f_name='square'):
@@ -20,11 +20,11 @@ def multi_func(x,f_name='square'):
 
 # training data
 train_x = np.linspace(-1, 1, N).reshape(N,1)
-train_y = multi_func(train_x,'sinusoidal')
+train_y = multi_func(train_x,'heaviside')
 
 # constructing NN
 model = Two_layer_net(1,4,1)
-optimizer = Adam(lr = 0.01)
+optimizer = Adam(lr = 0.1)
 #---learning----
 for _ in range(int(max_iter)):
     grads = model.gradient(train_x,train_y)
