@@ -4,7 +4,7 @@ from deepL_module.nn.two_layer_net import Two_layer_net
 from deepL_module.nn.optimizers import *
 
 N = 50 # sample
-max_iter = 5000
+max_iter = 2000
 
 
 def multi_func(x,f_name='square'):
@@ -25,7 +25,8 @@ train_y = multi_func(train_x,'heaviside')
 # constructing NN
 model = Two_layer_net(1,4,1)
 model.add(['tanh','linear'])
-optimizer = Adam(lr = 0.1)
+optimizer = Adam(lr = 0.1, beta_1 = 0.95, beta_2 = 0.95)
+
 #---learning----
 for _ in range(int(max_iter)):
     grads = model.gradient(train_x,train_y)
