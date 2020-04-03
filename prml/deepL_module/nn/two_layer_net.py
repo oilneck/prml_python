@@ -14,8 +14,10 @@ class Two_layer_net(object):
         self.params['b2'] = np.zeros(n_output)
 
         self.layers = OrderedDict()
-        self.layers['layer1'] = Tanh_Layer(self.params['W1'],self.params['b1'])
-        self.layers['layer2'] = Linear_Layer(self.params['W2'],self.params['b2'])
+        self.layers['layer1'] = Affine(self.params['W1'],self.params['b1'])
+        self.layers['tanh'] = Tanh_Layer()
+        self.layers['layer2'] = Affine(self.params['W2'],self.params['b2'])
+        self.layers['identity'] = Linear_Layer()
 
         self.cost_function = Sum_squared_error()
 

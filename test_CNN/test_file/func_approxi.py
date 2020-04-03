@@ -4,7 +4,7 @@ from deepL_module.nn.two_layer_net import Two_layer_net
 from deepL_module.nn.optimizers import *
 
 N = 50 # sample
-max_iter = 1#5000
+max_iter = 2000
 
 
 def multi_func(x,f_name='square'):

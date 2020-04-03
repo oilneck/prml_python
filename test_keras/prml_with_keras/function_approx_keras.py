@@ -32,14 +32,14 @@ model.add(Dense(3,input_dim=1,activation='tanh'))
 model.add(Dense(1,activation='linear'))
 
 # setting optimizer (lr:learning rate)
-optimize_routine = Adam(lr=0.01)
+optimize_routine = Adam(lr=0.1)
 
 # selection of loss function
 model.compile(optimizer=optimize_routine,loss=losses.mean_squared_error)
 
 
 '''creating prediction data'''
-model.fit(train_x,train_y,epochs=1000,verbose=0,batch_size=N)
+model.fit(train_x,train_y,epochs=2000,verbose=0,batch_size=N)
 test_x = np.linspace(-1,1,1000)
 test_y = model.predict(test_x)
 

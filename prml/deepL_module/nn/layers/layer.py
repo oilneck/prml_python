@@ -2,51 +2,36 @@ import numpy as np
 from .affine import Affine
 from deepL_module.base.functions import *
 
-class Linear_Layer(Affine):
-
-    def __init__(self,W,b):
-        super().__init__(W,b)
-        self.out = None
+class Linear_Layer(object):
 
     def forward(self, x):
-        out = identity_function( self.fp(x) )
+        out = identity_function(x)
         self.out = out
         return out
 
     def backward(self,delta):
-        dout = self.bp(delta)
-        dx =  dout
+        dx = delta
         return dx
 
 class Sigmoid_Layer(Affine):
 
-    def __init__(self,W,b):
-        super().__init__(W,b)
-        self.out = None
-
     def forward(self, x):
-        out = sigmoid( self.fp(x) )
+        out = sigmoid(x)
         self.out = out
         return out
 
     def backward(self,delta):
-        dout = self.bp(delta)
-        dx = self.out * (1.0 - self.out) * dout
+        dx = self.out * (1.0 - self.out) * delta
         return dx
 
 
-class Tanh_Layer(Affine):
-
-    def __init__(self,W,b):
-        super().__init__(W,b)
-        self.out = None
+class Tanh_Layer(object):
 
     def forward(self, x):
-        out = np.tanh( self.fp(x) )
+        out = np.tanh(x)
         self.out = out
         return out
 
     def backward(self,delta):
-        dout = self.bp(delta)
-        dx = (1.0 - self.out ** 2) * dout
+        dx = (1. - self.out **2) * delta
         return dx
