@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 
 
-#init_pos = (0.5,1.7)
+
 init_pos = [0.5,1.7]
 
 init_pos = np.array(init_pos).astype(float)
@@ -55,11 +55,3 @@ for key in optimizers:
     plt.tick_params(bottom=False,left=False)
 
 plt.show()
-
-
-# fig, ax = plt.subplots(figsize=(20, 10))
-# ax.contour(X,Y,Z, levels=np.logspace(0, 5, 35), norm=LogNorm(), cmap='jet')
-# ax.plot(*np.array([3.,0.5]), 'r*', markersize=18)
-# ax.set_xlim((-4.5, 4.5))
-# ax.set_ylim((-4.5, 4.5))
-# plt.show()
