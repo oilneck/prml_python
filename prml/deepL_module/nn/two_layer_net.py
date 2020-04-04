@@ -22,6 +22,14 @@ class Two_layer_net(object):
             arg = [self.params['W'+str(n)],self.params['b'+str(n)]]
             self.layers['layer'+str(n)] = eval(key.capitalize() + '_Layer' + '(*arg)')
 
+    def set_loss(self,name:str='sum_squared_error'):
+        if name == 'sum_squared_error':
+            self.cost_function = Sum_squared_error()
+        elif name == 'categorical_crossentropy':
+            self.cost_function = Softmax_cross_entropy()
+        else:
+            raise KeyError("not exist cost function")
+
     def predict(self,x):
         for layer in self.layers.values():
             x = layer.forward(x)

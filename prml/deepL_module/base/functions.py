@@ -17,8 +17,9 @@ def relu(x):
 
 
 def softmax(x):
-    x = x - np.max(x, axis=-1, keepdims=True)
-    return np.exp(x) / np.sum(np.exp(x), axis=-1, keepdims=True)
+    max_val = np.max(x, axis=-1, keepdims=True)
+    a = x - max_val
+    return np.exp(a) / np.sum(np.exp(a), axis=-1, keepdims=True)
 
 def beal_function(x,y):
     term_1 = np.square(1.5 - x + x * y)
@@ -35,3 +36,8 @@ def grad_beal(x,y):
     del_x = term_1 * (y - 1) + term_2 * (y ** 2 - 1) + term_3 * (y ** 3 - 1)
     del_y = term_1 * x + term_2 * (2 * x * y) + term_3 * (3 * x * y ** 2)
     return del_x, del_y
+
+def to_categorical(t,cls_num:int=None):
+    if cls_num is None:
+        cls_num = np.max(t) + 1
+    return np.identity(cls_num)[t]

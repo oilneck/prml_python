@@ -14,6 +14,7 @@ class Sum_squared_error(object):
         self.t = t
         self.y = self.activate(x)
         self.loss = 0.5 * np.sum( (self.y - self.t) ** 2 )
+        return np.copy(self.loss)
 
     def delta(self,dout=1):
         return self.y - self.t

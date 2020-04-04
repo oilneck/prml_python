@@ -1,5 +1,5 @@
 import numpy as np
-from cnn_module.datasets.mnist import load_mnist
+from deepL_module.datasets.mnist import load_mnist
 import matplotlib.pyplot as plt
 from PIL import Image
 
