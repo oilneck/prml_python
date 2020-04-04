@@ -17,7 +17,7 @@ max_iter = 2000
 optimizers = {}
 optimizers['SGD'] = SGD(lr=0.1)
 optimizers['Momentum'] = Momentum(lr=0.02, momentum=0.9)
-optimizers['Adagrad'] = Adagrad(lr=0.01)
+optimizers['Adagrad'] = Adagrad(lr=0.0001)
 optimizers['RMSprop'] = RMSprop(lr=0.002, rho=0.9)
 optimizers['Adam'] = Adam(lr=0.01)
 
