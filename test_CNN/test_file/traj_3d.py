@@ -4,6 +4,7 @@ from matplotlib.colors import LogNorm
 from deepL_module.base.functions import *
 from deepL_module.nn.optimizers import *
 from collections import OrderedDict
+from mpl_toolkits.mplot3d import Axes3D
 
 
 
@@ -11,6 +12,7 @@ from collections import OrderedDict
 init_pos = [0.6,1.7]
 
 init_pos = np.array(init_pos).astype(float)
+minimum = np.array([3.,0.5])
 
 params = {}
 params['x'], params['y'] = init_pos[0], init_pos[1]
@@ -32,12 +34,13 @@ for key in optimizers:
     y_history = []
     params['x'], params['y'] = init_pos[0], init_pos[1]
 
-    ax = fig.add_subplot(2, 2, idx)
-    train_x, train_y = np.linspace(-4.5,4.5,100), np.linspace(-4.5,4.5,100)
+    ax = fig.add_subplot(2,2,idx,projection='3d')
+    ax.view_init(elev=60,azim=150)
+    train_x, train_y = np.linspace(-3.5,4.,100), np.linspace(-4.5,4.5,100)
     X, Y = np.meshgrid(train_x,train_y)
     Z = beal_function(X, Y)
-    ax.contour(X, Y, Z, levels=np.logspace(0,5,20), norm=LogNorm(), cmap='jet')
-    ax.plot(*np.array([3,0.5]),'r*',markersize=18,color='orange')
+    ax.plot_surface(X,Y,Z, norm=LogNorm(), rstride=1, cstride=1, edgecolor='none', alpha=.8, cmap='rainbow')
+    ax.plot([3.],[0.5], beal_function(3,0.5), 'r*', markersize=20,color='orange',zorder=3)
 
     for i in range(90):
         x_history.append(params['x'])
@@ -47,12 +50,10 @@ for key in optimizers:
         optimizer.update(params, grads)
 
     idx += 1
-    path = np.array([x_history,y_history])
-    path = path.T[::2].T
-    ax.plot(x_history, y_history, 'o-', color="r",markersize=5,markevery=7)
+    ax.plot(x_history, y_history, '-',marker='.', color="k",markersize=5,markevery=7,zorder=3)
     plt.ylim(-4.5, 4.5)
-    plt.xlim(-1.5, 4.)
-    plt.title(key,fontsize=20)
+    plt.xlim(-3.5, 4.)
+    plt.title(key,fontsize=20,loc='left')
     plt.tick_params(labelbottom=False,labelleft=False)
     plt.tick_params(bottom=False,left=False)
 
