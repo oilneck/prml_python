@@ -63,6 +63,7 @@ class Relu_Layer(Affine):
         return out
 
     def backward(self,delta):
-        dout = (self.out > 0).astype(float)
+        diff_relu = (self.out > 0).astype(float)
+        dout = diff_relu * delta
         dx = self.bp(dout)
         return dx
