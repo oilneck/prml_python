@@ -38,6 +38,9 @@ class Neural_net(object):
             self.params['W' + str(idx)] = scale * np.random.randn(node_num_list[idx-1], node_num_list[idx])
             self.params['b' + str(idx)] = np.zeros(node_num_list[idx])
 
+    def __call__(self,X):
+        x = self.predict(X)
+        return self.cost_function.activate(x)
 
     def add(self,layer:list):
 
