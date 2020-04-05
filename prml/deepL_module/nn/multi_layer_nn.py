@@ -43,6 +43,10 @@ class Neural_net(object):
         return self.cost_function.activate(x)
 
     def add(self,layer:list):
+        n_layer = self.total_hidden_num + 1
+        assert len(layer) == n_layer, \
+        'The number of layers must be {} layers'.format(str(n_layer))
+
         for n,key in enumerate(layer,1):
             arg = [self.params['W' + str(n)],self.params['b' + str(n)]]
             self.layers['layer' + str(n)] = eval(key.capitalize() + '_Layer' + '(*arg)')
