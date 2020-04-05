@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import make_moons
+from sklearn.datasets import make_moons, make_circles
 from deepL_module.nn.multi_layer_nn import Neural_net
 from deepL_module.nn.optimizers import *
 
@@ -18,7 +18,7 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 
 # constructing NN
 model = Neural_net(2,[10,10,10],1)
-model.add(['tanh', 'tanh', 'tanh', 'sigmoid'])
+model.add(['tanh', 'linear', 'relu', 'sigmoid'])
 model.set_loss('sum_squared_error')
 optimizer = Adam(lr = 0.1)
 #---learning----
