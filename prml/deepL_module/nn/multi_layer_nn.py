@@ -43,19 +43,20 @@ class Neural_net(object):
         return self.cost_function.activate(x)
 
     def add(self,layer:list):
-
         for n,key in enumerate(layer,1):
             arg = [self.params['W' + str(n)],self.params['b' + str(n)]]
             self.layers['layer' + str(n)] = eval(key.capitalize() + '_Layer' + '(*arg)')
 
 
     def set_loss(self,name:str='sum_squared_error'):
-
         if name == 'sum_squared_error':
             self.cost_function = Sum_squared_error()
 
         elif name == 'categorical_crossentropy':
             self.cost_function = Softmax_cross_entropy()
+
+        elif name == 'binary_crossentropy':
+            self.cost_function = Sigmoid_cross_entropy()
 
         else:
             raise KeyError("Not exist cost function name : {}".format(name))

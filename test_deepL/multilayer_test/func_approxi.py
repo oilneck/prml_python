@@ -38,7 +38,7 @@ for n,func in enumerate(multi_func,1):
         grads = model.gradient(train_x,train_y)
         optimizer.update(model.params, grads)
     # prediction data
-    y = model.predict(x)
+    y = model(x)
     ax.plot(x, y, 'r-')
     plt.xticks([-1,0,1])
     plt.yticks([0,0.5,1])
