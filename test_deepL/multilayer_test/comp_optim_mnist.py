@@ -15,7 +15,7 @@ max_iter = 2000
 
 # === config for optimizer ===
 optimizers = {}
-optimizers['SGD'] = SGD(lr=0.3)
+optimizers['SGD'] = SGD(lr=0.05)
 optimizers['Momentum'] = Momentum(lr=0.04, momentum=0.92)
 optimizers['Adagrad'] = Adagrad(lr=0.01)
 optimizers['RMSprop'] = RMSprop(lr=0.002, rho=0.95)
@@ -26,10 +26,10 @@ model = {}
 train_loss = {}
 for key in optimizers.keys():
     model[key] = Neural_net(n_input=784,
-                            n_hidden=[100, 100, 100],
+                            n_hidden=[100, 100, 100 ,100],
                             n_output=10,
                             alpha=0.01)
-    model[key].add(['sigmoid', 'sigmoid', 'sigmoid', 'linear'])
+    model[key].add(['relu', 'relu', 'relu', 'relu', 'linear'])
     model[key].set_loss('categorical_crossentropy')
     train_loss[key] = []
 
@@ -61,9 +61,9 @@ ax = fig.add_subplot(111)
 x = np.arange(max_iter)
 for n,key in enumerate(optimizers.keys(),1):
     norm = np.max(train_loss[key])
-    ax.plot(x, train_loss[key] ,marker=markers[key], markersize=7, markevery=10, label=key, zorder=n, alpha=1-0.15*n)
+    ax.plot(x, train_loss[key] ,marker=markers[key], markersize=7, markevery=100, label=key, zorder=n, alpha=1-0.1*n)
 plt.xlabel("iterations",fontsize=20)
 plt.title("Comparison of optimizer losses",fontsize=20)
-plt.xlim([-5,210])
+plt.xlim([-5,510])
 plt.legend(fontsize=15)
 plt.show()
