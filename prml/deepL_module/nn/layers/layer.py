@@ -67,3 +67,60 @@ class Relu_Layer(Affine):
         dout = diff_relu * delta
         dx = self.bp(dout)
         return dx
+
+class Softsign_Layer(Affine):
+
+    def __init__(self,W,b):
+        super().__init__(W,b)
+        self.activate = None
+
+    def forward(self,x):
+        self.activate = self.fp(x)
+        _act = np.copy(self.activate)
+        out = softsign(_act)
+        return out
+
+    def backward(self,delta):
+        diff_ = 1 / np.square(1. + np.abs(self.activate))
+        dout = diff_ * delta
+        dx = self.bp(dout)
+        return dx
+
+
+class Softplus_Layer(Affine):
+
+    def __init__(self,W,b):
+        super().__init__(W,b)
+        self.activate = None
+
+    def forward(self,x):
+        self.activate = self.fp(x)
+        _act = np.copy(self.activate)
+        out = softplus(_act)
+        return out
+
+    def backward(self,delta):
+        diff_ = sigmoid(self.activate)
+        dout = diff_ * delta
+        dx = self.bp(dout)
+        return dx
+
+class Elu_Layer(Affine):
+
+    def __init__(self,W,b):
+        super().__init__(W,b)
+        self.activate = None
+        self.alpha = 0.5
+
+    def forward(self,x):
+        self.activate = self.fp(x)
+        _act = np.copy(self.activate)
+        out = elu(_act,self.alpha)
+        return out
+
+    def backward(self,delta):
+        act = self.activate
+        diff_ = np.where(act > 0, 1, self.alpha * np.exp(act))
+        dout = diff_ * delta
+        dx = self.bp(dout)
+        return dx
