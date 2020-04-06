@@ -38,7 +38,7 @@ plt.scatter(train_x[labels.ravel() == 1,0],
 
 
 # plot the test data
-Z = model(test_x)
+Z = model.predict(test_x)
 plt.contourf(X, Y, Z.reshape(X.shape), levels=np.linspace(0, 1, 11), alpha=0.2,cmap='jet')
 plt.colorbar()
 # axis setting
