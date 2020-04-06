@@ -10,7 +10,7 @@ from deepL_module.base import *
 
 train_size = X_train.shape[0]
 batch_size = 256
-max_iter = 2000
+max_iter = 1000
 
 
 # === config for optimizer ===
@@ -60,8 +60,9 @@ fig=plt.figure(figsize=(11,5))
 ax = fig.add_subplot(111)
 x = np.arange(max_iter)
 for n,key in enumerate(optimizers.keys(),1):
-    norm = np.max(train_loss[key])
-    ax.plot(x, train_loss[key] ,marker=markers[key], markersize=7, markevery=100, label=key, zorder=n, alpha=1-0.1*n)
+    ax.plot(x, smooth_filt(train_loss[key],weight=0.1), marker=markers[key],
+            markersize=7, markevery=100, label=key, zorder=n, alpha=1-0.1*n
+            )
 plt.xlabel("iterations",fontsize=20)
 plt.title("Comparison of optimizer losses",fontsize=20)
 plt.xlim([-5,510])
