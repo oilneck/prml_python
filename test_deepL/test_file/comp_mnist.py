@@ -3,7 +3,7 @@ from deepL_module.datasets.mnist import load_mnist
 from deepL_module.nn.two_layer_net import Two_layer_net
 from deepL_module.nn.optimizers import *
 from deepL_module.nn.cost_functions import *
-from deepL_module.base.functions import *
+from deepL_module.base import *
 
 # === loading data ===
 (X_train, train_t), (X_test, test_t) = load_mnist(normalize=True)

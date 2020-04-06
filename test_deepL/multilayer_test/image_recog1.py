@@ -3,7 +3,7 @@ from deepL_module.datasets.mnist import load_mnist
 from deepL_module.nn.multi_layer_nn import Neural_net
 from deepL_module.nn.optimizers import *
 from deepL_module.nn.cost_functions import *
-from deepL_module.base.functions import *
+from deepL_module.base import *
 
 
 '''#0 loading data '''
