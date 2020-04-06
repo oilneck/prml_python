@@ -110,7 +110,7 @@ class Elu_Layer(Affine):
     def __init__(self,W,b):
         super().__init__(W,b)
         self.activate = None
-        self.alpha = 0.5
+        self.alpha = 1.0
 
     def forward(self,x):
         self.activate = self.fp(x)
@@ -121,6 +121,29 @@ class Elu_Layer(Affine):
     def backward(self,delta):
         act = self.activate
         diff_ = np.where(act > 0, 1, self.alpha * np.exp(act))
+        dout = diff_ * delta
+        dx = self.bp(dout)
+        return dx
+
+class Swish_Layer(Affine):
+
+    def __init__(self,W,b):
+        super().__init__(W,b)
+        self.activate = None
+        self.out = None
+        self.beta = 1.0
+
+    def forward(self,x):
+        self.activate = self.fp(x)
+        _act = np.copy(self.activate)
+        out = swish(_act,self.beta)
+        self.out = out
+        return out
+
+    def backward(self,delta):
+        act = self.activate
+        beta = self.beta
+        diff_ = beta * self.out + sigmoid(beta * act) * (1 - beta * self.out)
         dout = diff_ * delta
         dx = self.bp(dout)
         return dx

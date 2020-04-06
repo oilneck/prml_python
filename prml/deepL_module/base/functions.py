@@ -26,9 +26,11 @@ def softsign(x):
 def softplus(x):
     return np.log(1. + np.exp(x))
 
-def elu(x,alpha:float=0.5):
+def elu(x,alpha:float=1.0):
     return np.maximum(0, x) + np.minimum(0, alpha * (np.exp(x) - 1) )
 
+def swish(x,beta:float=1.0):
+    return x * sigmoid(beta * x)
 
 def beal_function(x,y):
     term_1 = np.square(1.5 - x + x * y)
