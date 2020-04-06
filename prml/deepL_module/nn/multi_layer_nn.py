@@ -39,8 +39,7 @@ class Neural_net(object):
             self.params['b' + str(idx)] = np.zeros(node_num_list[idx])
 
     def __call__(self,X):
-        x = self.predict(X)
-        return self.cost_function.activate(x)
+        return self.predict(X)
 
     def add(self,layer:list):
         n_layer = self.total_hidden_num + 1
@@ -65,8 +64,11 @@ class Neural_net(object):
         else:
             raise KeyError("Not exist cost function name : {}".format(name))
 
+    def predict(self,X):
+        y = self.feed_forward(X)
+        return self.cost_function.activate(y)
 
-    def predict(self, x):
+    def feed_forward(self, x):
         for layer in self.layers.values():
             x = layer.forward(x)
         return x
@@ -74,7 +76,7 @@ class Neural_net(object):
 
     def loss(self, x, t):
 
-        y = self.predict(x)
+        y = self.feed_forward(x)
 
         weight_decay = 0
         for idx in range(1, self.total_hidden_num + 2):

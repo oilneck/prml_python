@@ -29,7 +29,7 @@ for key in optimizers.keys():
                             n_hidden=[100, 100, 100 ,100],
                             n_output=10,
                             alpha=0.01)
-    model[key].add(['relu', 'relu', 'relu', 'relu', 'linear'])
+    model[key].add(['relu', 'relu', 'relu', 'relu', 'relu'])
     model[key].set_loss('categorical_crossentropy')
     train_loss[key] = []
 
@@ -60,7 +60,7 @@ fig=plt.figure(figsize=(11,5))
 ax = fig.add_subplot(111)
 x = np.arange(max_iter)
 for n,key in enumerate(optimizers.keys(),1):
-    ax.plot(x, smooth_filt(train_loss[key],weight=0.1), marker=markers[key],
+    ax.plot(x, smooth_filt(train_loss[key]), marker=markers[key],
             markersize=7, markevery=100, label=key, zorder=n, alpha=1-0.1*n
             )
 plt.xlabel("iterations",fontsize=20)
