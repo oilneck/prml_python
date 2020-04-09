@@ -2,6 +2,7 @@ import numpy as np
 from deepL_module.nn.layers.layer import *
 from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
+from deepL_module.nn.metrics import *
 from collections import OrderedDict
 
 class Neural_net(object):
@@ -19,6 +20,7 @@ class Neural_net(object):
         self.layers = OrderedDict()
 
         self.cost_function = None
+        self.metric = None
 
 
     def __init_weight(self, weight_std):
@@ -57,6 +59,7 @@ class Neural_net(object):
 
         elif name == 'categorical_crossentropy':
             self.cost_function = Softmax_cross_entropy()
+            self.metric = Categorical_accuracy()
 
         elif name == 'binary_crossentropy':
             self.cost_function = Sigmoid_cross_entropy()
@@ -73,6 +76,9 @@ class Neural_net(object):
             x = layer.forward(x)
         return x
 
+    def accuracy(self, x, t):
+        y = self.predict(x)
+        return self.metric.accuracy(y,t)
 
     def loss(self, x, t):
 

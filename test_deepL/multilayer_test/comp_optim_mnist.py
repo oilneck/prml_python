@@ -24,6 +24,7 @@ optimizers['Adam'] = Adam(lr=0.01)
 
 model = {}
 train_loss = {}
+train_acc = {}
 for key in optimizers.keys():
     model[key] = Neural_net(n_input=784,
                             n_hidden=[100, 100, 100 ,100],
@@ -32,6 +33,7 @@ for key in optimizers.keys():
     model[key].add(['relu', 'relu', 'relu', 'relu', 'relu'])
     model[key].set_loss('categorical_crossentropy')
     train_loss[key] = []
+    train_acc[key] = []
 
 
 # === learning ===
@@ -47,6 +49,9 @@ for i in range(max_iter):
         loss = model[key].loss(x_batch, t_batch)
         train_loss[key].append(loss)
 
+        acc = model[key].accuracy(x_batch, t_batch)
+        train_acc[key].append(acc)
+
     if i % 200 == 0:
         print( "===========" + "iteration:" + str(i).rjust(3) + "===========")
         for key in optimizers.keys():
@@ -56,9 +61,11 @@ for i in range(max_iter):
 
 # === drawing loss data ===
 markers = {"SGD": "o", "Momentum": "x", "Adagrad": "s", "RMSprop": "*", "Adam": "D"}
-fig=plt.figure(figsize=(11,5))
-ax = fig.add_subplot(111)
+fig = plt.figure(figsize=(11,5))
 x = np.arange(max_iter)
+
+# plot error value
+ax = fig.add_subplot(111)
 for n,key in enumerate(optimizers.keys(),1):
     ax.plot(x, smooth_filt(train_loss[key]), marker=markers[key],
             markersize=7, markevery=100, label=key, zorder=n, alpha=1-0.1*n
@@ -66,5 +73,17 @@ for n,key in enumerate(optimizers.keys(),1):
 plt.xlabel("iterations",fontsize=20)
 plt.title("Comparison of optimizer losses",fontsize=20)
 plt.xlim([-5,510])
+plt.legend(fontsize=15)
+
+# plot accuracy data
+fig = plt.figure(figsize=(11,5))
+ax = fig.add_subplot(111)
+for n,key in enumerate(optimizers.keys(),1):
+    ax.plot(x, smooth_filt(train_acc[key]), marker=markers[key],
+            markersize=7, markevery=100, label=key, zorder=n, alpha=1-0.1*n
+            )
+plt.xlabel("iterations",fontsize=20)
+plt.title("Comparison of optimizer accuracies",fontsize=20)
+plt.xlim([-5,1000])
 plt.legend(fontsize=15)
 plt.show()
