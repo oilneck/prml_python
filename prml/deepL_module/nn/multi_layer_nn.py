@@ -56,6 +56,7 @@ class Neural_net(object):
     def set_loss(self,name:str='sum_squared_error'):
         if name == 'sum_squared_error':
             self.cost_function = Sum_squared_error()
+            self.metric = Regression_accuracy()
 
         elif name == 'categorical_crossentropy':
             self.cost_function = Softmax_cross_entropy()
