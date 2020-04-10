@@ -64,6 +64,7 @@ class Neural_net(object):
 
         elif name == 'binary_crossentropy':
             self.cost_function = Sigmoid_cross_entropy()
+            self.metric = Binary_accuracy()
 
         else:
             raise KeyError("Not exist cost function name : {}".format(name))

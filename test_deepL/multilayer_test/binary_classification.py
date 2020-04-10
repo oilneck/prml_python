@@ -4,6 +4,8 @@ from sklearn.datasets import make_moons, make_circles
 from deepL_module.nn.multi_layer_nn import Neural_net
 from deepL_module.nn.optimizers import *
 
+max_iter = 250
+
 def create_noise_data(sample:int=400):
     x,labels = make_moons(sample, noise = 0.2)
     x[:,0] -= 0.5
@@ -21,10 +23,15 @@ model = Neural_net(2,[10,10,10],1)
 model.add(['tanh', 'relu', 'tanh', 'linear'])
 model.set_loss('binary_crossentropy')
 optimizer = Adam(lr = 0.1)
+score_acc = []
+
 #---learning----
-for _ in range(int(250)):
+for _ in range(max_iter):
     grads = model.gradient(train_x,labels)
     optimizer.update(model.params, grads)
+
+    score = model.accuracy(train_x,labels)
+    score_acc.append(np.asarray(score))
 
 
 # plot the training data
@@ -46,4 +53,12 @@ plt.xlim(-2.2,2.2)
 plt.ylim(-2.,2.)
 plt.xticks(np.arange(-2,3,1))
 plt.yticks(np.arange(-2,3,1))
+plt.show()
+
+# plot the accuracy score
+fig = plt.figure(figsize=(7,4))
+plt.plot(np.arange(max_iter), score_acc, color='r')
+plt.title('Accuracy score', fontsize=15)
+plt.xlabel('iteration', fontsize=15)
+plt.tight_layout()
 plt.show()

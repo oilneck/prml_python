@@ -41,7 +41,8 @@ for n,func in enumerate(multi_func,1):
     for _ in range(int(max_iter)):
         grads = model.gradient(train_x,train_y)
         optimizer.update(model.params, grads)
-        train_acc[func_name[n-1]].append(model.accuracy(train_x, train_y))
+        score = model.accuracy(train_x, train_y)
+        train_acc[func_name[n-1]].append(score)
 
     # prediction data
     y = model(x)
