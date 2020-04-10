@@ -16,9 +16,10 @@ max_iter = 1e+4
 
 '''#1 config for NN '''
 model = Neural_net(784, [100, 100, 100, 100], 10, alpha=0.01)
-model.add(['tanh', 'sigmoid', 'tanh', 'sigmoid', 'linear'])
+model.add(['tanh', 'softsign', 'softplus', 'swish', 'linear'])
 model.set_loss('categorical_crossentropy')
 train_loss = []
+train_acc = []
 
 
 '''#2 optimizer '''
@@ -39,17 +40,35 @@ for i in range(int(max_iter)):
     loss = model.loss(x_batch, t_batch)
     train_loss.append(loss)
 
+    # get accuracy data
+    score = model.accuracy(x_batch, t_batch)
+    train_acc.append(score)
 
-'''#4 drawing loss data '''
-fig1=plt.figure(figsize=(11,5),dpi=50)
-ax = fig1.add_subplot(111)
+
+'''#4 drawing loss & accuracy data '''
+# ----- loss data -----
+fig1 = plt.figure(figsize=(13,5)) # dpi=50
+ax = fig1.add_subplot(121)
 x = np.arange(max_iter)
-ax.plot(x, train_loss, color='blue',marker="*", markersize=7, markevery=10, label="Adam")
+ax.plot(x, train_loss, color='blue',marker="*", markersize=7, markevery=10)
 plt.xlabel("iterations",fontsize=25)
 plt.title("loss",fontsize=25)
 plt.xlim([-5,210])
-plt.legend(fontsize=20)
 plt.show()
+
+# --- accuracy data ---
+ax = fig1.add_subplot(122)
+ax.plot(x, smooth_filt(train_acc),
+        color = 'lime',
+        marker = "*",
+        markersize = 8,
+        markevery = 100)
+plt.xlabel("iterations",fontsize=25)
+plt.title("accuracy",fontsize=25)
+plt.xlim([-30,1000])
+plt.tight_layout()
+plt.show()
+
 
 
 '''#5 preparing test data '''

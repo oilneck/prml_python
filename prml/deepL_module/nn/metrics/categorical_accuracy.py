@@ -13,6 +13,7 @@ class Categorical_accuracy(object):
         y = np.argmax(y_pred, axis=1)
         t = np.zeros_like(y)
 
+        # categorical judge
         if y_true.ndim != 1 : t = np.argmax(y_true, axis=1)
 
         if normalize:
@@ -24,8 +25,5 @@ class Categorical_accuracy(object):
 
     def _check_dim(self,y_pred,y_true):
         y_pred, y_true = np.asarray(y_pred), np.asarray(y_true)
-
-        if y_true.ndim == 1:
-            y_true = to_categorical(y_true)
-
+        pass
         return y_pred, y_true
