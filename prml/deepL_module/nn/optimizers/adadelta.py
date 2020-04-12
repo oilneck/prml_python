@@ -2,7 +2,7 @@ import numpy as np
 
 class Adadelta(object):
 
-    def __init__(self, lr:float=1.0, rho:float=0.95, epsilon:float=1e-3):
+    def __init__(self, lr:float=1.0, rho:float=0.95, epsilon:float=1e-6):
         self.lr = lr
         self.rho = rho
         self.eps = epsilon
