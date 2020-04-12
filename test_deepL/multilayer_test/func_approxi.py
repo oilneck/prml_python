@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from deepL_module.nn.multi_layer_nn import Neural_net
 from deepL_module.nn.optimizers import *
-from deepL_module.base import *
 
 N = 50 # sample
 max_iter = 1000 # iteration
@@ -63,7 +62,3 @@ for _, name in enumerate(func_name):
 plt.legend(fontsize=15)
 plt.xlim(-1,max_iter / 10)
 plt.show()
-
-'''# save model'''
-path_w = './../../prml/deepL_module/datasets/model_data/test_model.pkl'
-save_model(model)
