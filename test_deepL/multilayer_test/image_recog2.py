@@ -3,10 +3,10 @@ from deepL_module.datasets.mnist import load_mnist
 from deepL_module.base import *
 
 
-'''#0 loading data '''
+'''#0 load training data '''
 (X_train, train_t), (X_test, test_t) = load_mnist(normalize=True)
 
-'''#1 loading model data '''
+'''#1 load model data '''
 path_r = './../../prml/deepL_module/datasets/model_data/im_model.pkl'
 model = load_model(path_r)
 
@@ -22,10 +22,10 @@ label = test_t[fetch_idx]
 fig = plt.figure(figsize=(11,4))
 ax = fig.add_subplot(111)
 ax.imshow(data.reshape(28,28), cmap='gray')
-plt.tick_params(labelbottom=False,
-                labelleft=False,
-                bottom=False,
-                left=False)
+plt.tick_params(labelbottom = False,
+                labelleft = False,
+                bottom = False,
+                left = False)
 
 
 '''#4 output prediction data '''
