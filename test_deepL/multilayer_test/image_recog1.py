@@ -105,17 +105,18 @@ pos = ax.get_position()
 pos_y = 0.5 * (pos.y1 - pos.y0)
 fig2.text(0.75, pos_y, str(prediction), fontsize=60, color='r')
 fig2.text(0.71,0.65, "prediction",
-        fontsize=20,
-        transform=fig2.transFigure,
-        color='r')
+        fontsize = 20,
+        transform = fig2.transFigure,
+        color = 'r')
 
 # --- labels ---
 fig2.text(0.87, pos_y, str(label[0]), fontsize=60, color='k')
 fig2.text(0.86,0.65, "labels",
-        fontsize=20,
-        transform=fig2.transFigure)
+        fontsize = 20,
+        transform = fig2.transFigure)
 plt.show()
 
 
 '''#8 save model'''
-save_model(model)
+path = './../../prml/deepL_module/datasets/model_data/im_model.pkl'
+save_model(model, path)

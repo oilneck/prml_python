@@ -7,7 +7,8 @@ from deepL_module.base import *
 (X_train, train_t), (X_test, test_t) = load_mnist(normalize=True)
 
 '''#1 loading model data '''
-model = load_model()
+path_r = './../../prml/deepL_module/datasets/model_data/im_model.pkl'
+model = load_model(path_r)
 
 
 '''#2 preparing test data '''
