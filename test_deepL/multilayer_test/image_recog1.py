@@ -115,3 +115,7 @@ fig2.text(0.86,0.65, "labels",
         fontsize=20,
         transform=fig2.transFigure)
 plt.show()
+
+
+'''#8 save model'''
+save_model(model)

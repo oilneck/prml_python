@@ -18,14 +18,16 @@ def smooth_filt(x):
 
 def save_model(model, path:str=None):
     if path is None:
-        path = os.getcwd() + '/test_model.pkl'
+        path = os.path.dirname(os.path.abspath(__file__))
+        path += '/../datasets/model_data/test_model.pkl'
 
     with open(path, 'wb') as f:
         pickle.dump(model, f)
 
 def load_model(path:str=None):
     if path is None:
-        path = os.getcwd() + '/test_model.pkl'
+        path = os.path.dirname(os.path.abspath(__file__))
+        path += '/../datasets/model_data/test_model.pkl'
 
     with open(path, 'rb') as f:
         obj = pickle.load(f)
