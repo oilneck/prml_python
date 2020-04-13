@@ -13,14 +13,24 @@ model = load_model(path_r)
 
 
 ''' #2 load image data '''
-path_img = './../../test_keras/image_recognition/image_data/my_data/test_image.png'
-img = plt.imread(path_img)
-image = color.rgb2gray(img)
+path_img = './../../test_keras/image_recognition/image_data/my_data/_image.png'
+read_img = plt.imread(path_img)
+gray_img = color.rgb2gray(read_img)
+
+# resize image
+width, height = gray_img.shape
+cent_w, cent_h = width // 2, height // 2
+cut_size = 300 # trimming size [pix]
+margin = cut_size // 2
+image = gray_img[cent_h - margin : cent_h + margin,
+                 cent_w - margin : cent_w + margin]
 
 
 ''' #3 processing image '''
-image_resized = resize(image, (image.shape[0] / 5, image.shape[1] / 5),
-                       anti_aliasing=True)
+image_resized = rescale(image, 1. / (cut_size / 28.),
+                        anti_aliasing = True,
+                        multichannel = False,
+                        anti_aliasing_sigma = 1.5)
 data = invert(image_resized)
 
 
@@ -34,7 +44,7 @@ pred = np.argmax(prob)
 ''' #5 showing image '''
 fig = plt.figure(figsize=(11,4))
 ax = fig.add_subplot(111)
-ax.imshow(invert(image), cmap='gray')
+ax.imshow(data, cmap='gray')
 plt.tick_params(labelbottom = False,
                 labelleft = False,
                 bottom = False,
