@@ -29,14 +29,14 @@ plt.tick_params(labelbottom = False,
 
 
 '''#4 output prediction data '''
-prob = model.predict(data)
+prob = model(data).ravel()
 prediction = np.argmax(prob)
 
 # --- probability ---
 c_list = ['k'] * 10
 c_list[prediction] = 'r'
 for n in range(len(prob)):
-    p = np.round(prob[:,n], 3)
+    p = np.round(prob[n], 3)
     text = '{}:  {:.2g}'.format(n,float(p))
     fig.text(0.1, 0.93-0.1*n, text, color=c_list[n], size=15)
 
