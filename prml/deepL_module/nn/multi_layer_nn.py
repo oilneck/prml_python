@@ -8,6 +8,7 @@ from collections import OrderedDict
 class Neural_net(object):
 
     def __init__(self, n_input, n_hidden, n_output, weight_std:float = None, alpha:float = 0.):
+        if isinstance(n_hidden,int): n_hidden = [n_hidden]
         self.n_input = n_input
         self.n_output = n_output
         self.n_hidden_list = n_hidden
