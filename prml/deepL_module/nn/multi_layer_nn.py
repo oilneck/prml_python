@@ -57,31 +57,58 @@ class Neural_net(object):
 
 
     def set_loss(self,name:str='sum_squared_error'):
+        loss_comp = False
+
         if name == 'sum_squared_error':
             self.cost_function = Sum_squared_error()
             self.metric = Regression_accuracy()
+            loss_comp = True
 
         elif name == 'categorical_crossentropy':
             self.cost_function = Softmax_cross_entropy()
             self.metric = Categorical_accuracy()
+            loss_comp = True
 
         elif name == 'binary_crossentropy':
             self.cost_function = Sigmoid_cross_entropy()
             self.metric = Binary_accuracy()
+            loss_comp = True
 
         else:
             raise KeyError("Not exist cost function name : {}".format(name))
 
+        return loss_comp
+
     def optimizer(self,method):
         opt_dict = {'sgd':SGD(),'rmsprop':RMSprop(),'momentum':Momentum(),
                     'adam':Adam(),'adagrad':Adagrad(),'adadelta':Adadelta()}
+        optim_comp = False
 
         if isinstance(method,str):
-            self.optim = opt_dict[method]
+            for key in opt_dict.keys():
+                if key == method:
+                    self.optim = opt_dict[method]
+                    optim_comp = True
+            if optim_comp is not True:
+                raise KeyError("Not exist optimizer name : {}".format(method))
 
         for val in opt_dict.values():
             if isinstance(method,type(val)):
                 self.optim = method
+                optim_comp = True
+
+        if optim_comp is not True:
+            raise ValueError('Could not interpret optimizer: ' + str(method))
+
+        return optim_comp
+
+    def compile(self,loss:str, optimizer):
+
+        opt_compiled = self.optimizer(optimizer)
+        loss_compiled = self.set_loss(loss)
+        _is_compiled = opt_compiled and loss_compiled
+
+        return _is_compiled
 
     def predict(self,X):
         y = self.feed_forward(X)
@@ -128,9 +155,9 @@ class Neural_net(object):
 
         return grads
 
-    def fit(self,X_train:np.ndarray, t_train:np.ndarray,n_iter:int=1000, batch_size=None):
+    def fit(self,X_train:np.ndarray, t_train:np.ndarray, n_iter=1000, batch_size=None):
 
-        for _ in range(n_iter):
+        for _ in range(int(n_iter)):
             x_batch, t_batch = get_mini_batch(X_train, t_train, batch_size)
 
             grads = self.gradient(x_batch, t_batch)
