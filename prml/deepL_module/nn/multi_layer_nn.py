@@ -3,6 +3,7 @@ from deepL_module.nn.layers.layer import *
 from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
 from deepL_module.nn.metrics import *
+from deepL_module.base import *
 from collections import OrderedDict
 
 class Neural_net(object):
@@ -22,6 +23,7 @@ class Neural_net(object):
 
         self.cost_function = None
         self.metric = None
+        self.optim = None
 
 
     def __init_weight(self, weight_std):
@@ -70,6 +72,17 @@ class Neural_net(object):
         else:
             raise KeyError("Not exist cost function name : {}".format(name))
 
+    def optimizer(self,method):
+        opt_dict = {'sgd':SGD(),'rmsprop':RMSprop(),'momentum':Momentum(),
+                    'adam':Adam(),'adagrad':Adagrad(),'adadelta':Adadelta()}
+
+        if isinstance(method,str):
+            self.optim = opt_dict[method]
+
+        for val in opt_dict.values():
+            if isinstance(method,type(val)):
+                self.optim = method
+
     def predict(self,X):
         y = self.feed_forward(X)
         return self.cost_function.activate(y)
@@ -114,3 +127,11 @@ class Neural_net(object):
             grads['b' + str(idx)] = self.layers['layer' + str(idx)].db
 
         return grads
+
+    def fit(self,X_train:np.ndarray, t_train:np.ndarray,n_iter:int=1000, batch_size=None):
+
+        for _ in range(n_iter):
+            x_batch, t_batch = get_mini_batch(X_train, t_train, batch_size)
+
+            grads = self.gradient(x_batch, t_batch)
+            self.optim.update(self.params, grads)

@@ -3,16 +3,13 @@ import pickle
 import os
 
 def get_mini_batch(train_x, train_t, batch_size=None):
-    train_size = train_x.shape[0]
 
     if batch_size is None:
-        batch_size = train_size
-
-    batch_mask = np.random.choice(train_size, batch_size)
-    x_batch = train_x[batch_mask]
-    t_batch = train_t[batch_mask]
-
-    return x_batch, t_batch
+        return train_x, train_t
+    else:
+        train_size = train_x.shape[0]
+        batch_mask = np.random.choice(train_size, batch_size)
+        return train_x[batch_mask], train_t[batch_mask]
 
 
 def to_categorical(t,cls_num:int=None):
