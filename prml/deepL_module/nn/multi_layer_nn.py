@@ -155,10 +155,27 @@ class Neural_net(object):
 
         return grads
 
-    def fit(self,X_train:np.ndarray, t_train:np.ndarray, n_iter=1000, batch_size=None):
+    def fit(self,X_train:np.ndarray, t_train:np.ndarray,
+            n_iter=1000, batch_size=None, history:bool=False):
+
+        hist = {}
+        hist['loss'] = []
+        hist['acc'] = []
 
         for _ in range(int(n_iter)):
             x_batch, t_batch = get_mini_batch(X_train, t_train, batch_size)
 
             grads = self.gradient(x_batch, t_batch)
             self.optim.update(self.params, grads)
+
+            if history:
+                loss = self.loss(x_batch, t_batch)
+                score = self.accuracy(x_batch, t_batch)
+
+                hist['loss'].append(loss)
+                hist['acc'].append(score)
+
+            else:
+                hist = None
+
+        return hist        
