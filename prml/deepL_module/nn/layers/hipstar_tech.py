@@ -1,12 +1,8 @@
 import numpy as np
-from deepL_module.nn.layers import *
 
-class Batch_norm_Layer(Affine):
+class Batch_norm_Layer():
 
-    def __init__(self, W, b, gamma:float = 1., beta:float = 0.):
-        super().__init__(W,b)
-        self.dW = np.zeros_like(W)
-        self.db = np.zeros_like(b)
+    def __init__(self, gamma:float = 1., beta:float = 0.):
         self.gamma = gamma
         self.beta = beta
         self.xc = None
@@ -28,7 +24,6 @@ class Batch_norm_Layer(Affine):
 
         dX_norm = delta * self.gamma
         dvar = -.5 * np.sum(dX_norm * self.xc, axis=0) * std_inv ** 3
-        dmu = np.sum(dX_norm * -std_inv, axis=0) \
-            + dvar * np.mean(-2. * self.xc, axis=0)
+        dmu = np.sum(dX_norm * -std_inv, axis=0) + dvar * np.mean(-2. * self.xc, axis=0)
         dx = (dX_norm * std_inv) + (dvar * 2 * self.xc / self.n) + (dmu / self.n)
         return dx
