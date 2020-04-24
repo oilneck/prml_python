@@ -53,7 +53,8 @@ class Neural_net(object):
 
         for n,key in enumerate(layer,1):
             arg = [self.params['W' + str(n)],self.params['b' + str(n)]]
-            self.layers['layer' + str(n)] = eval(key.capitalize() + '_Layer' + '(*arg)')
+            self.layers['layer' + str(n)] = Affine(*arg)
+            self.layers['activation' + str(n)] = eval(key.capitalize() + '_Layer()')
 
 
     def set_loss(self,name:str='sum_squared_error'):
