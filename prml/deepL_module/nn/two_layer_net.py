@@ -1,5 +1,5 @@
 import numpy as np
-from deepL_module.nn.layers.layer import *
+from deepL_module.nn.layers import *
 from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
 from collections import OrderedDict
@@ -20,7 +20,8 @@ class Two_layer_net(object):
     def add(self,layer:list=['tanh','linear']):
         for n,key in enumerate(layer,1):
             arg = [self.params['W'+str(n)],self.params['b'+str(n)]]
-            self.layers['layer'+str(n)] = eval(key.capitalize() + '_Layer' + '(*arg)')
+            self.layers['layer' + str(n)] = Affine(*arg)
+            self.layers['activation' + str(n)] = eval(key.capitalize() + '_Layer()')
 
     def set_loss(self,name:str='sum_squared_error'):
         if name == 'sum_squared_error':
