@@ -1,5 +1,5 @@
 import numpy as np
-from deepL_module.nn.layers.layer import *
+from deepL_module.nn.layers import *
 from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
 from deepL_module.nn.metrics import *
