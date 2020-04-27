@@ -20,7 +20,7 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 
 # constructing NN
 model = Neural_net(2,[10,10,10],1)
-model.add(['tanh', 'swish', 'tanh', 'linear'])
+model.add(['tanh', 'swish', 'relu'])
 model.set_loss('binary_crossentropy')
 optimizer = Adam(lr = 0.1)
 score_acc = []

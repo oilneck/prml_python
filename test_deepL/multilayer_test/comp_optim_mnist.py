@@ -30,7 +30,7 @@ for key in optimizers.keys():
                             n_hidden=[100, 100, 100 ,100],
                             n_output=10,
                             alpha=0.01)
-    model[key].add(['relu', 'relu', 'relu', 'relu', 'relu'])
+    model[key].add(['relu', 'relu', 'relu', 'relu'])
     model[key].set_loss('categorical_crossentropy')
     train_loss[key] = []
     train_acc[key] = []

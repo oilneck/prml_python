@@ -29,8 +29,8 @@ bn_model = copy.deepcopy(model)
 
 
 # set the layer
-bn_model.add(['relu', 'batch_norm', 'relu', 'batch_norm', 'relu'])
-model.add(['relu'] * 5)
+bn_model.add(['relu', 'batch_norm', 'relu', 'batch_norm'])
+model.add(['relu'] * 4)
 model_dict = dict(zip(['batch_norm', 'normal'], [bn_model, model]))
 train_acc = {}
 

@@ -25,7 +25,7 @@ train_loss = {}
 train_acc = {}
 for key in layers:
     model[key] = Neural_net(n_input=784,
-                            n_hidden=[100, 100],
+                            n_hidden=[10, 10, 5],
                             n_output=10,
                             alpha=0.01)
     model[key].add([key] * 3)

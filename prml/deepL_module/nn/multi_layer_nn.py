@@ -47,14 +47,18 @@ class Neural_net(object):
         return self.predict(X)
 
     def add(self,layer:list):
-        n_layer = self.total_hidden_num + 1
-        assert len(layer) == n_layer, \
-        'The number of layers must be {} layers'.format(str(n_layer))
+        n_hidden = self.total_hidden_num
+        assert len(layer) == n_hidden, \
+        'The number of layers must be {} layers'.format(str(n_hidden))
 
         for n,key in enumerate(layer,1):
             arg = [self.params['W' + str(n)],self.params['b' + str(n)]]
             self.layers['layer' + str(n)] = Affine(*arg)
             self.layers['activation' + str(n)] = eval(key.capitalize() + '_Layer()')
+
+        n_layer = self.total_hidden_num + 1
+        arg = [self.params['W' + str(n_layer)],self.params['b' + str(n_layer)]]
+        self.layers['layer' + str(n_layer)] = Affine(*arg)
 
 
     def set_loss(self,name:str='sum_squared_error'):

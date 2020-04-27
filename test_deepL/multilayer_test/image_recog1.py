@@ -16,7 +16,7 @@ max_iter = 1e+4
 
 '''#1 config for NN '''
 model = Neural_net(784, [100, 100, 100, 100], 10, alpha=0.01)
-model.add(['tanh', 'softsign', 'softplus', 'swish', 'linear'])
+model.add(['tanh', 'softsign', 'softplus', 'swish'])
 model.set_loss('categorical_crossentropy')
 train_loss = []
 train_acc = []
