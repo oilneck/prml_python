@@ -24,7 +24,7 @@ max_iter = int(max_epochs * iter_per_epoch)
 
 # constructing model
 model = Neural_net(n_input=784, n_hidden=[100, 100, 100, 100],
-                   n_output=10, weight_std=scale)
+                   n_output=10, w_std=scale)
 bn_model = copy.deepcopy(model)
 
 

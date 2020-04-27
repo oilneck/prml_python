@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 class Neural_net(object):
 
-    def __init__(self, n_input, n_hidden, n_output, weight_std:float = None, alpha:float = 0.):
+    def __init__(self, n_input, n_hidden, n_output, w_std:float = None, alpha:float = 0.):
         if isinstance(n_hidden,int): n_hidden = [n_hidden]
         self.n_input = n_input
         self.n_output = n_output
@@ -17,7 +17,7 @@ class Neural_net(object):
         self.alpha = alpha # Weight decay coefficient.
         self.params = {}
 
-        self.__init_weight(weight_std)
+        self.__init_weight(w_std)
 
         self.layers = OrderedDict()
 
@@ -26,19 +26,19 @@ class Neural_net(object):
         self.optim = None
 
 
-    def __init_weight(self, weight_std):
+    def __init_weight(self, wscale):
         node_num_list = [self.n_input] + self.n_hidden_list + [self.n_output]
 
         for idx in range(1, len(node_num_list)):
 
-            if weight_std is None:
+            if wscale is None:
                 scale = np.sqrt(1. / node_num_list[idx - 1])
 
-            elif isinstance(weight_std,(int,float,np.number)):
-                scale = weight_std
+            elif isinstance(wscale,(int,float,np.number)):
+                scale = wscale
 
             else:
-                raise TypeError("weight_std must be float type")
+                raise TypeError("initial weight scale must be float or int type")
 
             self.params['W' + str(idx)] = scale * np.random.randn(node_num_list[idx-1], node_num_list[idx])
             self.params['b' + str(idx)] = np.zeros(node_num_list[idx])

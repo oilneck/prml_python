@@ -21,17 +21,12 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 # constructing NN
 model = Neural_net(2,[10,10,10],1)
 model.add(['tanh', 'swish', 'tanh', 'linear'])
-model.set_loss('binary_crossentropy')
-optimizer = Adam(lr = 0.1)
-score_acc = []
+routine = Adam(lr = 0.1)
+model.compile(loss='binary_crossentropy', optimizer=routine)
 
 #---learning----
-for _ in range(max_iter):
-    grads = model.gradient(train_x,labels)
-    optimizer.update(model.params, grads)
+history = model.fit(train_x, labels, n_iter=max_iter, history=True)
 
-    score = model.accuracy(train_x,labels)
-    score_acc.append(np.asarray(score))
 
 
 # plot the training data
@@ -57,7 +52,7 @@ plt.show()
 
 # plot the accuracy score
 fig = plt.figure(figsize=(7,4))
-plt.plot(np.arange(max_iter), score_acc, color='r')
+plt.plot(np.arange(max_iter), history['acc'], color='r')
 plt.title('Accuracy score', fontsize=15)
 plt.xlabel('iteration', fontsize=15)
 plt.tight_layout()
