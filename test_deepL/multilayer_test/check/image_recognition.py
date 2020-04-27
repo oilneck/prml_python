@@ -18,7 +18,7 @@ train_t = to_categorical(train_t)
 
 '''#1 config for NN '''
 model = Neural_net(784, [100, 100, 100, 100], 10, alpha=0.01)
-model.add(['tanh', 'softsign', 'softplus', 'swish', 'linear'])
+model.add(['tanh', 'softsign', 'softplus', 'swish'])
 # optimizer
 routine = Adam(lr=0.01)
 model.compile(loss='categorical_crossentropy', optimizer=routine)

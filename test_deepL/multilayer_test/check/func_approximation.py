@@ -32,7 +32,7 @@ for n,func in enumerate(multi_func,1):
     ax.scatter(train_x, train_y, s=12, color='blue')
     # constructing NN
     model = Neural_net(n_input=1, n_hidden=[10,10,10], n_output=1)
-    model.add(['tanh', 'tanh', 'sigmoid', 'linear'])
+    model.add(['tanh', 'tanh', 'sigmoid'])
     routine = Adam(lr=0.1, beta_1=0.9, beta_2=0.95)
     model.compile(loss='sum_squared_error', optimizer=routine)
     #-----learning------

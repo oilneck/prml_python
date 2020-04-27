@@ -16,7 +16,7 @@ plt.figure(figsize=(12, 3))
 for i,(n_unit,hyper_param) in enumerate(zip([1,3,50,50],[0,0,0,1e-2]),1):
     plt.subplot(1,4,i)
     model = Neural_net(1, n_unit, 1, alpha=hyper_param)
-    model.add(['sigmoid', 'linear'])
+    model.add(['sigmoid'])
     routine = Adam(lr=0.1)
     model.compile(loss='sum_squared_error', optimizer=routine)
     model.fit(train_x,train_y,n_iter=1000)
