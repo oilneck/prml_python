@@ -85,8 +85,7 @@ class Softsign_Layer():
 
     def forward(self,x):
         self.activate = x
-        _act = np.copy(self.activate)
-        out = softsign(_act)
+        out = softsign(x)
         return out
 
     def backward(self,delta):
@@ -106,8 +105,7 @@ class Softplus_Layer():
 
     def forward(self,x):
         self.activate = x
-        _act = np.copy(self.activate)
-        out = softplus(_act)
+        out = softplus(x)
         return out
 
     def backward(self,delta):
@@ -128,8 +126,7 @@ class Elu_Layer():
 
     def forward(self,x):
         self.activate = x
-        _act = np.copy(self.activate)
-        out = elu(_act,self.alpha)
+        out = elu(x, self.alpha)
         return out
 
     def backward(self,delta):
@@ -152,8 +149,7 @@ class Swish_Layer():
 
     def forward(self,x):
         self.activate = x
-        _act = np.copy(self.activate)
-        out = swish(_act,self.beta)
+        out = swish(x, self.beta)
         self.out = out
         return out
 
