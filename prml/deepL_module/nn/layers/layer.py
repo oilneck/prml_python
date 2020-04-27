@@ -15,6 +15,11 @@ class Linear_Layer():
         dx = delta
         return dx
 
+    @staticmethod
+    def identity(x):
+        return Linear_Layer().forward(x)
+
+
 class Sigmoid_Layer():
 
     def __init__(self):
@@ -28,6 +33,10 @@ class Sigmoid_Layer():
     def backward(self,delta):
         dx = self.out * (1.0 - self.out) * delta
         return dx
+
+    @staticmethod
+    def sigmoid(x):
+        return Sigmoid_Layer().forward(x)
 
 
 class Tanh_Layer():
@@ -44,6 +53,11 @@ class Tanh_Layer():
         dx = (1. - self.out ** 2) * delta
         return dx
 
+    @staticmethod
+    def tanh(x):
+        return Tanh_Layer().forward(x)
+
+
 class Relu_Layer():
 
     def __init__(self):
@@ -58,6 +72,11 @@ class Relu_Layer():
         diff_relu = (self.out > 0).astype(float)
         dx = diff_relu * delta
         return dx
+
+    @staticmethod
+    def relu(x):
+        return Relu_Layer().forward(x)
+
 
 class Softsign_Layer():
 
@@ -74,6 +93,10 @@ class Softsign_Layer():
         diff_ = 1 / np.square(1. + np.abs(self.activate))
         dx = diff_ * delta
         return dx
+
+    @staticmethod
+    def softsign(x):
+        return Softsign_Layer().forward(x)
 
 
 class Softplus_Layer():
@@ -92,6 +115,11 @@ class Softplus_Layer():
         dx = diff_ * delta
         return dx
 
+    @staticmethod
+    def softplus(x):
+        return Softplus_Layer().forward(x)
+
+
 class Elu_Layer():
 
     def __init__(self):
@@ -109,6 +137,11 @@ class Elu_Layer():
         diff_ = np.where(act > 0, 1, self.alpha * np.exp(act))
         dx = diff_ * delta
         return dx
+
+    @staticmethod
+    def elu(x):
+        return Elu_Layer().forward(x)
+
 
 class Swish_Layer():
 
@@ -130,3 +163,7 @@ class Swish_Layer():
         diff_ = beta * self.out + sigmoid(beta * act) * (1 - beta * self.out)
         dx = diff_ * delta
         return dx
+
+    @staticmethod
+    def swish(x):
+        return Swish_Layer().forward(x)
