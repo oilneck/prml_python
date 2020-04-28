@@ -8,10 +8,13 @@ class Affine(object):
         self.X = None
         self.dW = None
         self.db = None
+        self.out = None
+        self.n_param = W.size + b.size
 
     def forward(self,X):
         self.X = X
         out = np.dot(X,self.W) + self.b
+        self.out = out
         return out
 
     def backward(self,delta):

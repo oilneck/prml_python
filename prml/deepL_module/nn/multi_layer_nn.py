@@ -58,12 +58,12 @@ class Neural_net(object):
 
         for n,key in enumerate(layer,1):
             arg = [self.params['W' + str(n)],self.params['b' + str(n)]]
-            self.layers['layer_' + str(n)] = Affine(*arg)
+            self.layers['DenseLayer_' + str(n)] = Affine(*arg)
             self.layers['activation_' + str(n)] = eval(key.capitalize() + '_Layer()')
 
         n_layer = self.total_hidden_num + 1
         arg = [self.params['W' + str(n_layer)],self.params['b' + str(n_layer)]]
-        self.layers['layer_' + str(n_layer)] = Affine(*arg)
+        self.layers['DenseLayer_' + str(n_layer)] = Affine(*arg)
 
 
     def set_loss(self,name:str='sum_squared_error'):
@@ -159,9 +159,9 @@ class Neural_net(object):
             dout = layer.backward(dout)
 
         grads = {}
-        for idx in range(1, self.total_hidden_num+2):
-            grads['W' + str(idx)] = self.layers['layer_' + str(idx)].dW + self.alpha * self.layers['layer_' + str(idx)].W
-            grads['b' + str(idx)] = self.layers['layer_' + str(idx)].db
+        for idx in range(1, self.total_hidden_num + 2):
+            grads['W' + str(idx)] = self.layers['DenseLayer_' + str(idx)].dW + self.alpha * self.layers['DenseLayer_' + str(idx)].W
+            grads['b' + str(idx)] = self.layers['DenseLayer_' + str(idx)].db
 
         return grads
 

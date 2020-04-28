@@ -82,10 +82,12 @@ class Softsign_Layer():
 
     def __init__(self):
         self.activate = None
+        self.out = None
 
     def forward(self,x):
         self.activate = x
         out = softsign(x)
+        self.out = out
         return out
 
     def backward(self,delta):
@@ -102,10 +104,12 @@ class Softplus_Layer():
 
     def __init__(self):
         self.activate = None
+        self.out = None
 
     def forward(self,x):
         self.activate = x
         out = softplus(x)
+        self.out = out
         return out
 
     def backward(self,delta):
@@ -123,10 +127,12 @@ class Elu_Layer():
     def __init__(self):
         self.activate = None
         self.alpha = 1.0
+        self.out = None
 
     def forward(self,x):
         self.activate = x
         out = elu(x, self.alpha)
+        self.out = out
         return out
 
     def backward(self,delta):

@@ -56,44 +56,6 @@ def print_summary(model, line_length=None, positions=None):
     if positions[-1] <= 1:
         positions = [int(line_length * p) for p in positions]
 
-    def print_layer(layer):
-        to_display = ['Input Layer', model.n_input, 0]
-        print_row(to_display, positions)
-        print('_' * line_length)
-
-        params_ = np.asarray(count_params(model.params))
-        for n, (key, val) in enumerate(layer.items()):
-
-            name = key
-            type_ = val.__class__.__name__.split('_')[0]
-
-            if 'layer_' in key:
-                name = 'DenseLayer_' + key[-1]
-
-
-            shape_ = list(np.repeat(np.asarray(model.n_hidden_list), 2))
-            shape_ += [model.n_output]
-
-            n_param = params_[int(key[-1])-1]
-
-            if 'activation_' in key:
-                n_param = 0
-
-            to_display = [name + '  ({})'.format(type_), shape_[n], n_param]
-            print_row(to_display, positions)
-            print('_' * line_length)
-
-        # print activation of output layers
-        name = '{0}'.format(model.cost_function.__class__.__name__)
-        if name == 'Sum_squared_error':
-            name = 'Linear'
-        fields = 'Output Layer' + '  (' + name.split('_')[0] + ')'
-        to_display = [fields, model.n_output, 0]
-        print_row(to_display, positions)
-        print('=' * line_length)
-        print('Total params: ' + str(params_.sum()))
-        print('Optimizer: ' + str(model.optim.__class__.__name__))
-
 
     def print_row(fields, positions):
         line = ''
@@ -103,21 +65,63 @@ def print_summary(model, line_length=None, positions=None):
             line += ' ' * (positions[i] - len(line))
         print(line)
 
-    def count_params(w_dict):
 
-        node_num = model.total_hidden_num + 2
+    def count_params(layer_dict):
         params_list = []
 
-        for idx in range(1, node_num):
-            n_weight = w_dict['W'+str(idx)].size
-            n_bias = w_dict['b'+str(idx)].size
-            params_list.append(n_weight + n_bias)
+        for key, val in layer_dict.items():
+            num_param = 0 # the number of params in activation layer has zero
+            if 'DenseLayer_' in key: num_param = val.n_param
+            params_list.append(num_param)
 
         return params_list
 
+
+    def count_shapes(layer_dict):
+        shapes_list = []
+
+        for layer in layer_dict.values():
+            shape_val = list(layer.out.shape)
+            shape_val[0] = None
+            shapes_list.append(tuple(shape_val))
+
+        return shapes_list
+
+    params_ = np.asarray(count_params(model.layers))
+    shapes_ = list(count_shapes(model.layers)) + [model.n_output]
+
+    def print_layer(layer):
+
+        to_display = ['Input Layer', model.n_input, 0]
+        print_row(to_display, positions)
+        print('_' * line_length)
+
+        for n, (name, val) in enumerate(layer.items()):
+
+            type_ = val.__class__.__name__.split('_')[0]
+            to_display = [name + '  ({})'.format(type_), shapes_[n], params_[n]]
+
+            print_row(to_display, positions)
+            if 'activation_' in name:
+                print('_' * line_length)
+
+        # print activation of output layers
+        name = model.cost_function.__class__.__name__
+        if name == 'Sum_squared_error':name = 'Linear'
+        fields = 'Output Layer' + '  (' + name.split('_')[0] + ')'
+
+        to_display = [fields, model.n_output, 0]
+        print_row(to_display, positions)
+
+
+
     print('_' * line_length)
-    to_display = ['Layer (type)', 'Num Unit', 'Param #']
+    to_display = ['Layer (type)', 'Output shape', 'Param #']
     print_row(to_display, positions)
     print('=' * line_length)
 
     print_layer(model.layers)
+
+    print('=' * line_length)
+    print('Total params: ' + str(params_.sum()))
+    print('Optimizer: ' + str(model.optim.__class__.__name__))

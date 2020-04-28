@@ -7,6 +7,7 @@ class Batch_norm_Layer():
         self.beta = beta
         self.dgamma = None
         self.dbeta = None
+        self.out = None
 
     def forward(self, x):
         n_sample = x.shape[0]
@@ -16,6 +17,7 @@ class Batch_norm_Layer():
 
         X_norm = x_mu / np.sqrt(var + 1e-8)
         out = self.gamma * X_norm + self.beta
+        self.out = out
 
         self.cache = (n_sample, x_mu, var, X_norm)
 
