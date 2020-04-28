@@ -45,11 +45,10 @@ class Neural_net(object):
             self.params['W' + str(idx)] = scale * np.random.randn(node_num_list[idx-1], node_num_list[idx])
             self.params['b' + str(idx)] = np.zeros(node_num_list[idx])
 
+
     def __call__(self,X):
         return self.predict(X)
 
-    def __get__(self):
-        self.id = self
 
     def add(self,layer:list):
         n_hidden = self.total_hidden_num
@@ -89,6 +88,7 @@ class Neural_net(object):
 
         return loss_comp
 
+
     def optimizer(self,method):
         opt_dict = {'sgd':SGD(),'rmsprop':RMSprop(),'momentum':Momentum(),
                     'adam':Adam(),'adagrad':Adagrad(),'adadelta':Adadelta()}
@@ -112,26 +112,30 @@ class Neural_net(object):
 
         return optim_comp
 
+
     def compile(self,loss:str, optimizer):
 
         opt_compiled = self.optimizer(optimizer)
         loss_compiled = self.set_loss(loss)
-        _is_compiled = opt_compiled and loss_compiled
+        is_compiled = opt_compiled and loss_compiled
+        return is_compiled
 
-        return _is_compiled
 
     def predict(self,X):
         y = self.feed_forward(X)
         return self.cost_function.activate(y)
+
 
     def feed_forward(self, x):
         for layer in self.layers.values():
             x = layer.forward(x)
         return x
 
+
     def accuracy(self, x, t):
         y = self.predict(x)
         return self.metric.accuracy(y,t)
+
 
     def loss(self, x, t):
 
@@ -164,6 +168,7 @@ class Neural_net(object):
             grads['b' + str(idx)] = self.layers['DenseLayer_' + str(idx)].db
 
         return grads
+
 
     def fit(self, X_train:np.ndarray, t_train:np.ndarray, n_iter=1000, batch_size=None, history:bool=False):
 
