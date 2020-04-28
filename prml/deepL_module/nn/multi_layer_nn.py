@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 from deepL_module.nn.layers import *
 from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
@@ -26,6 +27,7 @@ class Neural_net(object):
         self.optim = None
 
 
+
     def __init_weight(self, wscale):
         node_num_list = [self.n_input] + self.n_hidden_list + [self.n_output]
 
@@ -46,6 +48,9 @@ class Neural_net(object):
     def __call__(self,X):
         return self.predict(X)
 
+    def __get__(self):
+        self.id = self
+
     def add(self,layer:list):
         n_hidden = self.total_hidden_num
         assert len(layer) == n_hidden, \
@@ -53,12 +58,12 @@ class Neural_net(object):
 
         for n,key in enumerate(layer,1):
             arg = [self.params['W' + str(n)],self.params['b' + str(n)]]
-            self.layers['layer' + str(n)] = Affine(*arg)
-            self.layers['activation' + str(n)] = eval(key.capitalize() + '_Layer()')
+            self.layers['layer_' + str(n)] = Affine(*arg)
+            self.layers['activation_' + str(n)] = eval(key.capitalize() + '_Layer()')
 
         n_layer = self.total_hidden_num + 1
         arg = [self.params['W' + str(n_layer)],self.params['b' + str(n_layer)]]
-        self.layers['layer' + str(n_layer)] = Affine(*arg)
+        self.layers['layer_' + str(n_layer)] = Affine(*arg)
 
 
     def set_loss(self,name:str='sum_squared_error'):
@@ -155,8 +160,8 @@ class Neural_net(object):
 
         grads = {}
         for idx in range(1, self.total_hidden_num+2):
-            grads['W' + str(idx)] = self.layers['layer' + str(idx)].dW + self.alpha * self.layers['layer' + str(idx)].W
-            grads['b' + str(idx)] = self.layers['layer' + str(idx)].db
+            grads['W' + str(idx)] = self.layers['layer_' + str(idx)].dW + self.alpha * self.layers['layer_' + str(idx)].W
+            grads['b' + str(idx)] = self.layers['layer_' + str(idx)].db
 
         return grads
 
@@ -181,3 +186,6 @@ class Neural_net(object):
                 hist = None
 
         return hist
+
+    def summary(self, line_length=None):
+        print_summary(self, line_length)

@@ -20,7 +20,8 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 
 '''Neural network design'''
 model = Sequential()
-model.add(Dense(4,input_dim=2,activation='tanh'))
+model.add(Dense(4,input_dim=2))
+model.add(Activation('tanh'))
 model.add(Dense(1,activation='sigmoid'))
 optimize_routine = Adam(lr=0.1)
 model.compile(optimizer=optimize_routine,loss=losses.mean_squared_error)

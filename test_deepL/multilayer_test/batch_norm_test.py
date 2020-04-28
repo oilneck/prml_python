@@ -23,7 +23,7 @@ iter_per_epoch = max(train_size / batch_size, 1)
 max_iter = int(max_epochs * iter_per_epoch)
 
 # constructing model
-model = Neural_net(n_input=784, n_hidden=[100, 100, 100, 100],
+model = Neural_net(n_input=784, n_hidden=[50, 100, 70, 100],
                    n_output=10, w_std=scale)
 bn_model = copy.deepcopy(model)
 
@@ -31,7 +31,7 @@ bn_model = copy.deepcopy(model)
 # set the layer
 bn_model.add(['relu', 'batch_norm', 'relu', 'batch_norm'])
 model.add(['relu'] * 4)
-model_dict = dict(zip(['batch_norm', 'normal'], [bn_model, model]))
+model_dict = {'batch_norm':bn_model, 'normal':model}
 train_acc = {}
 
 
