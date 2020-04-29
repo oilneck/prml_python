@@ -11,7 +11,6 @@ class Batch_norm_Layer():
         self.out = None
         self.test_mean = None
         self.test_var = None
-        self.is_training = True
 
 
     def forward(self, x, is_training:bool):
