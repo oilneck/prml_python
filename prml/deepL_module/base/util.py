@@ -87,23 +87,27 @@ def print_summary(model, line_length=None, positions=None):
 
         return shapes_list
 
-    params_ = np.asarray(count_params(model.layers))
+    params_ = count_params(model.layers)
     shapes_ = list(count_shapes(model.layers)) + [model.n_output]
 
     def print_layer(layer):
 
         to_display = ['Input Layer', model.n_input, 0]
         print_row(to_display, positions)
-        print('_' * line_length)
+        stack_id = 0
 
         for n, (name, val) in enumerate(layer.items()):
+
+            identifier = int(name[-1])
+            if identifier > stack_id:
+                stack_id = identifier
+                print('_' * line_length)
 
             type_ = val.__class__.__name__.split('_')[0]
             to_display = [name + '  ({})'.format(type_), shapes_[n], params_[n]]
 
             print_row(to_display, positions)
-            if 'activation_' in name:
-                print('_' * line_length)
+
 
         # print activation of output layers
         name = model.cost_function.__class__.__name__
@@ -123,5 +127,5 @@ def print_summary(model, line_length=None, positions=None):
     print_layer(model.layers)
 
     print('=' * line_length)
-    print('Total params: ' + str(params_.sum()))
+    print( 'Total params: ' + str(np.sum(params_)) )
     print('Optimizer: ' + str(model.optim.__class__.__name__))
