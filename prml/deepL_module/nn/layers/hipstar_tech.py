@@ -18,9 +18,10 @@ class Batch_norm_Layer():
 
         if self.moving_mean is None:
             N, D = x.shape
+            self.n_param = 4 * D
+            '''gamma weight, beta weight, moving_mean, moving_var'''
             self.moving_mean = np.zeros(D)
             self.moving_var = np.zeros(D)
-            self.n_param = 4 * D
 
         if is_training:
             n_sample = x.shape[0]
