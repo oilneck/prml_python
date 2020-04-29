@@ -62,8 +62,8 @@ class Neural_net(object):
             self.layers['DenseLayer_' + str(n)] = Affine(*arg)
 
             if self.use_batch:
-                self.params['gamma' + str(n)] = 1.
-                self.params['beta' + str(n)] = 0.
+                self.params['gamma' + str(n)] = np.ones(self.n_hidden_list[n-1])
+                self.params['beta' + str(n)] = np.zeros(self.n_hidden_list[n-1])
                 arg = [self.params['gamma' + str(n)], self.params['beta' + str(n)]]
                 self.layers['Batch_Norm_' + str(n)] = Batch_norm_Layer(*arg)
 
