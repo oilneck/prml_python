@@ -121,14 +121,21 @@ class Neural_net(object):
         return is_compiled
 
 
-    def predict(self,X):
-        y = self.feed_forward(X)
-        return self.cost_function.activate(y)
+    def predict(self, X):
+        x_out = self.feed_forward(X, train_flg=False)
+        return self.cost_function.activate(x_out)
 
 
-    def feed_forward(self, x):
+    def feed_forward(self, x, train_flg:bool):
+
         for layer in self.layers.values():
-            x = layer.forward(x)
+            cls_name = layer.__class__.__name__
+
+            if 'Batch_norm' in cls_name:
+                x = layer.forward(x, is_training=train_flg)
+            else:
+                x = layer.forward(x)
+
         return x
 
 
@@ -137,9 +144,9 @@ class Neural_net(object):
         return self.metric.accuracy(y,t)
 
 
-    def loss(self, x, t):
+    def loss(self, x, t, train_flg:bool=True):
 
-        y = self.feed_forward(x)
+        y = self.feed_forward(x, train_flg)
 
         weight_decay = 0
         for idx in range(1, self.total_hidden_num + 2):
@@ -152,7 +159,7 @@ class Neural_net(object):
     def gradient(self, x, t):
 
         # forward
-        self.loss(x, t)
+        self.loss(x, t, train_flg=True)
 
         # backward
         dout = self.cost_function.delta()
@@ -182,7 +189,7 @@ class Neural_net(object):
             self.optim.update(self.params, grads)
 
             if history:
-                loss = self.loss(x_batch, t_batch)
+                loss = self.loss(x_batch, t_batch, train_flg=True)
                 score = self.accuracy(x_batch, t_batch)
                 hist['loss'].append(loss)
                 hist['acc'].append(score)
