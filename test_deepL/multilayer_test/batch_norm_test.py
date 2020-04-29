@@ -24,22 +24,23 @@ max_iter = int(max_epochs * iter_per_epoch)
 
 # constructing model
 model = Neural_net(n_input=784, n_hidden=[50, 100, 70, 100],
-                   n_output=10, w_std=scale)
-bn_model = copy.deepcopy(model)
+                   n_output=10, w_std=scale, batch_norm=False)
+
+bn_model = Neural_net(n_input=784, n_hidden=[50, 100, 70, 100],
+                   n_output=10, w_std=scale, batch_norm=True)
 
 
-# set the layer
-bn_model.add(['relu', 'batch_norm', 'relu', 'batch_norm'])
-model.add(['relu'] * 4)
+
 model_dict = {'batch_norm':bn_model, 'normal':model}
 train_acc = {}
 
 
 '''---- learning ----'''
-for name, _network in model_dict.items():
+for name, network_ in model_dict.items():
+    network_.add(['relu'] * 4)
     optim = Adam(lr=learning_rate)
-    _network.compile(loss='categorical_crossentropy', optimizer=optim)
-    hist = _network.fit(X_train, train_t,
+    network_.compile(loss='categorical_crossentropy', optimizer=optim)
+    hist = network_.fit(X_train, train_t,
                         n_iter=max_iter,
                         batch_size=batch_size,
                         history=True)

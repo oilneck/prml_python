@@ -71,7 +71,8 @@ def print_summary(model, line_length=None, positions=None):
 
         for key, val in layer_dict.items():
             num_param = 0 # the number of params in activation layer has zero
-            if 'DenseLayer_' in key: num_param = val.n_param
+            if 'DenseLayer_' in key or 'Batch_Norm_' in key:
+                num_param = val.n_param
             params_list.append(num_param)
 
         return params_list

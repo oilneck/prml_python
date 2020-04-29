@@ -9,13 +9,15 @@ from collections import OrderedDict
 
 class Neural_net(object):
 
-    def __init__(self, n_input, n_hidden, n_output, w_std:float = None, alpha:float = 0.):
+    def __init__(self, n_input, n_hidden, n_output, w_std:float = None,
+                alpha:float = 0., batch_norm:bool=False):
         if isinstance(n_hidden,int): n_hidden = [n_hidden]
         self.n_input = n_input
         self.n_output = n_output
         self.n_hidden_list = n_hidden
         self.total_hidden_num = len(self.n_hidden_list)
         self.alpha = alpha # Weight decay coefficient.
+        self.use_batch = batch_norm
         self.params = {}
 
         self.__init_weight(w_std)
@@ -58,9 +60,16 @@ class Neural_net(object):
         for n,key in enumerate(layer,1):
             arg = [self.params['W' + str(n)],self.params['b' + str(n)]]
             self.layers['DenseLayer_' + str(n)] = Affine(*arg)
+
+            if self.use_batch:
+                self.params['gamma' + str(n)] = 1.
+                self.params['beta' + str(n)] = 0.
+                arg = [self.params['gamma' + str(n)], self.params['beta' + str(n)]]
+                self.layers['Batch_Norm_' + str(n)] = Batch_norm_Layer(*arg)
+
             self.layers['activation_' + str(n)] = eval(key.capitalize() + '_Layer()')
 
-        n_layer = self.total_hidden_num + 1
+        n_layer = n_hidden + 1
         arg = [self.params['W' + str(n_layer)],self.params['b' + str(n_layer)]]
         self.layers['DenseLayer_' + str(n_layer)] = Affine(*arg)
 
@@ -173,6 +182,10 @@ class Neural_net(object):
         for idx in range(1, self.total_hidden_num + 2):
             grads['W' + str(idx)] = self.layers['DenseLayer_' + str(idx)].dW + self.alpha * self.layers['DenseLayer_' + str(idx)].W
             grads['b' + str(idx)] = self.layers['DenseLayer_' + str(idx)].db
+
+            if self.use_batch and idx != self.total_hidden_num + 1:
+                grads['gamma' + str(idx)] = self.layers['Batch_Norm_' + str(idx)].dgamma
+                grads['beta' + str(idx)] = self.layers['Batch_Norm_' + str(idx)].dbeta
 
         return grads
 

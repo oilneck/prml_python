@@ -1,5 +1,6 @@
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Activation, Dense, Input
+from tensorflow.keras.layers import *
 from tensorflow.keras import losses
 from tensorflow.keras.optimizers import *
 import numpy as np
@@ -20,9 +21,11 @@ test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 
 '''Neural network design'''
 model = Sequential()
-model.add(Dense(4,input_dim=2))
+model.add(Dense(10,input_dim=2))
+model.add(BatchNormalization())
 model.add(Activation('tanh'))
-model.add(Dense(1,activation='sigmoid'))
+model.add(Dense(1))
+model.add(Activation('sigmoid'))
 optimize_routine = Adam(lr=0.1)
 model.compile(optimizer=optimize_routine,loss=losses.mean_squared_error)
 
