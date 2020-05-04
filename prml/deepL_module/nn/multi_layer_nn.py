@@ -98,12 +98,12 @@ class Neural_net(object):
         return loss_comp
 
 
-    def optimizer(self,method):
+    def optimizer(self, method):
         opt_dict = {'sgd':SGD(),'rmsprop':RMSprop(),'momentum':Momentum(),
                     'adam':Adam(),'adagrad':Adagrad(),'adadelta':Adadelta()}
         optim_comp = False
 
-        if isinstance(method,str):
+        if isinstance(method, str):
             for key in opt_dict.keys():
                 if key == method:
                     self.optim = opt_dict[method]
@@ -112,7 +112,7 @@ class Neural_net(object):
                 raise KeyError("Not exist optimizer name : {}".format(method))
 
         for val in opt_dict.values():
-            if isinstance(method,type(val)):
+            if isinstance(method, type(val)):
                 self.optim = method
                 optim_comp = True
 
@@ -138,9 +138,7 @@ class Neural_net(object):
     def feed_forward(self, x, train_flg:bool):
 
         for layer in self.layers.values():
-            cls_name = layer.__class__.__name__
-
-            if 'Batch_norm' in cls_name:
+            if isinstance(layer, Batch_norm_Layer):
                 x = layer.forward(x, is_training=train_flg)
             else:
                 x = layer.forward(x)
@@ -153,9 +151,9 @@ class Neural_net(object):
         return self.metric.accuracy(y,t)
 
 
-    def loss(self, x, t, train_flg:bool=True):
+    def loss(self, x, t):
 
-        y = self.feed_forward(x, train_flg)
+        y = self.feed_forward(x, train_flg=True)
 
         weight_decay = 0
         for idx in range(1, self.total_hidden_num + 2):
@@ -168,7 +166,7 @@ class Neural_net(object):
     def gradient(self, x, t):
 
         # forward
-        self.loss(x, t, train_flg=True)
+        self.loss(x, t)
 
         # backward
         dout = self.cost_function.delta()
@@ -202,7 +200,7 @@ class Neural_net(object):
             self.optim.update(self.params, grads)
 
             if history:
-                loss = self.loss(x_batch, t_batch, train_flg=True)
+                loss = self.loss(x_batch, t_batch)
                 score = self.accuracy(x_batch, t_batch)
                 hist['loss'].append(loss)
                 hist['acc'].append(score)

@@ -10,18 +10,18 @@ class Batch_norm_Layer():
         self.dgamma = None
         self.dbeta = None
         self.out = None
-        self.moving_mean = None
-        self.moving_var = None
+        self.mov_mean = None
+        self.mov_var = None
 
 
     def forward(self, x, is_training:bool):
 
-        if self.moving_mean is None:
+        if self.mov_mean is None:
             N, D = x.shape
             self.n_param = 4 * D
             '''gamma weight, beta weight, moving_mean, moving_var'''
-            self.moving_mean = np.zeros(D)
-            self.moving_var = np.zeros(D)
+            self.mov_mean = np.zeros(D)
+            self.mov_var = np.zeros(D)
 
         if is_training:
             n_sample = x.shape[0]
@@ -33,11 +33,11 @@ class Batch_norm_Layer():
 
             self.cache = (n_sample, x_mu, var, X_norm)
 
-            self.moving_mean = self.moment * self.moving_mean + (1-self.moment) * mu
-            self.moving_var = self.moment * self.moving_var + (1-self.moment) * var
+            self.mov_mean = self.moment * self.mov_mean + (1-self.moment) * mu
+            self.mov_var = self.moment * self.mov_var + (1-self.moment) * var
         else:
-            x_mu = x - self.moving_mean
-            X_norm = x_mu / np.sqrt(self.moving_var + 1e-8)
+            x_mu = x - self.mov_mean
+            X_norm = x_mu / np.sqrt(self.mov_var + 1e-8)
 
         out = self.gamma * X_norm + self.beta
         self.out = out
