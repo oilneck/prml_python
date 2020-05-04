@@ -9,8 +9,8 @@ from collections import OrderedDict
 
 class Neural_net(object):
 
-    def __init__(self, n_input, n_hidden, n_output, w_std:float = None,
-                alpha:float = 0., batch_norm:bool=False):
+    def __init__(self, n_input, n_hidden, n_output, w_std:float=None, alpha:float=0.,
+                batch_norm:bool=False, dropout:bool=False, do_rate:float=.5):
         if isinstance(n_hidden,int): n_hidden = [n_hidden]
         self.n_input = n_input
         self.n_output = n_output
@@ -18,6 +18,8 @@ class Neural_net(object):
         self.total_hidden_num = len(self.n_hidden_list)
         self.alpha = alpha # Weight decay coefficient.
         self.use_batch = batch_norm
+        self.use_dropout = dropout
+        self.do_rate = do_rate
         self.params = {}
 
         self.__init_weight(w_std)
@@ -53,8 +55,7 @@ class Neural_net(object):
 
 
     def add(self,layer:list):
-        n_hidden = self.total_hidden_num
-        assert len(layer) == n_hidden, \
+        assert len(layer) == self.total_hidden_num, \
         'The number of layers must be {} layers'.format(str(n_hidden))
 
         for n,key in enumerate(layer,1):
@@ -69,7 +70,10 @@ class Neural_net(object):
 
             self.layers['activation_' + str(n)] = eval(key.capitalize() + '_Layer()')
 
-        n_layer = n_hidden + 1
+            if self.use_dropout:
+                self.layers['-> Dropout_' + str(n)] = Dropout_Layer(self.do_rate)
+
+        n_layer = self.total_hidden_num + 1
         arg = [self.params['W' + str(n_layer)],self.params['b' + str(n_layer)]]
         self.layers['DenseLayer_' + str(n_layer)] = Affine(*arg)
 
@@ -138,7 +142,7 @@ class Neural_net(object):
     def feed_forward(self, x, train_flg:bool):
 
         for layer in self.layers.values():
-            if isinstance(layer, Batch_norm_Layer):
+            if isinstance(layer, (Batch_norm_Layer, Dropout_Layer)):
                 x = layer.forward(x, is_training=train_flg)
             else:
                 x = layer.forward(x)

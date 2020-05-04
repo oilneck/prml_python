@@ -60,3 +60,28 @@ class Batch_norm_Layer():
         self.dbeta = np.sum(delta, axis=0)
 
         return dx
+
+
+class Dropout_Layer():
+
+    def __init__(self, rate=0.5):
+        self.rate = rate
+        self.mask = None
+        self.n_param = 0
+        self.out = None
+
+    def forward(self, x, is_training:bool):
+
+        out = np.zeros_like(x)
+        
+        if is_training:
+            self.mask = np.random.rand(*x.shape) > self.rate
+            out = x * self.mask
+        else:
+            out = x * (1. - self.rate)
+
+        self.out = out
+        return out
+
+    def backward(self, delta):
+        return delta * self.mask
