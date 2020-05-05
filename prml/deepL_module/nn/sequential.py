@@ -1,5 +1,4 @@
 import numpy as np
-import copy
 from deepL_module.nn.layers import *
 from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
@@ -7,24 +6,17 @@ from deepL_module.nn.metrics import *
 from deepL_module.base import *
 from collections import OrderedDict
 
-class Neural_net(object):
 
-    def __init__(self, n_input, n_hidden, n_output, w_std:float=None, alpha:float=0.,
-                batch_norm:bool=False, dropout:bool=False, do_rate:float=.5):
-        if isinstance(n_hidden,int): n_hidden = [n_hidden]
-        self.n_input = n_input
-        self.n_output = n_output
-        self.n_hidden_list = n_hidden
-        self.total_hidden_num = len(self.n_hidden_list)
+class Sequential(object):
+
+    def __init__(self,input_dim:int, w_std:float=None, alpha:float=0.):
         self.alpha = alpha # Weight decay coefficient.
-        self.use_batch = batch_norm
-        self.use_dropout = dropout
-        self.do_rate = do_rate
+        self.n_hidden = 0
+        self.units_list = [input_dim]
+        self.input_dim = input_dim
         self.params = {}
 
-        self.__init_weight(w_std)
-
-        self.layers = OrderedDict()
+        self.layers = []
 
         self.cost_function = None
         self.metric = None
@@ -32,50 +24,27 @@ class Neural_net(object):
 
 
 
-    def __init_weight(self, wscale):
-        node_num_list = [self.n_input] + self.n_hidden_list + [self.n_output]
-
-        for idx in range(1, len(node_num_list)):
-
-            if wscale is None:
-                scale = np.sqrt(1. / node_num_list[idx - 1])
-
-            elif isinstance(wscale,(int,float,np.number)):
-                scale = wscale
-
-            else:
-                raise TypeError("initial weight scale must be float or int type")
-
-            self.params['W' + str(idx)] = scale * np.random.randn(node_num_list[idx-1], node_num_list[idx])
-            self.params['b' + str(idx)] = np.zeros(node_num_list[idx])
-
-
     def __call__(self,X):
         return self.predict(X)
 
+    def init_W(self):
+        self.n_hidden += 1
+        idx = np.copy(self.n_hidden)
+        self.params['W' + str(idx)] = np.random.randn(self.units_list[idx-1], self.units_list[idx])
+        self.params['b' + str(idx)] = np.zeros(self.units_list[idx])
 
-    def add(self, layer:list):
-        assert len(layer) == self.total_hidden_num, \
-        'The number of layers must be {} layers'.format(str(n_hidden))
 
-        for n,key in enumerate(layer,1):
-            arg = [self.params['W' + str(n)], self.params['b' + str(n)]]
-            self.layers['DenseLayer_' + str(n)] = Affine(*arg)
 
-            if self.use_batch:
-                self.params['gamma' + str(n)] = np.ones(self.n_hidden_list[n-1])
-                self.params['beta' + str(n)] = np.zeros(self.n_hidden_list[n-1])
-                arg = [self.params['gamma' + str(n)], self.params['beta' + str(n)]]
-                self.layers['Batch_Norm_' + str(n)] = Batch_norm_Layer(*arg)
+    def add(self, layer):
 
-            self.layers['activation_' + str(n)] = eval(key.capitalize() + '_Layer()')
+        if isinstance(layer, Dense):
+            self.units_list.append(layer.units)
+            self.init_W()
+            arg = [self.params['W' + str(self.n_hidden)], self.params['b' + str(self.n_hidden)]]
+            layer.set_param(*arg)
 
-            if self.use_dropout:
-                self.layers['-> Dropout_' + str(n)] = Dropout_Layer(self.do_rate)
+        self.layers.append(layer)
 
-        n_layer = self.total_hidden_num + 1
-        arg = [self.params['W' + str(n_layer)],self.params['b' + str(n_layer)]]
-        self.layers['DenseLayer_' + str(n_layer)] = Affine(*arg)
 
 
     def set_loss(self,name:str='sum_squared_error'):
@@ -141,8 +110,8 @@ class Neural_net(object):
 
     def feed_forward(self, x, train_flg:bool):
 
-        for layer in self.layers.values():
-            if isinstance(layer, (Batch_norm_Layer, Dropout_Layer)):
+        for layer in self.layers:
+            if isinstance(layer, Dropout_Layer):
                 x = layer.forward(x, is_training=train_flg)
             else:
                 x = layer.forward(x)
@@ -160,7 +129,7 @@ class Neural_net(object):
         y = self.feed_forward(x, train_flg=True)
 
         weight_decay = 0
-        for idx in range(1, self.total_hidden_num + 2):
+        for idx in range(1, self.n_hidden):
             W = self.params['W' + str(idx)]
             weight_decay += 0.5 * self.alpha * np.sum(np.square(W))
 
@@ -175,19 +144,16 @@ class Neural_net(object):
         # backward
         dout = self.cost_function.delta()
 
-        layers = list(self.layers.values())
-        layers.reverse()
-        for layer in layers:
+        tmp_layers = self.layers.copy()
+        tmp_layers.reverse()
+        for layer in tmp_layers:
             dout = layer.backward(dout)
 
         grads = {}
-        for idx in range(1, self.total_hidden_num + 2):
-            grads['W' + str(idx)] = self.layers['DenseLayer_' + str(idx)].dW + self.alpha * self.layers['DenseLayer_' + str(idx)].W
-            grads['b' + str(idx)] = self.layers['DenseLayer_' + str(idx)].db
-
-            if self.use_batch and idx != self.total_hidden_num + 1:
-                grads['gamma' + str(idx)] = self.layers['Batch_Norm_' + str(idx)].dgamma
-                grads['beta' + str(idx)] = self.layers['Batch_Norm_' + str(idx)].dbeta
+        affine_idx = np.where([type(obj) is Dense for obj in self.layers])[0]
+        for n, idx in enumerate(list(affine_idx)):
+            grads['W' + str(n+1)] = self.layers[idx].dW + self.alpha * self.layers[idx].W
+            grads['b' + str(n+1)] = self.layers[idx].db
 
         return grads
 
@@ -213,6 +179,3 @@ class Neural_net(object):
                 hist = None
 
         return hist
-
-    def summary(self, line_length=None):
-        print_summary(self, line_length)
