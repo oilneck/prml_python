@@ -62,8 +62,6 @@ class Sequential(object):
             raise ValueError('Could not interpret layer: ' + str(layer))
 
 
-
-
     def add(self, layer):
 
         self._check_layer(layer)
@@ -80,7 +78,6 @@ class Sequential(object):
             layer.set_param(*arg)
 
         self.layers.append(layer)
-
 
 
     def set_loss(self, name:str='sum_squared_error'):
