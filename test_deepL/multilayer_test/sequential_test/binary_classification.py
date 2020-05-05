@@ -4,6 +4,7 @@ from sklearn.datasets import make_moons, make_circles
 from deepL_module.nn.optimizers import *
 from deepL_module.nn.sequential import Sequential
 from deepL_module.nn.layers import *
+from deepL_module.nn.layers.core import *
 
 max_iter = 250
 
@@ -20,13 +21,11 @@ X,Y = np.meshgrid(np.linspace(-3, 3, 100),np.linspace(-3, 3, 100))
 test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 
 # constructing NN
-model = Sequential(2)
-model.add(Dense(32))
-model.add(Tanh_Layer())
+model = Sequential()
+model.add(Dense(32, input_dim=2, activation='tanh'))
 model.add(Dense(10))
-model.add(Dropout_Layer(0.15))
-model.add(Swish_Layer())
-model.add(Dense(1))
+model.add(Activation('swish'))
+model.add(Dense(1, activation='linear'))
 routine = Adam(lr = 0.1)
 model.compile(loss='binary_crossentropy', optimizer=routine)
 

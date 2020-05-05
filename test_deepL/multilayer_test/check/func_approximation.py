@@ -36,7 +36,10 @@ for n,func in enumerate(multi_func,1):
     routine = Adam(lr=0.1, beta_1=0.9, beta_2=0.95)
     model.compile(loss='sum_squared_error', optimizer=routine)
     #-----learning------
+    import time
+    start = time.time()
     history = model.fit(train_x, train_y, n_iter=max_iter, history=True)
+    print(time.time()-start)
     train_acc[func_name[n-1]] = history['acc']
 
     # prediction data

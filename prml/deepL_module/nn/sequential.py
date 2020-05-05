@@ -1,5 +1,6 @@
 import numpy as np
 from deepL_module.nn.layers import *
+from deepL_module.nn.layers.core import *
 from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
 from deepL_module.nn.metrics import *
@@ -9,11 +10,11 @@ from collections import OrderedDict
 
 class Sequential(object):
 
-    def __init__(self,input_dim:int, w_std:float=None, alpha:float=0.):
+    def __init__(self, w_std:float=None, alpha:float=0.):
         self.alpha = alpha # Weight decay coefficient.
+        self.wscale = w_std
         self.n_hidden = 0
-        self.units_list = [input_dim]
-        self.input_dim = input_dim
+        self.units_list = []
         self.params = {}
 
         self.layers = []
@@ -28,14 +29,49 @@ class Sequential(object):
         return self.predict(X)
 
     def init_W(self):
+
         self.n_hidden += 1
         idx = np.copy(self.n_hidden)
-        self.params['W' + str(idx)] = np.random.randn(self.units_list[idx-1], self.units_list[idx])
-        self.params['b' + str(idx)] = np.zeros(self.units_list[idx])
+
+        scale = 1.
+        if self.wscale is None:
+            scale = np.sqrt(1. / self.units_list[idx-1])
+        elif isinstance(self.wscale, (int, float, np.number)):
+            scale = self.wscale
+        else:
+            raise TypeError("initial weight scale must be float or int type")
+
+
+        args = [self.units_list[idx-1], self.units_list[idx]]
+        self.params['W' + str(idx)] = scale * np.random.randn(*args)
+        self.params['b' + str(idx)] = np.zeros(args[-1])
+
+
+    def _check_layer(self, layer):
+
+        layers = [Linear_Layer, Sigmoid_Layer, Tanh_Layer, Relu_Layer,
+                  Softsign_Layer, Softplus_Layer, Elu_Layer, Swish_Layer,
+                  Dropout_Layer, Dense, Activation]
+
+        is_layer = False
+        for val in layers:
+            if isinstance(layer, val):
+                is_layer = True
+
+        if is_layer is not True:
+            raise ValueError('Could not interpret layer: ' + str(layer))
+
 
 
 
     def add(self, layer):
+
+        self._check_layer(layer)
+
+        if isinstance(layer, Dense) and self.n_hidden == 0:
+            assert layer.input_dim is not None,\
+            'Set the units dimension in input layer'
+            self.units_list.append(layer.input_dim)
 
         if isinstance(layer, Dense):
             self.units_list.append(layer.units)
@@ -47,7 +83,7 @@ class Sequential(object):
 
 
 
-    def set_loss(self,name:str='sum_squared_error'):
+    def set_loss(self, name:str='sum_squared_error'):
         loss_comp = False
 
         if name == 'sum_squared_error':
