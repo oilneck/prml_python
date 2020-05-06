@@ -10,7 +10,7 @@ class Dense():
         self.dW = None
         self.db = None
         self.out = None
-        self.func = Activation(activation).get()
+        self.act_func = Activation(activation).func
 
 
     def set_param(self, W, b):
@@ -22,12 +22,12 @@ class Dense():
     def forward(self,X):
         self.X = X
         affine = np.dot(X,self.W) + self.b
-        self.out = self.func.forward(affine)
+        self.out = self.act_func.forward(affine)
         return self.out
 
 
     def backward(self, delta):
-        delta = self.func.backward(delta)
+        delta = self.act_func.backward(delta)
         dx = np.dot(delta, self.W.T)
         self.dW = np.dot(self.X.T, delta)
         self.db = np.sum(delta, axis=0)

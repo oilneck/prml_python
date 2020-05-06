@@ -2,7 +2,7 @@ import numpy as np
 
 class Batch_norm_Layer():
 
-    def __init__(self, gamma, beta, momentum:float = 0.9):
+    def __init__(self, gamma=1., beta=0., momentum:float = 0.9):
         self.gamma = gamma
         self.beta = beta
         self.moment = momentum
@@ -13,6 +13,9 @@ class Batch_norm_Layer():
         self.mov_mean = None
         self.mov_var = None
 
+    def set_param(self, gamma, beta):
+        self.gamma = gamma
+        self.beta = beta
 
     def forward(self, x, is_training:bool):
 
@@ -73,7 +76,7 @@ class Dropout_Layer():
     def forward(self, x, is_training:bool):
 
         out = np.zeros_like(x)
-        
+
         if is_training:
             self.mask = np.random.rand(*x.shape) > self.rate
             out = x * self.mask

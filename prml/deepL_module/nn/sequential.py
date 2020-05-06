@@ -1,6 +1,5 @@
 import numpy as np
 from deepL_module.nn.layers import *
-from deepL_module.nn.layers.core import *
 from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
 from deepL_module.nn.metrics import *
@@ -13,7 +12,8 @@ class Sequential(object):
     def __init__(self, w_std:float=None, alpha:float=0.):
         self.alpha = alpha # Weight decay coefficient.
         self.wscale = w_std
-        self.n_hidden = 0
+        self.last_idx = 0
+        self.batch_idx = 0
         self.units_list = []
         self.params = {}
 
@@ -30,8 +30,8 @@ class Sequential(object):
 
     def init_W(self):
 
-        self.n_hidden += 1
-        idx = np.copy(self.n_hidden)
+        self.last_idx += 1
+        idx = np.copy(self.last_idx)
 
         scale = 1.
         if self.wscale is None:
@@ -46,12 +46,23 @@ class Sequential(object):
         self.params['W' + str(idx)] = scale * np.random.randn(*args)
         self.params['b' + str(idx)] = np.zeros(args[-1])
 
+    def init_batch(self):
+
+        if self.units_list == []:
+            raise Exception("Could not set batch layer before the dense layer ")
+
+        self.batch_idx += 1
+
+        _shape = self.units_list[self.last_idx]
+        self.params['gamma' + str(self.batch_idx)] = np.ones(_shape)
+        self.params['beta' + str(self.batch_idx)] = np.zeros(_shape)
+
 
     def _check_layer(self, layer):
 
         layers = [Linear_Layer, Sigmoid_Layer, Tanh_Layer, Relu_Layer,
                   Softsign_Layer, Softplus_Layer, Elu_Layer, Swish_Layer,
-                  Dropout_Layer, Dense, Activation]
+                  Dropout_Layer, Batch_norm_Layer, Dense, Activation]
 
         is_layer = False
         for val in layers:
@@ -66,7 +77,7 @@ class Sequential(object):
 
         self._check_layer(layer)
 
-        if isinstance(layer, Dense) and self.n_hidden == 0:
+        if isinstance(layer, Dense) and self.units_list == []:
             assert layer.input_dim is not None,\
             'Set the units dimension in input layer'
             self.units_list.append(layer.input_dim)
@@ -74,8 +85,15 @@ class Sequential(object):
         if isinstance(layer, Dense):
             self.units_list.append(layer.units)
             self.init_W()
-            arg = [self.params['W' + str(self.n_hidden)], self.params['b' + str(self.n_hidden)]]
-            layer.set_param(*arg)
+            args = [self.params['W' + str(self.last_idx)],
+                    self.params['b' + str(self.last_idx)]]
+            layer.set_param(*args)
+
+        if isinstance(layer, Batch_norm_Layer):
+            self.init_batch()
+            args = [self.params['gamma' + str(self.batch_idx)],
+                    self.params['b' + str(self.batch_idx)]]
+            layer.set_param(*args)
 
         self.layers.append(layer)
 
@@ -144,7 +162,7 @@ class Sequential(object):
     def feed_forward(self, x, train_flg:bool):
 
         for layer in self.layers:
-            if isinstance(layer, Dropout_Layer):
+            if isinstance(layer, (Dropout_Layer, Batch_norm_Layer)):
                 x = layer.forward(x, is_training=train_flg)
             else:
                 x = layer.forward(x)
@@ -162,7 +180,7 @@ class Sequential(object):
         y = self.feed_forward(x, train_flg=True)
 
         weight_decay = 0
-        for idx in range(1, self.n_hidden):
+        for idx in range(1, self.last_idx):
             W = self.params['W' + str(idx)]
             weight_decay += 0.5 * self.alpha * np.sum(np.square(W))
 
@@ -183,10 +201,15 @@ class Sequential(object):
             dout = layer.backward(dout)
 
         grads = {}
-        affine_idx = np.where([type(obj) is Dense for obj in self.layers])[0]
-        for n, idx in enumerate(list(affine_idx)):
+        dense_loc = np.where([type(obj) is Dense for obj in self.layers])[0]
+        for n, idx in enumerate(list(dense_loc)):
             grads['W' + str(n+1)] = self.layers[idx].dW + self.alpha * self.layers[idx].W
             grads['b' + str(n+1)] = self.layers[idx].db
+
+        batch_loc = np.where([type(obj) is Batch_norm_Layer for obj in self.layers])[0]
+        for n, idx in enumerate(list(batch_loc)):
+            grads['gamma' + str(n+1)] = self.layers[idx].dgamma
+            grads['beta' + str(n+1)] = self.layers[idx].dbeta
 
         return grads
 
