@@ -12,8 +12,7 @@ class Sequential(object):
     def __init__(self, w_std:float=None, alpha:float=0.):
         self.alpha = alpha # Weight decay coefficient.
         self.wscale = w_std
-        self.last_idx = 0
-        self.batch_idx = 0
+        self.batch_num = 0
         self.units_list = []
         self.params = {}
 
@@ -30,8 +29,7 @@ class Sequential(object):
 
     def init_W(self):
 
-        self.last_idx += 1
-        idx = np.copy(self.last_idx)
+        idx = len(self.units_list) - 1
 
         scale = 1.
         if self.wscale is None:
@@ -49,13 +47,13 @@ class Sequential(object):
     def init_batch(self):
 
         if self.units_list == []:
-            raise Exception("Could not set batch layer before the dense layer ")
+            raise Exception("Could not set 'batch norm' before 'dense' one")
 
-        self.batch_idx += 1
+        self.batch_num += 1
 
-        _shape = self.units_list[self.last_idx]
-        self.params['gamma' + str(self.batch_idx)] = np.ones(_shape)
-        self.params['beta' + str(self.batch_idx)] = np.zeros(_shape)
+        _shape = self.units_list[-1]
+        self.params['gamma' + str(self.batch_num)] = np.ones(_shape)
+        self.params['beta' + str(self.batch_num)] = np.zeros(_shape)
 
 
     def _check_layer(self, layer):
@@ -79,20 +77,20 @@ class Sequential(object):
 
         if isinstance(layer, Dense) and self.units_list == []:
             assert layer.input_dim is not None,\
-            'Set the units dimension in input layer'
+            'Set the the number of units in input layer'
             self.units_list.append(layer.input_dim)
 
         if isinstance(layer, Dense):
             self.units_list.append(layer.units)
             self.init_W()
-            args = [self.params['W' + str(self.last_idx)],
-                    self.params['b' + str(self.last_idx)]]
+            idx = len(self.units_list) - 1
+            args = [self.params['W' + str(idx)], self.params['b' + str(idx)]]
             layer.set_param(*args)
 
         if isinstance(layer, Batch_norm_Layer):
             self.init_batch()
-            args = [self.params['gamma' + str(self.batch_idx)],
-                    self.params['b' + str(self.batch_idx)]]
+            args = [self.params['gamma' + str(self.batch_num)],
+                    self.params['b' + str(self.batch_num)]]
             layer.set_param(*args)
 
         self.layers.append(layer)
@@ -166,7 +164,6 @@ class Sequential(object):
                 x = layer.forward(x, is_training=train_flg)
             else:
                 x = layer.forward(x)
-
         return x
 
 
@@ -180,7 +177,7 @@ class Sequential(object):
         y = self.feed_forward(x, train_flg=True)
 
         weight_decay = 0
-        for idx in range(1, self.last_idx):
+        for idx in range(1, len(self.units_list)-1):
             W = self.params['W' + str(idx)]
             weight_decay += 0.5 * self.alpha * np.sum(np.square(W))
 
