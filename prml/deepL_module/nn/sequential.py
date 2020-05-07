@@ -60,7 +60,8 @@ class Sequential(object):
 
         layers = [Linear_Layer, Sigmoid_Layer, Tanh_Layer, Relu_Layer,
                   Softsign_Layer, Softplus_Layer, Elu_Layer, Swish_Layer,
-                  Dropout_Layer, Batch_norm_Layer, Dense, Activation]
+                  Dropout_Layer, Batch_norm_Layer, Dense, Activation,
+                  ]
 
         is_layer = False
         for val in layers:
@@ -90,7 +91,7 @@ class Sequential(object):
         if isinstance(layer, Batch_norm_Layer):
             self.init_batch()
             args = [self.params['gamma' + str(self.batch_num)],
-                    self.params['b' + str(self.batch_num)]]
+                    self.params['beta' + str(self.batch_num)]]
             layer.set_param(*args)
 
         self.layers.append(layer)
@@ -177,7 +178,8 @@ class Sequential(object):
         y = self.feed_forward(x, train_flg=True)
 
         weight_decay = 0
-        for idx in range(1, len(self.units_list)-1):
+        num_W = np.sum(['W' in key for key in list(self.params.keys())])
+        for idx in range(1, num_W):
             W = self.params['W' + str(idx)]
             weight_decay += 0.5 * self.alpha * np.sum(np.square(W))
 
