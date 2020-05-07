@@ -61,7 +61,7 @@ class Sequential(object):
         layers = [Linear_Layer, Sigmoid_Layer, Tanh_Layer, Relu_Layer,
                   Softsign_Layer, Softplus_Layer, Elu_Layer, Swish_Layer,
                   Dropout_Layer, Batch_norm_Layer, Dense, Activation,
-                  ]
+                  Maxpooling, Conv2D]
 
         is_layer = False
         for val in layers:
