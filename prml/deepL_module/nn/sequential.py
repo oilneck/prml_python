@@ -13,7 +13,7 @@ class Sequential(object):
         self.alpha = alpha # Weight decay coefficient.
         self.wscale = w_std
         self.batch_num = 0
-        self.units_list = []
+        self.units_num = []
         self.params = {}
 
         self.layers = []
@@ -29,29 +29,29 @@ class Sequential(object):
 
     def init_W(self):
 
-        idx = len(self.units_list) - 1
+        idx = len(self.units_num) - 1
 
         scale = 1.
         if self.wscale is None:
-            scale = np.sqrt(1. / self.units_list[idx-1])
+            scale = np.sqrt(1. / self.units_num[idx-1])
         elif isinstance(self.wscale, (int, float, np.number)):
             scale = self.wscale
         else:
             raise TypeError("initial weight scale must be float or int type")
 
 
-        args = [self.units_list[idx-1], self.units_list[idx]]
+        args = [self.units_num[idx-1], self.units_num[idx]]
         self.params['W' + str(idx)] = scale * np.random.randn(*args)
         self.params['b' + str(idx)] = np.zeros(args[-1])
 
     def init_batch(self):
 
-        if self.units_list == []:
+        if self.units_num == []:
             raise Exception("Could not set 'batch norm' before 'dense' one")
 
         self.batch_num += 1
 
-        _shape = self.units_list[-1]
+        _shape = self.units_num[-1]
         self.params['gamma' + str(self.batch_num)] = np.ones(_shape)
         self.params['beta' + str(self.batch_num)] = np.zeros(_shape)
 
@@ -76,15 +76,15 @@ class Sequential(object):
 
         self._check_layer(layer)
 
-        if isinstance(layer, Dense) and self.units_list == []:
+        if isinstance(layer, Dense) and self.units_num == []:
             assert layer.input_dim is not None,\
             'Set the the number of units in input layer'
-            self.units_list.append(layer.input_dim)
+            self.units_num.append(layer.input_dim)
 
         if isinstance(layer, Dense):
-            self.units_list.append(layer.units)
+            self.units_num.append(layer.units)
             self.init_W()
-            idx = len(self.units_list) - 1
+            idx = len(self.units_num) - 1
             args = [self.params['W' + str(idx)], self.params['b' + str(idx)]]
             layer.set_param(*args)
 
