@@ -1,6 +1,7 @@
 import numpy as np
 import pickle
 import os
+from deepL_module.nn.layers import *
 
 def get_mini_batch(train_x, train_t, batch_size=None):
 
@@ -191,7 +192,7 @@ def seq_save_model(model, path:str=None, name:str=None):
         elif isinstance(layer, Conv2D):
             value = dict(zip(['filters','kernel_size','input_shape', 'stride','pad'], layer.cache))
         elif isinstance(layer, Maxpooling):
-            value = dict(zip(['pool_h','pool_w','stride','pad'], layer.cache))
+            value = dict(zip(['pool_h','pool_w','stride','pad'], [layer.pool_h,layer.pool_w,layer.stride,layer.pad]))
 
         model_dict['layer_cls'][layer.__class__.__name__+'_'+str(n)] = value
 
