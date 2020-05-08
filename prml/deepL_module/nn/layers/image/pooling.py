@@ -6,6 +6,7 @@ class Maxpooling:
         self.pool_w = pool_w
         self.stride = stride
         self.pad = pad
+        self.cache = [pool_h, pool_w, stride, pad]
 
         self.x = None
         self.arg_max = None

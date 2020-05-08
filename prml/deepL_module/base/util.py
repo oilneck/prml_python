@@ -173,3 +173,28 @@ def col2im(col, input_shape, filter_h, filter_w, stride=1, pad=0):
             img[:, :, y:y_max:stride, x:x_max:stride] += col[:, :, y, x, :, :]
 
     return img[:, :, pad:H + pad, pad:W + pad]
+
+
+def seq_save_model(model, path:str=None, name:str=None):
+    params = {}
+    for key, val in model.params.items():
+        params[key] = val
+
+    model_dict = {'layer_cls':{}, 'param':params, 'history':model.history}
+    for n, layer in enumerate(model.layers):
+        value = 0
+        if isinstance(layer, Dense):
+            value = dict(zip(['units','input_dim','activation'],
+                            [layer.units, layer.input_dim, layer.act_func]))
+        elif isinstance(layer, Activation):
+            value = {'activation':layer.func}
+        elif isinstance(layer, Conv2D):
+            value = dict(zip(['filters','kernel_size','input_shape', 'stride','pad'], layer.cache))
+        elif isinstance(layer, Maxpooling):
+            value = dict(zip(['pool_h','pool_w','stride','pad'], layer.cache))
+
+        model_dict['layer_cls'][layer.__class__.__name__+'_'+str(n)] = value
+
+    model_dict['cost_function'] = model.cost_function
+    model_dict['optimizer'] = model.optim
+    save_model(model_dict, path, name)

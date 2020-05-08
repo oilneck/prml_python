@@ -15,7 +15,7 @@ class Sequential(object):
         self.batch_num = 0
         self.idx = 0
         self.units_num = []
-        self.conv_output_shape = []
+        self.conv_params = []
         self.params = {}
 
         self.layers = []
@@ -49,7 +49,7 @@ class Sequential(object):
     def init_conv(self, filter_num, filter_size, input_shape, stride, pad):
 
         self.idx += 1
-        args = [filter_num, self.conv_output_shape[-2][0], filter_size[0], filter_size[1]]
+        args = [filter_num, self.conv_params[-2][0], filter_size[0], filter_size[1]]
         self.params['W' + str(self.idx)] = np.random.randn(*args)
         self.params['b' + str(self.idx)] = np.zeros(filter_num)
 
@@ -97,21 +97,23 @@ class Sequential(object):
             layer.set_param(*args)
 
         # convolution init
-        if isinstance(layer, Conv2D) and self.conv_output_shape == []:
-            self.conv_output_shape.append(layer.input_shape)
+        if isinstance(layer, Conv2D) and self.conv_params == []:
+            self.conv_params.append(layer.input_shape)
 
 
         if isinstance(layer, Conv2D):
-            input_size = self.conv_output_shape[-1][1]
+            input_size = self.conv_params[-1][1]
             output_size = calc_size(input_size, layer.kernel_size[0], layer.stride, layer.pad)
-            self.conv_output_shape.append((layer.filters,int(output_size),int(output_size)))
+            self.conv_params.append((layer.filters,int(output_size),int(output_size)))
             self.init_conv(*layer.cache)
             args = [self.params['W' + str(self.idx)], self.params['b' + str(self.idx)]]
             layer.set_param(*args)
 
         if isinstance(layer, Maxpooling):
-            _shape = self.conv_output_shape[-1]
-            self.units_num.append(_shape[0] * int(_shape[1] / 2) * int(_shape[2] / 2))
+            _shape = self.conv_params[-1]
+            output_shape = (_shape[0], int(_shape[1] / 2), int(_shape[2] / 2))
+            self.conv_params.append(output_shape)
+            self.units_num.append(np.prod(output_shape))
 
         if isinstance(layer, Batch_norm_Layer):
             self.init_batch()
