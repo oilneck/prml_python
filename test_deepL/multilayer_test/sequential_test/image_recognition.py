@@ -8,12 +8,12 @@ from deepL_module.nn.layers import *
 from deepL_module.nn import *
 
 
-max_iter = 1000
+max_iter = 100
 
 
 '''#0 loading data '''
 (X_train, train_t), (X_test, test_t) = load_mnist(normalize=True, flatten=False)
-X_train, train_t = X_train[:5000], train_t[:5000]
+X_train, train_t = X_train[:500], train_t[:500]
 train_t = to_categorical(train_t)
 
 
@@ -64,4 +64,4 @@ plt.xlim([-30,1000])
 plt.tight_layout()
 plt.show()
 
-model.save(name='simple_CNN')
+#model.save(name='simple_CNN')
