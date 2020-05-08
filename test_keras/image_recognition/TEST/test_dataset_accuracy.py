@@ -1,5 +1,5 @@
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import Activation, Dense, Input
+from tensorflow.keras.layers import Activation, Dense, Input, Flatten, Reshape, Conv2D
 from tensorflow.keras import losses
 from tensorflow.keras.optimizers import *
 from tensorflow.keras.datasets import mnist

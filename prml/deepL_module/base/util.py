@@ -28,10 +28,17 @@ def smooth_filt(x):
      return np.asarray(y)
 
 
-def save_model(model, path:str=None):
-    if path is None:
+def save_model(model, path:str=None, name:str=None):
+    if path is None and name is None:
         path = os.path.dirname(os.path.abspath(__file__))
         path += '/../datasets/model_data/test_model.pkl'
+    elif path is None and name is not None:
+        path = os.path.dirname(os.path.abspath(__file__))
+        path += '/../datasets/model_data/' + name + '.pkl'
+    elif path is not None and name is None:
+        pass
+    else:
+        raise Exception("Could not specify 'path' and 'name'")
 
     with open(path, 'wb') as f:
         pickle.dump(model, f)
@@ -131,6 +138,8 @@ def print_summary(model, line_length=None, positions=None):
     print( 'Total params: ' + str(np.sum(params_)) )
     print('Optimizer: ' + str(model.optim.__class__.__name__))
 
+def calc_size(input_size, filter_size, stride=1, pad=0):
+    return (input_size + 2*pad - filter_size) / stride + 1
 
 def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
     N, C, H, W = input_data.shape

@@ -20,6 +20,8 @@ class Dense():
 
 
     def forward(self,X):
+        self.original_x_shape = X.shape
+        X = X.reshape(X.shape[0], -1)
         self.X = X
         affine = np.dot(X,self.W) + self.b
         self.out = self.act_func.forward(affine)
@@ -29,6 +31,7 @@ class Dense():
     def backward(self, delta):
         delta = self.act_func.backward(delta)
         dx = np.dot(delta, self.W.T)
+        dx = dx.reshape(*self.original_x_shape)
         self.dW = np.dot(self.X.T, delta)
         self.db = np.sum(delta, axis=0)
         return dx

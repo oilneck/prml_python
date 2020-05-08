@@ -1,11 +1,15 @@
 import numpy as np
+from deepL_module.base import *
 
 class Conv2D:
-    def __init__(self,filters:int, kernel_size:tuple,stride=1, pad=0):
+    def __init__(self,filters:int, kernel_size:tuple,stride=1, pad=0, input_shape:tuple=(1,28,28)):
         self.filters = filters
         self.kernel_size = kernel_size
+        self.input_shape = input_shape
         self.stride = stride
         self.pad = pad
+
+        self.cache = [self.filters, self.kernel_size, input_shape, stride, pad]
 
         self.x = None
         self.col = None
@@ -33,6 +37,7 @@ class Conv2D:
         self.x = x
         self.col = col
         self.col_W = col_W
+        self.out = out
 
         return out
 

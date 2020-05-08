@@ -13,7 +13,9 @@ class Sequential(object):
         self.alpha = alpha # Weight decay coefficient.
         self.wscale = w_std
         self.batch_num = 0
+        self.idx = 0
         self.units_num = []
+        self.conv_output_shape = []
         self.params = {}
 
         self.layers = []
@@ -29,20 +31,27 @@ class Sequential(object):
 
     def init_W(self):
 
-        idx = len(self.units_num) - 1
+        self.idx += 1
 
         scale = 1.
         if self.wscale is None:
-            scale = np.sqrt(1. / self.units_num[idx-1])
+            scale = np.sqrt(1. / self.units_num[-1])
         elif isinstance(self.wscale, (int, float, np.number)):
             scale = self.wscale
         else:
             raise TypeError("initial weight scale must be float or int type")
 
 
-        args = [self.units_num[idx-1], self.units_num[idx]]
-        self.params['W' + str(idx)] = scale * np.random.randn(*args)
-        self.params['b' + str(idx)] = np.zeros(args[-1])
+        args = [self.units_num[-2], self.units_num[-1]]
+        self.params['W' + str(self.idx)] = scale * np.random.randn(*args)
+        self.params['b' + str(self.idx)] = np.zeros(args[-1])
+
+    def init_conv(self, filter_num, filter_size, input_shape, stride, pad):
+
+        self.idx += 1
+        args = [filter_num, self.conv_output_shape[-2][0], filter_size[0], filter_size[1]]
+        self.params['W' + str(self.idx)] = np.random.randn(*args)
+        self.params['b' + str(self.idx)] = np.zeros(filter_num)
 
     def init_batch(self):
 
@@ -84,9 +93,25 @@ class Sequential(object):
         if isinstance(layer, Dense):
             self.units_num.append(layer.units)
             self.init_W()
-            idx = len(self.units_num) - 1
-            args = [self.params['W' + str(idx)], self.params['b' + str(idx)]]
+            args = [self.params['W' + str(self.idx)], self.params['b' + str(self.idx)]]
             layer.set_param(*args)
+
+        # convolution init
+        if isinstance(layer, Conv2D) and self.conv_output_shape == []:
+            self.conv_output_shape.append(layer.input_shape)
+
+
+        if isinstance(layer, Conv2D):
+            input_size = self.conv_output_shape[-1][1]
+            output_size = calc_size(input_size, layer.kernel_size[0], layer.stride, layer.pad)
+            self.conv_output_shape.append((layer.filters,int(output_size),int(output_size)))
+            self.init_conv(*layer.cache)
+            args = [self.params['W' + str(self.idx)], self.params['b' + str(self.idx)]]
+            layer.set_param(*args)
+
+        if isinstance(layer, Maxpooling):
+            _shape = self.conv_output_shape[-1]
+            self.units_num.append(_shape[0] * int(_shape[1] / 2) * int(_shape[2] / 2))
 
         if isinstance(layer, Batch_norm_Layer):
             self.init_batch()
@@ -200,8 +225,8 @@ class Sequential(object):
             dout = layer.backward(dout)
 
         grads = {}
-        dense_loc = np.where([type(obj) is Dense for obj in self.layers])[0]
-        for n, idx in enumerate(list(dense_loc)):
+        W_loc = np.where([isinstance(obj,(Dense, Conv2D)) for obj in list(self.layers)])[0]
+        for n, idx in enumerate(list(W_loc)):
             grads['W' + str(n+1)] = self.layers[idx].dW + self.alpha * self.layers[idx].W
             grads['b' + str(n+1)] = self.layers[idx].db
 
@@ -233,4 +258,8 @@ class Sequential(object):
             else:
                 hist = None
 
+        self.history = hist
         return hist
+
+    def save(self, path:str=None, name:str=None):
+        save_model(self, path, name)
