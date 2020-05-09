@@ -1,5 +1,6 @@
 import numpy as np
-from deepL_module.base import *
+from deepL_module.base.util import *
+
 class Maxpooling:
     def __init__(self, pool_h, pool_w, stride=1, pad=0):
         self.pool_h = pool_h

@@ -6,7 +6,7 @@ from deepL_module.nn.sequential import Sequential
 from deepL_module.nn.layers import *
 
 
-max_iter = 250
+max_epoch = 250
 
 def create_noise_data(sample:int=400):
     x,labels = make_moons(sample, noise = 0.2)
@@ -31,7 +31,7 @@ routine = Adam(lr = 0.1)
 model.compile(loss='binary_crossentropy', optimizer=routine)
 
 #---learning----
-history = model.fit(train_x, labels, n_iter=max_iter, history=True)
+history = model.fit(train_x, labels, epochs=max_epoch, history=True)
 
 
 
@@ -58,8 +58,8 @@ plt.show()
 
 # plot the accuracy score
 fig = plt.figure(figsize=(7,4))
-plt.plot(np.arange(max_iter), history['acc'], color='r')
+plt.plot(np.arange(max_epoch), history['acc'], color='r')
 plt.title('Accuracy score', fontsize=15)
-plt.xlabel('iteration', fontsize=15)
+plt.xlabel('epochs', fontsize=15)
 plt.tight_layout()
 plt.show()

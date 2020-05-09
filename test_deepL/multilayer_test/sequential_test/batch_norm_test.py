@@ -17,12 +17,9 @@ train_t = to_categorical(train_t)
 
 # setting parameters
 max_epochs = 20
-train_size = X_train.shape[0]
 batch_size = 200
 learning_rate = 0.01
 scale = 0.005
-iter_per_epoch = max(train_size / batch_size, 1)
-max_iter = int(max_epochs * iter_per_epoch)
 
 # constructing model
 model = Sequential(w_std=scale)
@@ -63,7 +60,7 @@ for name, network_ in model_dict.items():
     optim = Adam(lr=learning_rate)
     network_.compile(loss='categorical_crossentropy', optimizer=optim)
     hist = network_.fit(X_train, train_t,
-                        n_iter=max_iter,
+                        epochs=max_epochs,
                         batch_size=batch_size,
                         history=True)
     train_acc[name] = np.asarray(hist['acc'])
@@ -71,15 +68,13 @@ for name, network_ in model_dict.items():
 
 # drawing graph
 x = np.arange(max_epochs)
-idx = np.arange(0, max_iter, iter_per_epoch)
-idx = list(map(int,idx))
 
 fig = plt.figure(figsize=(10,6))
 ax = fig.add_subplot(111)
 
-ax.plot(x, train_acc['batch_norm'][idx],
+ax.plot(x, train_acc['batch_norm'],
         label='Batch Normalization', markevery=2, color='r')
-ax.plot(x, train_acc['normal'][idx], linestyle = "--",
+ax.plot(x, train_acc['normal'], linestyle = "--",
         label='Normal (without BatchNorm)', markevery=2, color='blue')
 
 plt.legend(fontsize=15)

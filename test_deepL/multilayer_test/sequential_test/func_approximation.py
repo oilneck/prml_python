@@ -6,7 +6,7 @@ from deepL_module.nn.layers import *
 from deepL_module.nn.layers.core import *
 
 N = 50 # sample
-max_iter = 1000 # iteration
+max_epochs = 1000 # epochs
 
 
 heaviside = lambda x : 0.5 * (1 + np.sign(x))
@@ -42,7 +42,7 @@ for n,func in enumerate(multi_func,1):
     routine = Adam(lr=0.1, beta_1=0.9, beta_2=0.95)
     model.compile(loss='sum_squared_error', optimizer=routine)
     #-----learning------
-    history = model.fit(train_x, train_y, n_iter=max_iter, history=False)
+    history = model.fit(train_x, train_y, epochs=max_epochs, history=False)
     #train_acc[func_name[n-1]] = history['acc']
 
     # prediction data

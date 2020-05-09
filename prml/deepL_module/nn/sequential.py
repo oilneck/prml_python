@@ -240,25 +240,34 @@ class Sequential(object):
         return grads
 
 
-    def fit(self, X_train:np.ndarray, t_train:np.ndarray, n_iter=1000, batch_size=None, history:bool=False):
+    def fit(self, X_train:np.ndarray, t_train:np.ndarray, epochs:int=1, batch_size:int=None, history:bool=False):
 
         hist = {}
         hist['loss'] = []
         hist['acc'] = []
 
-        for _ in range(int(n_iter)):
+        train_size = X_train.shape[0]
+        iter_per_epoch = 1
+
+        if batch_size is not None:
+            iter_per_epoch = int(max(train_size / batch_size, 1))
+
+        n_iter = epochs * iter_per_epoch
+
+        for n in range(int(n_iter)):
             x_batch, t_batch = get_mini_batch(X_train, t_train, batch_size)
             grads = self.gradient(x_batch, t_batch)
             self.optim.update(self.params, grads)
 
             if history:
-                loss = self.loss(x_batch, t_batch)
-                score = self.accuracy(x_batch, t_batch)
-                hist['loss'].append(loss)
-                hist['acc'].append(score)
-
+                if n % iter_per_epoch == 0:
+                    loss = self.loss(x_batch, t_batch)
+                    score = self.accuracy(x_batch, t_batch)
+                    hist['loss'].append(loss)
+                    hist['acc'].append(score)
             else:
                 hist = None
+
 
         self.history = hist
         return hist

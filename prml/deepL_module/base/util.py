@@ -1,7 +1,6 @@
 import numpy as np
 import pickle
 import os
-from deepL_module.nn.layers import *
 
 def get_mini_batch(train_x, train_t, batch_size=None):
 
@@ -54,6 +53,42 @@ def load_model(path:str=None):
         obj = pickle.load(f)
 
     return obj
+
+def calc_size(input_size, filter_size, stride=1, pad=0):
+    return (input_size + 2*pad - filter_size) / stride + 1
+
+def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
+    N, C, H, W = input_data.shape
+    out_h = (H + 2*pad - filter_h)//stride + 1
+    out_w = (W + 2*pad - filter_w)//stride + 1
+
+    img = np.pad(input_data, [(0,0), (0,0), (pad, pad), (pad, pad)], 'constant')
+    col = np.zeros((N, C, filter_h, filter_w, out_h, out_w))
+
+    for y in range(filter_h):
+        y_max = y + stride*out_h
+        for x in range(filter_w):
+            x_max = x + stride*out_w
+            col[:, :, y, x, :, :] = img[:, :, y:y_max:stride, x:x_max:stride]
+
+    col = col.transpose(0, 4, 5, 1, 2, 3).reshape(N*out_h*out_w, -1)
+    return col
+
+
+def col2im(col, input_shape, filter_h, filter_w, stride=1, pad=0):
+    N, C, H, W = input_shape
+    out_h = (H + 2*pad - filter_h)//stride + 1
+    out_w = (W + 2*pad - filter_w)//stride + 1
+    col = col.reshape(N, out_h, out_w, C, filter_h, filter_w).transpose(0, 3, 4, 5, 1, 2)
+
+    img = np.zeros((N, C, H + 2*pad + stride - 1, W + 2*pad + stride - 1))
+    for y in range(filter_h):
+        y_max = y + stride*out_h
+        for x in range(filter_w):
+            x_max = x + stride*out_w
+            img[:, :, y:y_max:stride, x:x_max:stride] += col[:, :, y, x, :, :]
+
+    return img[:, :, pad:H + pad, pad:W + pad]
 
 
 def print_summary(model, line_length=None, positions=None):
@@ -138,64 +173,3 @@ def print_summary(model, line_length=None, positions=None):
     print('=' * line_length)
     print( 'Total params: ' + str(np.sum(params_)) )
     print('Optimizer: ' + str(model.optim.__class__.__name__))
-
-def calc_size(input_size, filter_size, stride=1, pad=0):
-    return (input_size + 2*pad - filter_size) / stride + 1
-
-def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
-    N, C, H, W = input_data.shape
-    out_h = (H + 2*pad - filter_h)//stride + 1
-    out_w = (W + 2*pad - filter_w)//stride + 1
-
-    img = np.pad(input_data, [(0,0), (0,0), (pad, pad), (pad, pad)], 'constant')
-    col = np.zeros((N, C, filter_h, filter_w, out_h, out_w))
-
-    for y in range(filter_h):
-        y_max = y + stride*out_h
-        for x in range(filter_w):
-            x_max = x + stride*out_w
-            col[:, :, y, x, :, :] = img[:, :, y:y_max:stride, x:x_max:stride]
-
-    col = col.transpose(0, 4, 5, 1, 2, 3).reshape(N*out_h*out_w, -1)
-    return col
-
-
-def col2im(col, input_shape, filter_h, filter_w, stride=1, pad=0):
-    N, C, H, W = input_shape
-    out_h = (H + 2*pad - filter_h)//stride + 1
-    out_w = (W + 2*pad - filter_w)//stride + 1
-    col = col.reshape(N, out_h, out_w, C, filter_h, filter_w).transpose(0, 3, 4, 5, 1, 2)
-
-    img = np.zeros((N, C, H + 2*pad + stride - 1, W + 2*pad + stride - 1))
-    for y in range(filter_h):
-        y_max = y + stride*out_h
-        for x in range(filter_w):
-            x_max = x + stride*out_w
-            img[:, :, y:y_max:stride, x:x_max:stride] += col[:, :, y, x, :, :]
-
-    return img[:, :, pad:H + pad, pad:W + pad]
-
-
-def seq_save_model(model, path:str=None, name:str=None):
-    params = {}
-    for key, val in model.params.items():
-        params[key] = val
-
-    model_dict = {'layer_cls':{}, 'param':params, 'history':model.history}
-    for n, layer in enumerate(model.layers):
-        value = 0
-        if isinstance(layer, Dense):
-            value = dict(zip(['units','input_dim','activation'],
-                            [layer.units, layer.input_dim, layer.act_func]))
-        elif isinstance(layer, Activation):
-            value = {'activation':layer.func}
-        elif isinstance(layer, Conv2D):
-            value = dict(zip(['filters','kernel_size','input_shape', 'stride','pad'], layer.cache))
-        elif isinstance(layer, Maxpooling):
-            value = dict(zip(['pool_h','pool_w','stride','pad'], [layer.pool_h,layer.pool_w,layer.stride,layer.pad]))
-
-        model_dict['layer_cls'][layer.__class__.__name__+'_'+str(n)] = value
-
-    model_dict['cost_function'] = model.cost_function
-    model_dict['optimizer'] = model.optim
-    save_model(model_dict, path, name)

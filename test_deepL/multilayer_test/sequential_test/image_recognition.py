@@ -5,10 +5,9 @@ from deepL_module.nn.sequential import Sequential
 from deepL_module.nn.optimizers import *
 from deepL_module.base import *
 from deepL_module.nn.layers import *
-from deepL_module.nn import *
 
 
-max_iter = 1000
+max_epochs = 50
 
 
 '''#0 loading data '''
@@ -37,7 +36,7 @@ import time
 start = time.time()
 hist = model.fit(X_train, train_t,
                  batch_size=256,
-                 n_iter=max_iter,
+                 epochs=max_epochs,
                  history=True)
 print(time.time()-start)
 
@@ -45,26 +44,26 @@ print(time.time()-start)
 
 '''#3 drawing loss & accuracy data '''
 # ----- loss data -----
-fig1 = plt.figure(figsize=(13,5)) # dpi=50
-ax = fig1.add_subplot(121)
-x = np.arange(max_iter)
-ax.plot(x, hist['loss'], color='blue',marker="*", markersize=7, markevery=10)
-plt.xlabel("iterations",fontsize=25)
-plt.title("loss",fontsize=25)
-plt.xlim([-5,210])
+fig = plt.figure(figsize=(15,4)) # dpi=50
+ax1 = fig.add_subplot(121)
+x = np.arange(max_epochs)
+ax1.plot(x, hist['loss'], color='blue',marker="*", markersize=7, markevery=10, label='loss')
+ax1.set_xlabel("epochs",fontsize=25)
+ax1.set_title("loss",fontsize=25)
+ax1.set_xlim([-2,max_epochs])
 plt.show()
 
 # --- accuracy data ---
 ax = fig1.add_subplot(122)
 ax.plot(x, smooth_filt(hist['acc']),
-        color = 'lime',
+        color = 'red',
         marker = "*",
         markersize = 8,
         markevery = 100)
-plt.xlabel("iterations",fontsize=25)
+plt.xlabel("epochs",fontsize=25)
 plt.title("accuracy",fontsize=25)
-plt.xlim([-30,1000])
+plt.xlim([-2,50])
 plt.tight_layout()
 plt.show()
 
-model.save(name='simple_CNN')
+#model.save(name='simple_CNN')

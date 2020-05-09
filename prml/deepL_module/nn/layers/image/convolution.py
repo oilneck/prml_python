@@ -1,7 +1,8 @@
 import numpy as np
-from deepL_module.base import *
+from deepL_module.base.util import *
 
-class Conv2D:
+class Conv2D(object):
+
     def __init__(self,filters:int, kernel_size:tuple,stride=1, pad=0, input_shape:tuple=(1,28,28)):
         self.filters = filters
         self.kernel_size = kernel_size
