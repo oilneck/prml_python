@@ -18,7 +18,7 @@ train_t = to_categorical(train_t)
 
 '''#1 config for NN '''
 model = Sequential()
-model.add(Conv2D(16,(3,3),input_shape=(1,28,28)))
+model.add(Conv2D(16,(5,5),input_shape=(1,28,28)))
 model.add(Activation('relu'))
 model.add(Maxpooling(pool_h=2, pool_w=2, stride=2))
 model.add(Conv2D(16,(3,3)))
@@ -54,12 +54,12 @@ ax1.set_xlim([-2,max_epochs])
 plt.show()
 
 # --- accuracy data ---
-ax = fig1.add_subplot(122)
+ax = fig.add_subplot(122)
 ax.plot(x, smooth_filt(hist['acc']),
-        color = 'red',
+        color = 'r',
         marker = "*",
         markersize = 8,
-        markevery = 100)
+        markevery = 10)
 plt.xlabel("epochs",fontsize=25)
 plt.title("accuracy",fontsize=25)
 plt.xlim([-2,50])
