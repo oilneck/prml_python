@@ -50,7 +50,7 @@ class Sequential(object):
 
         self.idx += 1
         args = [filter_num, self.conv_params[-2][0], filter_size[0], filter_size[1]]
-        self.params['W' + str(self.idx)] = np.random.randn(*args)
+        self.params['W' + str(self.idx)] = 0.01 * np.random.randn(*args)
         self.params['b' + str(self.idx)] = np.zeros(filter_num)
 
     def init_batch(self):
