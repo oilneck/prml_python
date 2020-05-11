@@ -49,8 +49,23 @@ class Sequential(object):
     def init_conv(self, filter_num, filter_size, input_shape, stride, pad):
 
         self.idx += 1
-        args = [filter_num, self.conv_params[-2][0], filter_size[0], filter_size[1]]
-        self.params['W' + str(self.idx)] = 0.01 * np.random.randn(*args)
+
+        prev_feature = self.conv_params[-2]
+        # fetch the shape of previous layer:tuple (channel, output_size, output_size)
+        input_channel = prev_feature[0]
+
+        scale = 1.
+        if self.wscale is None:
+            n_units = input_channel * np.prod(filter_size)
+            scale = np.sqrt(1. / n_units)
+        elif isinstance(self.wscale, (int, float, np.number)):
+            scale = self.wscale
+        else:
+            raise TypeError("initial weight scale must be float or int type")
+
+
+        args = [filter_num, input_channel, filter_size[0], filter_size[1]]
+        self.params['W' + str(self.idx)] = scale * np.random.randn(*args)
         self.params['b' + str(self.idx)] = np.zeros(filter_num)
 
     def init_batch(self):

@@ -16,6 +16,6 @@ def show_filters(filters, n_row=6):
     plt.tight_layout()
     plt.show()
 
-path_r = './../../../../prml/deepL_module/datasets/model_data/visualize_filter_CNN.pkl'
+path_r = './../../../../prml/deepL_module/datasets/model_data/simple_CNN.pkl'
 model = load_model(path_r)
 show_filters(model.params['W1'])

@@ -51,7 +51,7 @@ show_filters(model.params['W1'], fig_num=1, title='before learning')
 #                  epochs=30,
 #                  history=True)
 
-#model.save(name='visualize_filter_CNN')
+# model.save(name='visualize_filter_CNN')
 
 path_r = './../../../../prml/deepL_module/datasets/model_data/visualize_filter_CNN.pkl'
 model = load_model(path_r)
