@@ -13,7 +13,6 @@ def show_filters(filters, fig_num, title:str, n_row=6):
     filter_num = filters.shape[0]
     n_col = int(np.ceil(filter_num / n_row))
     fig = plt.figure(fig_num,figsize=(8,5))
-    patch = patches.Rectangle(xy=(0, 0), width=0.25, height=0.5, ec='#000000', fill=False)
 
     for i in range(filter_num):
         ax = fig.add_subplot(n_col, n_row, i+1)
@@ -21,17 +20,17 @@ def show_filters(filters, fig_num, title:str, n_row=6):
         plt.tick_params(labelbottom=False, labelleft=False)
         plt.tick_params(bottom=False, left=False)
     fig.suptitle(title,fontsize=20)
-    ax.add_patch(patch)
     plt.show()
 
 
 '''#0 loading data '''
 (X_train, train_t), (X_test, test_t) = load_mnist(flatten=False)
+X_train, train_t = X_train[:5000], train_t[:5000]
 train_t = to_categorical(train_t)
 
 
 '''#1 config for NN '''
-model = Sequential(w_std=0.01)
+model = Sequential(w_std=0.005)
 model.add(Conv2D(30,(5,5),input_shape=(1,28,28)))
 model.add(Activation('relu'))
 model.add(Maxpooling(pool_h=2, pool_w=2, stride=2))
@@ -50,7 +49,7 @@ show_filters(model.params['W1'], fig_num=1, title='before learning')
 #                  batch_size=256,
 #                  epochs=30,
 #                  history=True)
-
+#
 # model.save(name='visualize_filter_CNN')
 
 path_r = './../../../../prml/deepL_module/datasets/model_data/visualize_filter_CNN.pkl'
