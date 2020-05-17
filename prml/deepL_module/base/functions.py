@@ -40,6 +40,8 @@ def elu(x,alpha:float=1.0):
 def swish(x,beta:float=1.0):
     return x * sigmoid(beta * x)
 
+def mish(x):
+    return x * tanh(softplus(x))
 
 def beal_function(x,y):
     term_1 = np.square(1.5 - x + x * y)

@@ -169,3 +169,31 @@ class Swish_Layer():
     @staticmethod
     def swish(x):
         return Swish_Layer().forward(x)
+
+class Mish_Layer():
+
+    def __init__(self):
+        self.activate = None
+        self.out = None
+
+    def omega(self,x):
+        return 4 * (x+1) + 4 * np.exp(2*x) + np.exp(3*x) + np.exp(x) * (4*x + 6)
+
+    def delta(self,x):
+        return 2 * np.exp(x) + np.exp(2*x) + 2
+
+    def forward(self,x):
+        self.activate = x
+        out = mish(x)
+        self.out = out
+        return out
+
+    def backward(self,delta):
+        act = self.activate
+        diff_ = np.exp(act) * self.omega(act) / np.square(self.delta(act))
+        dx = diff_ * delta
+        return dx
+
+    @staticmethod
+    def mish(x):
+        return Mish_Layer().forward(x)

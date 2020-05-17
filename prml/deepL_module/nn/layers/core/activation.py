@@ -23,7 +23,8 @@ class Activation():
                     'elu':Elu_Layer(),
                     'softsign':Softsign_Layer(),
                     'softplus':Softplus_Layer(),
-                    'swish':Swish_Layer()
+                    'swish':Swish_Layer(),
+                    'mish':Mish_Layer()
                     }
 
         activate = None
