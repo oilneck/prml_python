@@ -1,6 +1,6 @@
-import numpy as np
 import pickle
 import os
+import numpy as np
 
 def get_mini_batch(train_x, train_t, batch_size=None):
 
@@ -54,8 +54,10 @@ def load_model(path:str=None):
 
     return obj
 
+
 def calc_size(input_size, filter_size, stride=1, pad=0):
     return (input_size + 2*pad - filter_size) / stride + 1
+
 
 def im2col(input_data, filter_h, filter_w, stride=1, pad=0):
     N, C, H, W = input_data.shape
