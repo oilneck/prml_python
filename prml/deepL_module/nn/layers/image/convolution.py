@@ -3,7 +3,7 @@ from deepL_module.base.util import *
 
 class Conv2D(object):
 
-    def __init__(self,filters:int, kernel_size:tuple,stride=1, pad=0, input_shape:tuple=(1,28,28)):
+    def __init__(self,filters:int, kernel_size:tuple, input_shape:tuple=(1,28,28), stride=1, pad=0):
         self.filters = filters
         self.kernel_size = kernel_size
         self.input_shape = input_shape
