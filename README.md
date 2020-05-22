@@ -29,7 +29,7 @@ git clone https://github.com/oilneck/prml_python.git
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/section5.ipynb">sec.5 : Neural Networks </a>
 
  > Deep learning and Convolutional neural network for image recognition
-- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_Deep_learning.ipynb"><div style="text-align: justify"> Deep learning test</div></a> 【 Required libraries : numpy, sklearn (←to fetch data) 】
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_Deep_learning.ipynb"><p style='text-align: justify;'> Deep learning test</p> </a> 【 Required libraries : numpy, sklearn (←to fetch data) 】
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/simple_CNN_model.ipynb"><div style="text-align: justify"> Sequential models </div></a> 【 Required libraries : numpy 】
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_CNN_keras.ipynb"> Image recognition </a>【 Required libraries : keras, TensorFlow, OpenCV 】
 
