@@ -22,6 +22,7 @@ class Conv2D(object):
     def set_param(self, W, b):
         self.W = W
         self.b = b
+        self.n_param = W.size + b.size
 
     def forward(self, x):
         FN, C, FH, FW = self.W.shape

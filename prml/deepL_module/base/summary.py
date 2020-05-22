@@ -1,6 +1,7 @@
 from deepL_module.nn.layers import *
 from deepL_module.nn.sequential import *
 import joblib
+import pandas as pd
 
 
 def seq_save_model(model, path:str=None, name:str=None):
@@ -63,3 +64,94 @@ def seq_load_model(path:str=None):
     model.cost_function = feat['cost_function']
 
     return model
+
+
+def print_seq_summary(model, line_length=None, positions=None):
+
+    Layers = model.layers.copy()
+
+    line_length = line_length or 69
+    positions = positions or [.5, .85, 1.]
+
+    if positions[-1] <= 1:
+        positions = [int(line_length * p) for p in positions]
+
+    def print_row(fields, positions):
+        line = ''
+        for i in range(len(fields)):
+            line += str(fields[i])
+            line = line[:positions[i]]
+            line += ' ' * (positions[i] - len(line))
+        print(line)
+
+
+    def get_shapes(layers):
+        shapes_list = []
+        for n,layer in enumerate(layers):
+            shape_val = None
+            if isinstance(layer,Activation) and n > 0:
+                shape_val = shapes_list[n-1]
+            else:
+                shape_val = list(layer.out.shape)
+                shape_val[0] = None
+
+            #list(shape_val) = None
+            shapes_list.append(tuple(shape_val))
+        return shapes_list
+
+    def get_params(layers):
+        params_list = []
+
+        for layer in layers:
+            num_param = 0
+            if isinstance(layer, (Dense, Batch_norm_Layer, Conv2D)):
+                num_param = layer.W.size + layer.b.size
+
+            params_list.append(num_param)
+
+        return params_list
+
+    def get_cls(layers):
+
+        name_trans = {
+                      'Dense':{'name':'DenseLayer', 'value':0},
+                      'Activation':{'name':'Activation', 'value':0},
+                      'Conv2D':{'name':'Convol2dim', 'value':0},
+                      'Maxpooling':{'name':'Maxpooling', 'value':0},
+                      'Batch_norm_Layer':{'name':'Batch_Norm', 'value':0},
+                      'Dropout_Layer':{'name':'-> Dropout', 'value':0}
+                      }
+
+        layers_list = []
+
+        for layer in layers:
+
+            cls_name = layer.__class__.__name__
+            label = name_trans.get(cls_name)
+
+            if label == None:
+                label = name_trans['Activation']
+
+            label['value'] += 1
+            name = label['name'] + '_{}'.format(label['value'])
+            layers_list.append('{}  ({})'.format(name, cls_name.split('_')[0]))
+
+        return layers_list
+
+    print('_' * line_length)
+    to_display = ['Layer (type)', 'Output shape', 'Param #']
+    print_row(to_display, positions)
+    print('=' * line_length)
+
+    df = np.array([get_cls(Layers), get_shapes(Layers), get_params(Layers)]).T
+
+
+    for n in range(df.shape[0]):
+        fields = df[n]
+        print_row(fields, positions)
+        if n < df.shape[0]-1:
+            print('-' * line_length)
+
+    print('=' * line_length)
+    print( 'Total params: ' + str(np.sum(get_params(Layers))) )
+    print('Optimizer: ' + str(model.optim.__class__.__name__))
