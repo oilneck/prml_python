@@ -4,6 +4,7 @@ from deepL_module.nn.cost_functions import *
 from deepL_module.nn.optimizers import *
 from deepL_module.nn.metrics import *
 from deepL_module.base import *
+from deepL_module.base import summarys
 from collections import OrderedDict
 
 
@@ -289,3 +290,6 @@ class Sequential(object):
 
     def save(self, path:str=None, name:str=None):
         save_model(self, path, name)
+
+    def summary(self, line_length=None, positions=None):
+        summarys.print_seq_summary(self, line_length, positions)
