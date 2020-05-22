@@ -1,5 +1,7 @@
 from deepL_module.nn.layers import *
 from deepL_module.nn.sequential import *
+import joblib
+
 
 def seq_save_model(model, path:str=None, name:str=None):
 
@@ -35,7 +37,7 @@ def seq_load_model(path:str=None):
         path = os.path.dirname(os.path.abspath(__file__))
         path += '/../datasets/model_data/test.pkl'
 
-    feat = load_model(path)
+    feat = loads(path)
     model = Sequential(alpha=feat['alpha'], w_std=feat['wscale'])
     model.params = feat['params']
     model.units_num = feat['units']

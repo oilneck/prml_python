@@ -1,4 +1,4 @@
-import pickle
+import joblib
 import os
 import numpy as np
 
@@ -41,7 +41,7 @@ def save_model(model, path:str=None, name:str=None):
         raise Exception("Could not specify 'path' and 'name'")
 
     with open(path, 'wb') as f:
-        pickle.dump(model, f)
+        joblib.dump(model, f, compress=3)
 
 
 def load_model(path:str=None):
@@ -50,7 +50,7 @@ def load_model(path:str=None):
         path += '/../datasets/model_data/test_model.pkl'
 
     with open(path, 'rb') as f:
-        obj = pickle.load(f)
+        obj = joblib.load(f)
 
     return obj
 
