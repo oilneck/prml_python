@@ -104,9 +104,7 @@ def print_seq_summary(model, line_length=None, positions=None):
 
         for layer in layers:
             num_param = 0
-            if isinstance(layer, (Dense, Conv2D)):
-                num_param = layer.W.size + layer.b.size
-            elif isinstance(layer, Batch_norm_Layer):
+            if isinstance(layer, (Dense, Conv2D, Batch_norm_Layer)):
                 num_param = layer.n_param
 
             params_list.append(num_param)
