@@ -30,7 +30,7 @@ train_t = to_categorical(train_t)
 
 
 '''#1 config for NN '''
-model = Sequential(w_std=0.005)
+model = Sequential(w_std=0.01)
 model.add(Conv2D(30,(5,5),input_shape=(1,28,28)))
 model.add(Activation('relu'))
 model.add(Maxpooling(pool_h=2, pool_w=2, stride=2))

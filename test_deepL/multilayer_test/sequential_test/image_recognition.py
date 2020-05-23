@@ -12,7 +12,7 @@ max_epochs = 50
 
 '''#0 loading data '''
 (X_train, train_t), (X_test, test_t) = load_mnist(normalize=True, flatten=False)
-X_train, train_t = X_train[:5000], train_t[:5000]
+X_train, train_t = X_train[:10000], train_t[:10000]
 train_t = to_categorical(train_t)
 
 
