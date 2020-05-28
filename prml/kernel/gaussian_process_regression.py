@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 
 class GP_regression(object):
 
@@ -20,16 +21,17 @@ class GP_regression(object):
         if get_std:
             c = np.reciprocal(self.beta) + self.kernel(x,x,False)
             var = c - np.sum(K @ self.cov_inv * K, axis=1)
-            return m_x.ravel(), np.sqrt(var).ravel()
+            return m_x.ravel(), np.sqrt(var.clip(min=0.)).ravel()
         return m_x.ravel()
 
-    def fit(self, x:np.ndarray, t:np.ndarray, lr:float=0.001, n_iter:int=1):
-        for _ in range(n_iter):
-            params = self.kernel.get_params()
+    def fit(self, x:np.ndarray, t:np.ndarray, lr:float=0.1, n_iter:int=0):
+        self._fit(x,t)
+        for n in range(int(n_iter)):
+            params = np.copy(self.kernel.get_params())
             self._fit(x,t)
-            _grads = self.kernel.gradient(x,x).values()
+            _grads = self.kernel.gradient(x,x)
             C = np.copy(self.cov_inv)
-            grads = [-np.trace(C @ grad) + t @ C @ grad @ C @ t for grad in _grads]
-            self.kernel.update_params(lr * np.array(grads))
+            updates = [lr * (-np.trace(C @ grad) + t @ C @ grad @ C @ t) for grad in _grads]
+            self.kernel.updates(np.asarray(updates))
             if np.allclose(params, self.kernel.get_params()):
                 break
