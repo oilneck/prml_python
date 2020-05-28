@@ -11,8 +11,8 @@ class GP_regression(object):
         self.X_train = X
         self.t_train = t
         I = np.eye(len(X))
-        Gram = self.kernel(X,X)
-        self.cov = Gram + np.reciprocal(self.beta) * I
+        self.Gram = self.kernel(X,X)
+        self.cov = self.Gram + np.reciprocal(self.beta) * I
         self.cov_inv = np.linalg.inv(self.cov)
 
     def predict(self, x, get_std:bool=False):
@@ -33,5 +33,5 @@ class GP_regression(object):
             C = np.copy(self.cov_inv)
             updates = [lr * (-np.trace(C @ grad) + t @ C @ grad @ C @ t) for grad in _grads]
             self.kernel.updates(np.asarray(updates))
-            if np.allclose(params, self.kernel.get_params()):
+            if np.allclose(params, np.copy(self.kernel.get_params())):
                 break
