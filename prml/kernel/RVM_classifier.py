@@ -50,6 +50,7 @@ class RVM_classifier(object):
         RV_mask = self.alpha < 1e9
         self.relevance_vector = {'x':X[RV_mask], 't':t[RV_mask]}
 
+
     def predict(self, X:np.ndarray):
         X = self.vector2mat(X)
         PHI = self.kernel(X, self.X_train)
