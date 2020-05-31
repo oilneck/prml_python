@@ -13,6 +13,18 @@ class RVM_regression(object):
             X = X.reshape(len(X), 1)
         return X
 
+    def create_feature(self):
+        idx = self.alpha < 1e9
+        self.alpha = self.alpha[idx]
+        self.X_train = self.X_train[idx]
+        self.t_train = self.t_train[idx]
+        self.relevance_vector = {'x':self.X_train, 't':self.t_train}
+        PHI = self.kernel(self.X_train, self.X_train)
+        pred_cov = np.linalg.inv(np.diag(self.alpha) + self.beta * PHI.T @ PHI)
+        pred_mean = self.beta * pred_cov @ PHI.T @ self.t_train
+        return pred_mean, pred_cov
+
+
     def fit(self, X:np.ndarray, t:np.ndarray, n_iter:int=1000):
         X = self.vector2col(X)
         self.X_train = X
@@ -32,10 +44,8 @@ class RVM_regression(object):
             if np.allclose(old_param, np.r_[self.alpha, self.beta]):
                 break
 
-        self.mean = mean
-        self.cov = cov
-        RV_mask = self.alpha < 1e9
-        self.relevance_vector = {'x':X[RV_mask], 't':t[RV_mask]}
+        self.mean, self.cov = self.create_feature()
+
 
     def predict(self, x:np.ndarray, get_std:bool=False):
         X = self.vector2col(x)
