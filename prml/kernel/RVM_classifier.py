@@ -40,14 +40,13 @@ class RVM_classifier(object):
             old_param = np.copy(self.alpha)
             w_map, cov = self.update_param(w_map)
             gamma = 1 - self.alpha * np.diag(cov)
-            self.alpha = gamma / np.square(w_map)
-            self.alpha = self.alpha.clip(max=1e10)
+            self.alpha = (gamma / np.square(w_map)).clip(max=1e10)
             if np.allclose(old_param, self.alpha):
                 break
 
         self.w_map = w_map
         self.cov = cov
-        RV_mask = self.alpha < 1e9
+        RV_mask = self.alpha < 1e8
         self.relevance_vector = {'x':X[RV_mask], 't':t[RV_mask]}
 
 
