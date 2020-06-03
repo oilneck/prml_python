@@ -26,7 +26,7 @@ X_test = np.array([X, Y]).reshape(2, -1).T
 
 ''' learning '''
 model = C_SVM(kernel=GaussianKernel(*[1,1,1]))
-model.fit(X_train ,t_train, n_iter=100)
+model.fit(X_train ,t_train, n_iter=1000)
 Z = model.predict(X_test)
 
 # plot training data
