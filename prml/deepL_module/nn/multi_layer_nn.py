@@ -11,7 +11,7 @@ class Neural_net(object):
 
     def __init__(self, n_input, n_hidden, n_output, w_std:float=None, alpha:float=0.,
                 batch_norm:bool=False, dropout:bool=False, do_rate:float=.5):
-        if isinstance(n_hidden,int): n_hidden = [n_hidden]
+        if isinstance(n_hidden, (int, float)): n_hidden = [n_hidden]
         self.n_input = n_input
         self.n_output = n_output
         self.n_hidden_list = n_hidden
