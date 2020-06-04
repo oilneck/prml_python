@@ -8,6 +8,8 @@ class Kmeans(object):
         self.n_clusters = n_clusters
         self.kernel = Kernel()
         self.loss = []
+        self.centers = {}
+        self.cls_X = {}
 
 
     def cdist(self, x:np.ndarray, y:np.ndarray):
@@ -16,23 +18,27 @@ class Kmeans(object):
         return np.sqrt(sum_sq)
 
 
-    def fit(self, X_train:np.ndarray, n_iter:int=100):
-        idx = np.random.choice(len(X_train), self.n_clusters, replace=False)
-        means = X_train[idx]
-        for _ in range(n_iter):
-            old_means = means.copy()
-            D = self.cdist(X_train, means)
+    def fit(self, X:np.ndarray, n_iter:int=100):
+        self.means = np.random.normal(size=(self.n_clusters, X.shape[1]))
+        for n in range(n_iter):
+            old_means = np.copy(self.means)
+            D = self.cdist(X, self.means)
             cls_num = np.argmin(D, axis=1)
             # E-step
             distortion = to_categorical(cls_num, self.n_clusters)
+            self.cls_X['step' + str(n+1)] = self.predict(X)
+            self.centers['step' + str(n+1)] = self.means.copy()
             # M-step
-            means = (distortion.T @ X_train) / distortion.sum(axis=0)[:,None]
+            denom = distortion.sum(axis=0)[:,None]
+            denom[denom==0] = 1e-8
+            self.means = (distortion.T @ X) / denom
             self.loss.append(np.trace(distortion.T @ D))
 
-            if np.allclose(old_means, means):
+
+            if np.allclose(old_means, self.means):
                 break
 
-        self.means = means
+
         self.loss = np.asarray(self.loss)
 
 
