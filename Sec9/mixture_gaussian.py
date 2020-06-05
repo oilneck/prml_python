@@ -1,72 +1,40 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from pd import *
 
 
-
-covs = np.array([[[1,0],[0,1]],[[1,1],[-1,1]],[[1,0],[0,1]]])
-param = np.array([1,2,3])
-means = np.array([[0,0],[0,3],[-1,-1]])
-
-def gauss(X):
-    dev = X[None,:,:]-means[:,None,:]
-    vect = np.einsum('kij, knj -> kni', np.linalg.inv(covs), dev)
-    gauss = np.exp(-0.5 * np.sum(dev * vect, axis=-1)).T
-    gauss /= np.sqrt(2 * np.pi * np.linalg.det(covs))
-    return gauss
-
-def gamma(X):
-    nume = gauss(X) * param
-    nume /= nume.sum(axis=-1)[:,None]
-    return nume
-
-def update_params(X):
-    global covs,means
-    resp = gamma(X)
-    N_k = np.sum(resp,axis=0)
-    param = N_k / len(X)
-    means = resp.T @ X / N_k[:,None]
-    diff = X[None,:,:]-means[:,None,:]
-    diff_ = diff*gamma(X)[None,:,:].transpose(2,1,0)
-    covs =  diff.transpose(0,2,1) @ diff_
-    covs /= N_k[:,None,None]
-    param = N_k / len(X)
-
-def fit(X:np.ndarray, n_iter:int=100):
-    for _ in range(n_iter):
-        old_params = np.hstack((param.ravel(),covs.ravel(),means.ravel())).copy()
-        update_params(X_train)
-        if np.allclose(old_params, np.hstack((param.ravel(),covs.ravel(),means.ravel()))):
-            break
-
-def predict_proba(X):
-    g = param * gauss(X)
-    return np.sum(g, axis=-1)
-
-def classify(X):
-    joint_prob = param * gauss(X)
-    return np.argmax(joint_prob, axis=1)
-
-def create_toy_data():
-    x1 = np.random.normal(size=(100, 2))
-    x1 += np.array([-5, -5])
-    x2 = np.random.normal(size=(100, 2))
-    x2 += np.array([5, -5])
-    x3 = np.random.normal(size=(100, 2))
-    x3 += np.array([0, 5])
+def make_blobs():
+    x1 = np.random.normal(size=(100, 2)) + np.array([-5, -5])
+    x2 = np.random.normal(size=(100, 2)) + np.array([0, 5])
+    x3 = np.random.normal(size=(100, 2)) + np.array([5, -5])
     return np.vstack((x1, x2, x3))
 
 
-X_train =create_toy_data()
-fit(X_train)
-labels = classify(X_train)
+# training data & test data
+X_train = make_blobs()
+X, Y = np.meshgrid(np.linspace(-10, 10, 100), np.linspace(-10, 10, 100))
+X_test = np.array([X, Y]).reshape(2, -1).T
 
-x_test, y_test = np.meshgrid(np.linspace(-10, 10, 100), np.linspace(-10, 10, 100))
-X_test = np.array([x_test, y_test]).reshape(2, -1).transpose()
-probs = predict_proba(X_test)
-Probs = probs.reshape(100, 100)
-colors = ["red", "blue", "green"]
-plt.scatter(X_train[:, 0], X_train[:, 1], c=[colors[int(label)] for label in labels])
-plt.contour(x_test, y_test, Probs)
-plt.xlim(-10, 10)
-plt.ylim(-10, 10)
+
+''' ML estimation with EM-algorithm '''
+prob_dist = MultivariateGaussian(n_components = 3)
+prob_dist.fit(X_train)
+labels = prob_dist.classify(X_train)
+Z = prob_dist.predict(X_test)
+
+
+# plot training data & prediction data
+fig = plt.figure(figsize=(12,4))
+keys = list(prob_dist.centers.keys())
+n_step = len(keys)
+keys = [keys[0], keys[n_step // 3], keys[2 * n_step // 3], keys[-1]]
+c=['dodgerblue', 'r', 'limegreen']
+for n, key in enumerate(keys):
+    fig.add_subplot(1, len(keys), n+1)
+    plt.scatter(*X_train.T, c=[c[int(label)] for label in labels], alpha=.5)
+    plt.scatter(*prob_dist.centers[key].T, s=170, marker='X', lw=2, c=c, edgecolor="white", zorder=3)
+    plt.gca().set_aspect('equal', adjustable='box')
+    plt.tick_params(labelbottom=False, labelleft=False)
+    plt.tick_params(bottom=False,left=False)
+plt.contour(X, Y, Z.reshape(X.shape), levels=np.linspace(min(Z), max(Z), 5), linewidths=4, cmap='Greys_r')
 plt.show()

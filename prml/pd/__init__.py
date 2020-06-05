@@ -5,3 +5,4 @@ from .gamma import *
 from .gaussian import *
 from .binomial import *
 from .students_t import *
+from .multivariate_gaussian import *
