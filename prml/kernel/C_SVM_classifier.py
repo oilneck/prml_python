@@ -20,11 +20,12 @@ class C_SVM(object):
         a = np.zeros((N,1))
         PHI = self.kernel(X, X)
         t_train = self.vector2mat(t)
+        np.seterr(divide='ignore', invalid='ignore')
         for _ in range(n_iter):
             for i in range(N):
                 a[i] += lr * (1. - t[i] * np.dot(PHI, t_train * a)[i])
-                if (a[i] > self.C): a[i] = self.C
-                if (a[i] < 0): a[i] = 0
+                np.clip(a, 0, self.C, out=a)
+
 
         self.alpha = a.ravel()
         mask = list(np.where(self.alpha > 1e-5)[0])
