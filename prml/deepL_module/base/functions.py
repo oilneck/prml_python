@@ -59,3 +59,24 @@ def grad_beal(x,y):
     del_x = term_1 * (y - 1) + term_2 * (y ** 2 - 1) + term_3 * (y ** 3 - 1)
     del_y = term_1 * x + term_2 * (2 * x * y) + term_3 * (3 * x * y ** 2)
     return del_x, del_y
+
+
+def log_sumexp(a:np.ndarray, axis=None, keepdims=False):
+    a_max = np.amax(a, axis=axis, keepdims=True)
+
+    if a_max.ndim > 0:
+        a_max[~np.isfinite(a_max)] = 0
+    elif not np.isfinite(a_max):
+        a_max = 0
+
+    with np.errstate(divide='ignore'):
+        s = np.sum(np.exp(a - a_max), axis=axis, keepdims=keepdims)
+
+    out = np.log(s)
+
+    if not keepdims:
+        a_max = np.squeeze(a_max, axis=axis)
+
+    out += a_max
+
+    return out
