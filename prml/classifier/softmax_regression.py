@@ -17,7 +17,7 @@ class Softmax_Regression(object):
         while True: #Updating weight matrix
             Y = self._softmax(train_PHI @ W)
             W_NEW = np.zeros((np.size(train_PHI, 1), np.size(train_t, 1)))
-            for cls_num in range(np.size(train_t, 1)):            
+            for cls_num in range(np.size(train_t, 1)):
                 W_NEW[:,cls_num] = W[:,cls_num] - (np.linalg.inv(self.Hessian(train_PHI,W,cls_num)) @ train_PHI.T @ (Y-train_t))[:,cls_num]
             if np.allclose(W, W_NEW,rtol=0.01): break
             W = W_NEW
