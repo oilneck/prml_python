@@ -12,13 +12,15 @@ def ellipse_draw(ax, covs, means):
     maha = np.sum(dev * map, axis=-1)
     for k in range(maha.shape[0]):
         ax_.contour(x_test, y_test, maha[k].reshape(x_test.shape),
-                    levels=np.linspace(0, 1, 2), colors='magenta', linewidths=3)
+                    levels=np.linspace(0, 1, 2), colors='r', linewidths=3)
+        ax_.contourf(x_test, y_test, maha[k].reshape(x_test.shape),
+                    levels=np.linspace(0, 1, 2), colors=('r', 'w'), alpha=0.1)
 
 
 def make_blobs():
     center = 20
-    cls1 = np.random.normal(size=(200, 2), loc=(-center,-center), scale=2)
-    cls2 = np.random.normal(size=(200, 2), loc=(center, center), scale=5)
+    cls1 = np.random.normal(size=(300, 2), loc=(-center, -center), scale=2)
+    cls2 = np.random.normal(size=(150, 2), loc=(center, center), scale=5)
     return np.vstack((cls1, cls2))
 
 
@@ -44,7 +46,7 @@ keys = [keys[0], keys[n_step // 4], keys[2 * n_step // 3], keys[-1]]
 for n, key in enumerate(keys):
     ax_ = fig.add_subplot(1, len(keys), n+1)
     ax_.scatter(*X_train.T, c='limegreen')
-    ax_.scatter(*model.eff_means[key].T, s=170, marker='X', lw=2, c='r', edgecolor="white", zorder=3)
+    ax_.scatter(*model.eff_means[key].T, s=130, marker='X', lw=1, c='r', edgecolor="white", zorder=3)
     ellipse_draw(ax_, model.eff_covs[key], model.eff_means[key])
     ax_.set_xlim(-80, 80)
     ax_.set_ylim(-80, 80)
