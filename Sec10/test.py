@@ -1,47 +1,37 @@
-import matplotlib.pyplot as plt
 import numpy as np
-from deepL_module.datasets import *
+import matplotlib.pyplot as plt
 from pd import *
+from scipy.linalg import eigh
 
 
 
-def unit_ring(ndiv = 20):
-    theta = np.linspace(0, 2 * np.pi, ndiv)
-    ring = np.array([np.cos(theta), np.sin(theta)]).T
-    return ring
+
+def ellipse_draw(ax, covs, means):
+    dev = X_test[None,:,:] - means[:,None,:]
+    map = np.einsum('kij, knj -> kni', covs, dev)
+    maha = np.sqrt( np.sum(dev * map, axis=-1) )
+    for k in range(maha.shape[0]):
+        ax_.contour(x_test, y_test, maha[k].reshape(x_test.shape),
+                    levels=np.linspace(0, 1, 2), colors=('r'), linewidths=3)
+        ax_.contourf(x_test, y_test, maha[k].reshape(x_test.shape),
+                    levels=np.linspace(0, 1, 2), colors=('r', 'w'), alpha=0.1)
 
 
-def calc_units(covs):
-    (vals, vecs) = np.linalg.eig(covs)
-    vals = np.sqrt(vals)
-    return vals[:, None].transpose(0, 2, 1) * vecs
-
-
-def make_rings(cov, ndiv = 50):
-    ring = unit_ring(ndiv)
-    units = calc_units(cov)
-    buf = ring @ units
-    return buf
-
-
-def ellipse_draw(ax, mu, var):
-    num_class = var.shape[0]
-    rbuf = make_rings(var)
-    for k in range(num_class):
-        ax.plot(rbuf[k][:, 0] + mu[k, 0], rbuf[k][:, 1] + mu[k, 1], 'r', linewidth=3)
-
-
-
+def make_blobs():
+    center = 20
+    cls1 = np.random.normal(size=(300, 2), loc=(-center, -center), scale=2)
+    cls2 = np.random.normal(size=(150, 2), loc=(center, center), scale=5)
+    return np.vstack((cls1, cls2))
 
 
 
 # training data & test data
-X_train = load_faithful(normalize=True)
-x_test, y_test = np.meshgrid(np.linspace(0, 6, 100), np.linspace(0, 100, 100))
+X_train = make_blobs()
+x_test, y_test = np.meshgrid(np.linspace(-80, 80, 100), np.linspace(-80, 80, 100))
 X_test = np.array([x_test, y_test]).reshape(2, -1).T
 
 ''' Variational Gaussian Mixture '''
-model = BayesianGaussianMixture(n_components=4, alpha_0=1)
+model = BayesianGaussianMixture(n_components=4, alpha_0=1e-3)
 model.fit(X_train, n_iter=100)
 labels = model.classify(X_train)
 Z = model.predict(X_test)
@@ -53,13 +43,14 @@ keys = list(model.eff_means.keys())
 n_step = len(keys)
 keys = [keys[0], keys[n_step // 4], keys[2 * n_step // 3], keys[-1]]
 
-
-
 for n, key in enumerate(keys):
     ax_ = fig.add_subplot(1, len(keys), n+1)
     ax_.scatter(*X_train.T, c='limegreen')
     ax_.scatter(*model.eff_means[key].T, s=130, marker='X', lw=1, c='r', edgecolor="white", zorder=3)
-    ellipse_draw(ax_, model.eff_means[key], model.eff_covs[key])
+    ellipse_draw(ax_, model.eff_covs[key], model.eff_means[key])
+    ax_.set_xlim(-80, 80)
+    ax_.set_ylim(-80, 80)
+    plt.gca().set_aspect('equal', adjustable='box')
     plt.tick_params(labelbottom=False, labelleft=False)
     plt.tick_params(bottom=False, left=False)
 plt.show()
