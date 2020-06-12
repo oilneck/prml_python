@@ -9,10 +9,10 @@ from scipy.linalg import eigh
 def ellipse_draw(ax, covs, means):
     dev = X_test[None,:,:] - means[:,None,:]
     map = np.einsum('kij, knj -> kni', covs, dev)
-    maha = np.sum(dev * map, axis=-1)
+    maha = np.sqrt( np.sum(dev * map, axis=-1) )
     for k in range(maha.shape[0]):
         ax_.contour(x_test, y_test, maha[k].reshape(x_test.shape),
-                    levels=np.linspace(0, 1, 2), colors='r', linewidths=3)
+                    levels=np.linspace(0, 1, 2), colors=('r'), linewidths=3)
         ax_.contourf(x_test, y_test, maha[k].reshape(x_test.shape),
                     levels=np.linspace(0, 1, 2), colors=('r', 'w'), alpha=0.1)
 
@@ -31,7 +31,7 @@ x_test, y_test = np.meshgrid(np.linspace(-80, 80, 100), np.linspace(-80, 80, 100
 X_test = np.array([x_test, y_test]).reshape(2, -1).T
 
 ''' Variational Gaussian Mixture '''
-model = BayesianGaussianMixture(n_components=4, alpha_0=0.01)
+model = BayesianGaussianMixture(n_components=4, alpha_0=1e-3)
 model.fit(X_train, n_iter=100)
 labels = model.classify(X_train)
 Z = model.predict(X_test)

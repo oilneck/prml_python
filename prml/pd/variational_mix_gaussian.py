@@ -57,7 +57,7 @@ class BayesianGaussianMixture(object):
 
     def update_params(self, resp):
         self.n_eff = resp.sum(axis=0)
-        comp_size = self.n_eff.reshape(-1, 1)
+        comp_size = self.n_eff.reshape(-1, 1).clip(min=1e-10)
         x_bar = resp.T @ self.X / comp_size
         col = (self.X[:, None, :] - x_bar).transpose(1, 2, 0)
         row = col.transpose(0, 2, 1) * np.expand_dims(resp, 0).T

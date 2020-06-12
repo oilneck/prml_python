@@ -5,6 +5,7 @@ import os
 import numpy as np
 import urllib.request
 import pandas as pd
+from scipy.stats import zscore
 
 url_base = 'http://www.stat.cmu.edu/~larry/all-of-statistics/=data/faithful.dat'
 dataset_dir = os.path.dirname(os.path.abspath(__file__))
@@ -39,9 +40,15 @@ def init_faithful():
 
 
 
-def load_faithful():
+def load_faithful(normalize:bool=False):
     if not os.path.exists(save_file):
         init_faithful()
 
     df = pd.read_csv(save_file, header=0)
-    return np.array([df.x.values, df.y.values]).T
+    data = np.array([df.x.values, df.y.values]).T
+
+    if normalize:
+        data = zscore(data, axis=0)
+
+
+    return data
