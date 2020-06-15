@@ -8,3 +8,4 @@ from .students_t import *
 from .multivariate_gaussian import *
 from .multivariate_bernoulli import *
 from .variational_mix_gaussian import *
+from .variational_gaussian import *
