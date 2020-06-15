@@ -10,5 +10,5 @@ class Poly_Feature(object):
             X = X[:, None]
         pows = np.repeat(np.arange(1, self.M + 1), X.shape[1])
         PHI = np.tile(X, self.M) ** pows
-        ones = np.ones(X.shape[0]).reshape(-1, 1)
-        return np.concatenate([ones, PHI], axis=1)
+        ones_mat = np.ones(X.shape[0]).reshape(-1, 1)
+        return np.concatenate([ones_mat, PHI], axis=1)
