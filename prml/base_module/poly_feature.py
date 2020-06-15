@@ -5,16 +5,10 @@ class Poly_Feature(object):
         self.M = degree
 
 
-    def polynomial_feature(self,train_x:np.ndarray):
-        return np.array(([train_x]*(self.M + 1))).T**(np.array([np.arange(0,self.M + 1)]*(train_x.shape[0])))
-
-
-    def transform(self,train_x:np.ndarray):
-        if train_x.ndim == 1:
-            self.PHI = self.polynomial_feature(train_x)
-        else:
-            X = np.zeros((train_x.shape[0],1))
-            for m in range(self.M + 1):
-                X = np.append(X,train_x**m,axis=1)
-            self.PHI = X[:,train_x.shape[1]:]
-        return self.PHI
+    def transform(self, X:np.ndarray):
+        if X.ndim == 1:
+            X = X[:, None]
+        pows = np.repeat(np.arange(1, self.M + 1), X.shape[1])
+        PHI = np.tile(X, self.M) ** pows
+        ones = np.ones(X.shape[0]).reshape(-1, 1)
+        return np.concatenate([ones, PHI], axis=1)
