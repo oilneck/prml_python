@@ -39,13 +39,8 @@ class VariationalRegressor(object):
         return mean
 
 
-    def lower_bound(self, PHI:np.ndarray, t:np.ndarray):
-        N = len(t)
-        D = np.size(PHI, 1)
-
-
-
-
+    def lower_bound(self):
+        N, D = self.PHI.shape
         invS = np.linalg.inv(self.w_cov)
         U = np.linalg.cholesky(invS)
         KLw = -np.sum(np.log(np.diag(U)))
@@ -53,27 +48,3 @@ class VariationalRegressor(object):
         const = np.log(gamma(self.a)) - np.log(gamma(self.a0))
         const += self.a0 * np.log(self.b0) + 0.5 * (D - N * np.log(2 * np.pi))
         return KLalpha + const + KLw
-
-        # m = self.w_ave.reshape(-1, 1)
-        # E_tw = N * np.log(self.beta / (2 * np.pi)) - self.beta * t @ t
-        # E_tw += self.beta * m.T @ PHI.T @ t
-        # E_tw -= self.beta * np.trace(PHI.T @ PHI @ (self.w_cov + m @ m.T))
-        #
-        #
-        # E_wa = -D * np.log(2 * np.pi) + D * (digamma(self.a) - np.log(self.b))
-        # E_wa -= self.calc_resp() * (m.T @ m + np.trace(self.w_cov))
-        # E_wa = E_wa.ravel()
-        #
-        # E_a = - self.b0 * self.calc_resp() +  self.a0 * np.log(self.b0)
-        # E_a += (self.a0 - 1) * (digamma(self.a) - np.log(self.b))
-        # E_a -= np.log(gamma(self.a))
-        #
-        #
-        #
-        # E_w = np.linalg.slogdet(self.w_cov)[1] + D * (1 + np.log(2 * np.pi))
-        #
-        #
-        # Eq_a = np.log(gamma(self.a)) - (self.a - 1) * digamma(self.a)
-        # Eq_a += self.a - np.log(self.b)
-        #
-        # return E_tw + E_wa + E_w + E_a + Eq_a
