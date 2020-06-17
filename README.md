@@ -14,7 +14,7 @@ git clone https://github.com/oilneck/prml_python.git
 
 2. Run Python and change your directory (~/prml_python/), then run the **`init.py`** script.  
 
-3. Run some demonstration files in Sec1~Sec5 folder.
+3. Run some demonstration files in Chap1~Chap10 folder.
 ## Execution example
 |<img src="https://user-images.githubusercontent.com/60212785/74105720-b1070080-4ba3-11ea-90b3-e56cb9769cf4.png" width="250px" alt="section1">|<img src="https://user-images.githubusercontent.com/60212785/74105786-41dddc00-4ba4-11ea-9c01-ebb161f89986.png" width="210px">|<img src="https://user-images.githubusercontent.com/60212785/74105498-b6fbe200-4ba1-11ea-9b99-879ecac3d67c.png" width="250px">|
 |:---:|:---:|:---:|
