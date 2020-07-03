@@ -1,10 +1,15 @@
 import numpy as np
+import warnings
+warnings.simplefilter('ignore', RuntimeWarning)
 from scipy.special import gamma
 from scipy.stats import norm
 
 class Gamma(object):
 
-    def __init__(self,alpha:float,beta:float):
+    def __init__(self, alpha:float, beta:float):
+        '''
+        Gam(z|a,b)= b^a * z^(a-1) * exp(-b*z) / gamma(a)
+        '''
         if alpha >= 0:
             self.a = alpha
         if beta >= 0:
@@ -17,11 +22,12 @@ class Gamma(object):
         return norm.pdf(mu,mu0,var) * self.pdf(x)
 
 
-    def draw(self,sample_size:int=1000):
-        return np.random.gamma(shape=self.a,scale=1 / self.b,size=(sample_size,))
+    def draw(self, sample_size:int=1000):
+        tau = 1 / self.b
+        return np.random.gamma(shape=self.a, scale=tau, size=(sample_size,))
 
 
-    def pdf(self,x):
+    def pdf(self, x):
         np.seterr(divide='ignore')
-        coef = np.power(self.b,self.a) / gamma(self.a)
-        return coef * np.power(x,self.a - 1) * np.exp(-self.b * x)
+        coef = np.power(self.b, self.a) / gamma(self.a)
+        return coef * np.power(x, self.a - 1) * np.exp(-self.b * x)

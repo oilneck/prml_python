@@ -6,7 +6,7 @@ class Gaussian(object):
     p(x|mu,var)= (1 / sqrt(2*pi*var)) * exp(-0.5 * (x-mu)^2 / var)
     '''
 
-    def __init__(self,mu:float=0.,var:float=1.):
+    def __init__(self, mu:float=0., var:float=1.):
         self.mu = mu
         self.var = var
         self.bayes_fixed_var = None
@@ -50,7 +50,7 @@ class Gaussian(object):
         self.set_var(var)
 
 
-    def draw(self,sample_size:int=1000):
+    def draw(self, sample_size:int=1000):
         return np.random.normal(loc=self.mu,scale=np.sqrt(self.var),size=(sample_size,))
 
     def pdf(self,x:np.ndarray):
