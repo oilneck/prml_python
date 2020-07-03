@@ -31,6 +31,7 @@ git clone https://github.com/oilneck/prml_python.git
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter07.ipynb">chap.7 : Sparse Kernel Machines </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter09.ipynb">chap.9 : Mixture Models and EM </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter10.ipynb">chap.10 : Approximate Inference </a>
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter11.ipynb">chap.11 : Sampling Methods </a>
  > Deep learning and Convolutional neural network for image recognition
  - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_CNN_keras.ipynb"> Image recognition </a>【 Required libraries : keras, TensorFlow, OpenCV 】
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/test_Deep_learning.ipynb"><div style="text-align: justify"> Deep learning test</dim> </a> 【 Required libraries : numpy, sklearn (←to fetch data) 】
