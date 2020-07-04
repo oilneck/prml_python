@@ -1,6 +1,6 @@
 import numpy as np
 
-class MultivariateGaussian(object):
+class MultivariateGaussianMixture(object):
 
     def __init__(self, n_components:int):
         self.n_cls = n_components

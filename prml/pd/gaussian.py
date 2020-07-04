@@ -51,7 +51,11 @@ class Gaussian(object):
 
 
     def draw(self, sample_size:int=1000):
-        return np.random.normal(loc=self.mu,scale=np.sqrt(self.var),size=(sample_size,))
+        return np.random.normal(
+                                loc=self.mu,
+                                scale=np.sqrt(self.var),
+                                size=(sample_size,)
+                                )
 
     def pdf(self,x:np.ndarray):
         np.seterr(divide='ignore')

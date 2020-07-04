@@ -17,7 +17,7 @@ X_test = np.array([X, Y]).reshape(2, -1).T
 
 
 ''' ML estimation with EM-algorithm '''
-prob_dist = MultivariateGaussian(n_components = 3)
+prob_dist = MultivariateGaussianMixture(n_components = 3)
 prob_dist.fit(X_train)
 labels = prob_dist.classify(X_train)
 Z = prob_dist.predict(X_test)
