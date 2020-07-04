@@ -24,7 +24,7 @@ Z = prob_dist.predict(X_test)
 
 
 # plot training data & prediction data
-fig = plt.figure(figsize=(12,4))
+fig = plt.figure(figsize=(17,4))
 keys = list(prob_dist.centers.keys())
 n_step = len(keys)
 keys = [keys[0], keys[n_step // 3], keys[2 * n_step // 3], keys[-1]]
@@ -36,5 +36,5 @@ for n, key in enumerate(keys):
     plt.gca().set_aspect('equal', adjustable='box')
     plt.tick_params(labelbottom=False, labelleft=False)
     plt.tick_params(bottom=False,left=False)
-plt.contour(X, Y, Z.reshape(X.shape), levels=np.linspace(min(Z), max(Z), 5), linewidths=4, cmap='Greys_r')
+plt.contour(X, Y, Z.reshape(X.shape), levels=np.linspace(min(Z), max(Z), 5), linewidths=3, cmap='Greys_r')
 plt.show()
