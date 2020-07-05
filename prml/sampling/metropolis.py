@@ -12,10 +12,7 @@ class Metropolis(object):
         self.target = target
         self.prop = prop
         self.dim = dim
-
-
-    def accept_proba(self, x_new, x_old):
-        return min(1., self.target(x_new) / self.target(x_old))
+        self.path = {'accept':[], 'reject':[]}
 
 
     def _check_attr(self):
@@ -24,15 +21,27 @@ class Metropolis(object):
         assert hasattr(self.prop, "draw"), message
 
 
-    def rvs(self, size, downsample=10):
+    def accept_rate(self, x_new, x_old):
+        return min(1., self.target(x_new) / self.target(x_old))
+
+
+    def rvs(self, size, downsample:int=10, init_x:float=1):
         self._check_attr()
         sample = []
-        x = np.zeros(self.dim)
+        x = np.ones(self.dim) * init_x
+
         for n in range(size * downsample):
-            x_new = self.prop.draw(sample_size = self.dim)
-            x_new += x
-            if np.random.uniform() < self.accept_proba(x_new, x):
-                x = x_new
+            x_tmp = x + self.prop.draw(sample_size=self.dim)
+
+            if np.random.uniform() < self.accept_rate(x_tmp, x):
+                self.path['accept'].append([x_tmp, x])
+                x = x_tmp
+            else:
+                self.path['reject'].append([x_tmp, x])
+
             if n % downsample == 0:
                 sample.append(x)
+
+        self.path['accept'] = np.asarray(self.path['accept'])
+        self.path['reject'] = np.asarray(self.path['reject'])
         return np.asarray(sample)

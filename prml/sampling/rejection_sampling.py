@@ -20,8 +20,11 @@ class RejectionSampling(object):
 
     def fetch_upperLim(self, upper):
         if upper is None:
-            xopt = scipy.optimize.fmin(lambda x: -self.target(x), 0, disp=False)
-            max_const = self.target(xopt)[0]
+            xopt = scipy.optimize.fmin(lambda x : -self.target(x), 0, disp=0)
+            f_max = self.target(xopt)[0]
+            xopt = scipy.optimize.fmin(lambda x: -self.prop.pdf(x), 0, disp=0)
+            q_max = self.prop.pdf(xopt)[0]
+            max_const = f_max / q_max
         else:
             assert isinstance(upper, (int, float, np.number)),\
             "upper limit must be float or integer number"

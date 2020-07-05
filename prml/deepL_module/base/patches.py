@@ -1,7 +1,7 @@
 import numpy as np
 
 def ellipse2D_orbit(center:np.ndarray, cov:np.ndarray):
-    assert sigma.ndim == 2
+    assert cov.ndim == 2
     if center.ndim == 1: center = np.expand_dims(center, 1)
     D = np.linalg.cholesky(cov)
     theta = np.linspace(0, 2 * np.pi, 100)
