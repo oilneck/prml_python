@@ -10,7 +10,7 @@ func = lambda x : Gamma(alpha=10, beta=1).pdf(x)
 proba = Cauchy(x0=10 - 1, gamma=np.sqrt(2 * 10 - 1))
 
 ''' Rejection Sampling'''
-sampler = RejectionSampling(target=func, prop=proba, offset=1.8)
+sampler = RejectionSampling(target=func, prop=proba)
 samples = sampler.rvs(size=300)
 
 
