@@ -6,7 +6,7 @@ from deepL_module.base import *
 
 # center & covariance
 mu = np.array([1.5, 1.5])
-cov = np.array([[1.2, .875], [.875, 1.2]])
+cov = np.array([[1.125, .875], [.875, 1.125]])
 
 # target function p(z)
 func = lambda x : MultivariateGaussian(mu=mu, cov=cov).pdf(x)
@@ -14,7 +14,7 @@ func = lambda x : MultivariateGaussian(mu=mu, cov=cov).pdf(x)
 
 ''' Metropolis sampling '''
 sampler = Metropolis(target=func, prop=Gaussian(0, .05), dim=2)
-sampler.rvs(150, downsample=1, init_x=1.5)
+sampler.rvs(120, downsample=1, init_x=1.5)
 
 
 plt.plot(*ellipse2D_orbit(mu, cov).T, color='k')
