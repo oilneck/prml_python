@@ -4,7 +4,8 @@ from prml import (
     classifier,
     base_module,
     pd,
-    deepL_module
+    deepL_module,
+    graphx
 )
 
 
@@ -14,5 +15,6 @@ __all__ = [
     "classifier",
     "base_module",
     "pd",
-    "deepL_module"
+    "deepL_module",
+    "graphx"
 ]
