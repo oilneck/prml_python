@@ -4,62 +4,66 @@ from deepL_module.datasets.mnist import load_mnist
 from graphx import *
 import itertools
 
-def addNoise(image_, num=50):
-    img = np.copy(image_).ravel()
+
+def addNoise(image, num=50):
+    img = np.copy(image).ravel()
     idx = np.random.choice(img.size, size=num)
-    img[idx] = 1 - img[idx]
-    return img.reshape(*image_.shape)
+    img[idx] = np.array(~img[idx].astype(bool), dtype=int)
+    return img.reshape(*image.shape)
 
-(data, _), (_, _) = load_mnist(normalize=True)
-image_data = (data[7] > .5).astype(int).reshape(28,28)
-noisy_image = addNoise(image_data)
-X, Y = image_data.shape
 
-def generateBeliefNetwork(image):
-    network = MarkovRandomField()
-    dy = [-1, 0, 0, 1]
-    dx = [0, -1, 1, 0]
+def generateMarkovNetwork(image):
 
-    for nodeID, (i,j) in enumerate(itertools.product(range(X), range(Y))):
+    mrf = MarkovRandomField()
+
+    for nodeID, _ in enumerate(itertools.product(range(x_len), range(y_len))):
             node = Node(nodeID)
-            network.add_node(nodeID, node)
+            mrf.add_node(nodeID, node)
 
 
-    for n, (i,j) in enumerate(itertools.product(range(X), range(Y))):
-            node = network.get_node(n)
+    for n, (x,y) in enumerate(itertools.product(range(x_len), range(y_len))):
+        node = mrf.get_node(n)
+        for dx, dy in itertools.permutations(range(-1, 2), 2):
+            try:
+                neighbor = mrf.get_node(y_len * (x + dx) + y + dy)
+                node.add_neighbor(neighbor)
+            except Exception:
+                pass
 
-            for k in range(4):
-                if i + dy[k] >= 0 and i + dy[k] < X and j + dx[k] >= 0 and j + dx[k] < Y:
-                    neighbor = network.get_node(Y * (i + dy[k]) + j + dx[k])
-                    node.add_neighbor(neighbor)
-
-    return network
+    return mrf
 
 
+#1 Preparing image data
+(data, _), _ = load_mnist(normalize=True)
+image_data = (data[7] > .5).astype(int).reshape(28, 28)
+noisy_image = addNoise(image_data)
+x_len, y_len = image_data.shape
 
-network = generateBeliefNetwork(image_data)
-for n, (i,j) in enumerate(itertools.product(range(X), range(Y))):
+
+#2 constructing Markov Random field
+network = generateMarkovNetwork(image_data)
+
+#3 setting obeserved value
+for n, loc in enumerate(itertools.product(range(x_len), range(y_len))):
     node = network.get_node(n)
-    node.likelihood(noisy_image[i,j])
+    node.likelihood(noisy_image[loc])
 
+
+'''#4 sum-product algorithm'''
 network.message_passing(n_iter=10)
 
+
+#5 denoising
 output = np.zeros_like(noisy_image)
-
-for n, (i,j) in enumerate(itertools.product(range(X), range(Y))):
+for n, loc in enumerate(itertools.product(range(x_len), range(y_len))):
     node = network.get_node(n)
-    output[i,j] = np.argmax(node.prob)
+    output[loc] = np.argmax(node.prob)
 
-fig = plt.figure(figsize=(11,4))
-ax = fig.add_subplot(131)
-ax.imshow(image_data, cmap='gray')
-ax.axis("off")
-
-ax = fig.add_subplot(132)
-ax.imshow(noisy_image, cmap='gray')
-ax.axis("off")
-
-ax = fig.add_subplot(133)
-ax.imshow(output, cmap='gray')
-ax.axis("off")
+#6 display images
+for n, disp in enumerate([image_data, noisy_image, output]):
+    ax = plt.subplot(1, 3, n+1)
+    ax.imshow(disp, cmap='gray')
+    ax.axis("off")
+plt.tight_layout()
+plt.title('denoised', fontsize=20)
 plt.show()
