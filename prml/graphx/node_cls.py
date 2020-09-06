@@ -47,8 +47,9 @@ class Node(object):
 
 
     def likelihood(self, value):
-        message = np.exp(-self.alpha * np.array([value, value + 1]))
-        if value == 1:
-            message = np.flip(message)
+        assert value in [0, 1], 'observed value must be 0 or 1'
+
+        observed_value = np.array([int(value), int(not value)])
+        message = np.exp(-self.alpha * observed_value)
 
         self.messages[self] = message
