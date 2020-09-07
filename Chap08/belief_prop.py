@@ -15,11 +15,9 @@ def addNoise(image, num=50):
 def generateMarkovNetwork(image):
 
     mrf = MarkovRandomField()
-
     for nodeID, _ in enumerate(itertools.product(range(x_len), range(y_len))):
             node = Node(nodeID)
             mrf.add_node(nodeID, node)
-
 
     for n, (x,y) in enumerate(itertools.product(range(x_len), range(y_len))):
         node = mrf.get_node(n)
@@ -33,15 +31,24 @@ def generateMarkovNetwork(image):
     return mrf
 
 
+def removalNoise(noised_image):
+
+    output = np.zeros_like(noised_image)
+    for n, loc in enumerate(itertools.product(range(x_len), range(y_len))):
+        node = network.get_node(n)
+        output[loc] = np.argmax(node.prob)
+
+    return output
+
+
 #1 Preparing image data
 (data, _), _ = load_mnist(normalize=True)
-image_data = (data[7] > .5).astype(int).reshape(28, 28)
-noisy_image = addNoise(image_data)
-x_len, y_len = image_data.shape
-
+origin_image = (data[7] > .5).astype(int).reshape(28, 28)
+noisy_image = addNoise(origin_image)
+x_len, y_len = origin_image.shape
 
 #2 constructing Markov Random field
-network = generateMarkovNetwork(image_data)
+network = generateMarkovNetwork(origin_image)
 
 #3 setting obeserved value
 for n, loc in enumerate(itertools.product(range(x_len), range(y_len))):
@@ -49,21 +56,19 @@ for n, loc in enumerate(itertools.product(range(x_len), range(y_len))):
     node.likelihood(noisy_image[loc])
 
 
-'''#4 sum-product algorithm'''
+''' #4 sum-product algorithm '''
 network.message_passing(n_iter=10)
 
 
-#5 denoising
-output = np.zeros_like(noisy_image)
-for n, loc in enumerate(itertools.product(range(x_len), range(y_len))):
-    node = network.get_node(n)
-    output[loc] = np.argmax(node.prob)
+#5 image de-noising
+output = removalNoise(noisy_image)
 
 #6 display images
-for n, disp in enumerate([image_data, noisy_image, output]):
+images = {'origin':origin_image, 'noised':noisy_image, 'denoised':output}
+for n, (text, disp) in enumerate(images.items()):
     ax = plt.subplot(1, 3, n+1)
     ax.imshow(disp, cmap='gray')
     ax.axis("off")
+    plt.title(text, fontsize=20)
 plt.tight_layout()
-plt.title('denoised', fontsize=20)
 plt.show()

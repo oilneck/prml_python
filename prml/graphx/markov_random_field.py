@@ -19,16 +19,20 @@ class MarkovRandomField(object):
         self.__nodes.append(node)
         self.label[name] = node
 
+
     def get_node(self, name):
         return self.label[name]
+
 
     def clear_messages(self):
         for node in self.nodes:
             node.init_messages()
 
+
     def calc_proba(self):
         for node in self.nodes:
             node.marginalize()
+
 
     def message_passing(self, n_iter=20):
 
