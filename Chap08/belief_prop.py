@@ -16,7 +16,7 @@ def generateMarkovNetwork(image):
 
     mrf = MarkovRandomField()
     for nodeID, _ in enumerate(itertools.product(range(x_len), range(y_len))):
-            node = Node(nodeID)
+            node = Node()
             mrf.add_node(nodeID, node)
 
     for n, (x,y) in enumerate(itertools.product(range(x_len), range(y_len))):

@@ -3,18 +3,17 @@ from functools import reduce
 
 class Node(object):
 
-    def __init__(self, label, alpha:float=10., beta:float=5.):
+    def __init__(self, ndim:int=2, alpha:float=10., beta:float=5.):
         '''
         QUBO system
         s = {+1, -1}
         x = (s + 1) / 2 = {0, +1}
         '''
-        self.label = label
         self.neighbors = []
         self.messages = {}
         self.prob = None
-        self.ndim = 2
 
+        self.ndim = ndim
         self.alpha = alpha
         self.beta = beta
 
