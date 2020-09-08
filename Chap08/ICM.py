@@ -10,44 +10,45 @@ def addNoise(image, num=50):
     img[idx] *= -1
     return img.reshape(*image.shape)
 
-def E(loc):
-    neighbor = np.sum([output[tuple(loc + x)] for x in comb])
-    energy = h * output.sum() - eta * (noisy_image * output).sum()
-    energy -= beta * neighbor * output[loc]
-    return energy
+
+def get_energy(loc): # calc. Hamiltonian
+    delta = list(itertools.product(range(-1, 2), range(-1, 2)))
+    Del = np.sum([X_out[tuple(idx)] for idx in np.array(loc) + delta])
+    E = h * X_out.sum() - eta * (X_in * X_out).sum() - beta * Del * X_out[loc]
+    return E
+
 
 def ICM(loc):
-    global output
-    output[loc] = 1
-    posi = E(loc)
-    output[loc] = -1
-    nega = E(loc)
-    if posi < nega:
-        output[loc] = 1
-    else:
-        output[loc] = -1
+    global X_out
+    E = []
+    X_out[loc] = 1
+    E.append(get_energy(loc))
+    X_out[loc] = -1
+    E.append(get_energy(loc))
+    X_out[loc] = 2 * np.argmax(E) - 1
+
 
 #1 Preparing image data
 (data, _), _ = load_mnist(normalize=True)
-origin_image = (data[7] > .5).astype(int).reshape(28, 28)
-origin_image = origin_image * 2 - 1
-noisy_image = addNoise(origin_image)
-output = noisy_image.copy()
-x_len, y_len = origin_image.shape
+origin = np.where(data[7] > 0.5, 1, -1).reshape(28,28)
+X_in = addNoise(origin)
+X_out = X_in.copy()
 
-comb = set(itertools.product(range(-1, 2), range(-1, 2)))
-comb = np.array(list(map(np.array, comb.difference((0,0)))))
+#2 Setting Hamiltonian params
 h = 0.2
 beta = .5
 eta = 2
 
+
+'''#3 ICM algorithm'''
 for _ in range(10):
-    for loc in itertools.product(range(1, x_len-1), range(1, y_len-1)):
+    for loc in itertools.product(range(1, 27), range(1, 27)):
         ICM(loc)
 
 
-# display images
-images = {'origin':origin_image, 'noised':noisy_image, 'denoised':output}
+#4 display images
+padding = np.pad(np.ones((26, 26)), (1, 1), 'constant')
+images = {'origin':origin, 'noised':X_in, 'denoised':X_out * padding}
 for n, (text, disp) in enumerate(images.items()):
     ax = plt.subplot(1, 3, n+1)
     ax.imshow(disp, cmap='gray')
