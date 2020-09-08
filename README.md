@@ -29,6 +29,7 @@ git clone https://github.com/oilneck/prml_python.git
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter05.ipynb">chap.5 : Neural Networks </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter06.ipynb">chap.6 : Kernel Methods </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter07.ipynb">chap.7 : Sparse Kernel Machines </a>
+- <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter08.ipynb">chap.8 : Graphical Models
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter09.ipynb">chap.9 : Mixture Models and EM </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter10.ipynb">chap.10 : Approximate Inference </a>
 - <a href="https://nbviewer.jupyter.org/github/oilneck/prml_python/blob/master/Notebook/chapter11.ipynb">chap.11 : Sampling Methods </a>
