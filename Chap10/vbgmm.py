@@ -51,4 +51,10 @@ for n, key in enumerate(keys):
     ax_.set_title(str(key), fontsize=20)
     plt.tick_params(labelbottom=False, labelleft=False)
     plt.tick_params(bottom=False, left=False)
+
+# x_test, y_test = np.meshgrid(
+#     np.linspace(-2, 2, 100), np.linspace(-2, 2, 100))
+# X_test = np.array([x_test, y_test]).reshape(2, -1).transpose()
+# probs = model.predict(X_test)
+# plt.contour(x_test, y_test, probs.reshape(100, 100))
 plt.show()
