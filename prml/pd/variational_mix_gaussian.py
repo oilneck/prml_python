@@ -8,8 +8,7 @@ class BayesianGaussianMixture(object):
         self.n_cls = n_components
         self.alpha_0 = alpha_0
         self.cls_X = {}
-        self.eff_means = {}
-        self.eff_covs = {}
+        self.eff_params = {}
 
 
     def init_W(self, X):
@@ -27,6 +26,7 @@ class BayesianGaussianMixture(object):
         self.nu = self.nu_0 + self.n_eff
         self.m = X[np.random.choice(len(X), self.n_cls, replace=False)]
         self.W = np.array([self.W_0] * self.n_cls)
+        self.S = self.W.copy()
 
 
     def get_params(self):
@@ -61,7 +61,7 @@ class BayesianGaussianMixture(object):
         x_bar = resp.T @ self.X / comp_size
         col = (self.X[:, None, :] - x_bar).transpose(1, 2, 0)
         row = col.transpose(0, 2, 1) * np.expand_dims(resp, 0).T
-        S = col @ row / np.expand_dims(comp_size, 2)
+        self.S = col @ row / np.expand_dims(comp_size, 2)
 
         self.alpha = self.alpha_0 + self.n_eff
         self.beta = self.beta_0 + self.n_eff
@@ -79,7 +79,7 @@ class BayesianGaussianMixture(object):
 
         self.W = np.linalg.inv(
                                np.linalg.inv(self.W_0) +
-                               self.n_eff[:, None, None] * S +
+                               self.n_eff[:, None, None] * self.S +
                                coef[:, None, None] * d_mat
                                )
 
@@ -92,8 +92,11 @@ class BayesianGaussianMixture(object):
             # E-step
             resp = self.calc_resp()
             self.cls_X['step' + str(n+1)] = self.classify(X)
-            self.eff_means['step' + str(n+1)] = self.m[self.n_eff > 1]
-            self.eff_covs['step' + str(n+1)] = self.W[self.n_eff > 1]
+            self.eff_params['step' + str(n+1)] = {
+                                                 'means':self.m[self.n_eff > 1],
+                                                 'covs':self.S[self.n_eff > 1]
+                                                 }
+
             # M-step
             self.update_params(resp)
 
