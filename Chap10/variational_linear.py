@@ -21,7 +21,7 @@ x = np.linspace(-5, 5, 100)
 X_test = feature.transform(x)
 
 '''Variational Linear Regression'''
-model = VariationalRegressor(beta=1e-2, a0=1, b0=1)
+model = VariationalRegressor()
 model.fit(X_train, train_t)
 y_mean, y_std = model.predict(X_test, get_std=True)
 

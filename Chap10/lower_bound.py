@@ -25,7 +25,7 @@ x = np.linspace(-6, 6, 100)
 L_list = []
 models = []
 for m in range(1, max_deg + 1):
-    model = VariationalRegressor(beta=5e-3, a0=1, b0=1)
+    model = VariationalRegressor(b0=10, d0=100)
     X_train = Poly_Feature(m).transform(train_x)
     model.fit(X_train, train_t)
     l_bound = model.lower_bound()
