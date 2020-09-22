@@ -30,40 +30,42 @@ X_test = feature.transform(x)
 model = Bayesian_Regression(alpha=2, beta=25)
 
 
-fig = plt.figure(figsize=(8,10))
-for n, (begin, end) in enumerate([[0, 0], [0, 1], [1, 2], [2, 20]], 1):
+
+for n, (begin, end) in enumerate([[0, 0], [0, 1], [1, 2], [2, 20]],1):
     model.fit(X_train[begin: end], train_y[begin: end])
-    fig.add_subplot(4, 3, 3*n-2)
-    plt.scatter(-0.3, 0.5, s=200, marker="+", color='w', zorder=2)
+    fig = plt.figure(figsize=(8,3))
+    ax = fig.add_subplot(1,3,1)
+    ax.scatter(-0.3, 0.5, s=200, marker="+", color='w', zorder=2)
     wz = likelihood(X_train[begin:begin+1], train_y[begin:begin+1])
-    plt.contourf(wx, wy, wz.reshape(wx.shape), 30, cmap='jet')
+    ax.contourf(wx, wy, wz.reshape(wx.shape), 30, cmap='jet')
     plt.gca().set_aspect('equal')
     plt.xticks([-1,0,1])
     plt.yticks([-1,0,1])
+    plt.xlabel("$w_0$", fontsize=15)
+    plt.ylabel("$w_1$", fontsize=15)
     if n==1:
-        plt.title("likelihood", fontsize=15)
-        plt.xlabel("$w_0$", fontsize=15)
-        plt.ylabel("$w_1$", fontsize=15)
+        ax.set_title("likelihood", fontsize=15)
 
 
-    fig.add_subplot(4, 3, 3*n-1)
-    plt.scatter(-0.3, 0.5, s=200, marker="+", zorder=2, color='w')
+    ax = fig.add_subplot(132)
+    ax.scatter(-0.3, 0.5, s=200, marker="+", zorder=2, color='w')
     wz = multivariate_normal(mean=model.w_mean, cov=model.w_cov).pdf(W)
-    plt.contourf(wx, wy, wz.reshape(wx.shape), levels=30, cmap='jet')
+    ax.contourf(wx, wy, wz.reshape(wx.shape), levels=30, cmap='jet')
     plt.gca().set_aspect('equal')
     plt.xticks([-1,0,1])
     plt.yticks([-1,0,1])
+    plt.xlabel("$w_0$", fontsize=15)
+    plt.ylabel("$w_1$", fontsize=15)
     if n==1:
         plt.title("prior/posterior", fontsize=15)
-        plt.xlabel("$w_0$", fontsize=15)
-        plt.ylabel("$w_1$", fontsize=15)
 
 
-    fig.add_subplot(4, 3, 3*n)
-    plt.scatter(train_x[:end], train_y[:end], s=50, facecolor="none", edgecolor="b", lw=1, zorder=3)
-    plt.plot(x, model.posterior(X_test, n_sample=6), c="r", lw=2)
-    plt.xlim(-1, 1)
-    plt.ylim(-1, 1)
+
+    ax = fig.add_subplot(133)
+    ax.scatter(train_x[:end], train_y[:end], s=50, facecolor="none", edgecolor="b", lw=1, zorder=3)
+    ax.plot(x, model.posterior(X_test, n_sample=6), c="r", lw=2)
+    ax.set_xlim(-1, 1)
+    ax.set_ylim(-1, 1)
     plt.xticks([-1,0,1])
     plt.yticks([-1,0,1])
     plt.gca().set_aspect('equal', adjustable='box')
