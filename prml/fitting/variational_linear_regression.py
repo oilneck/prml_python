@@ -11,7 +11,7 @@ class VariationalRegressor(object):
         self.d0 = d0
 
 
-    def calc_resp(self):
+    def calc_params(self):
         X = self.PHI.copy()
         self.a = self.a0 + 0.5 * X.shape[1]
         self.b = self.b0
@@ -30,11 +30,11 @@ class VariationalRegressor(object):
         self.w_cov = np.random.normal(size=I.shape)
         self.w_ave = np.ones(M)
         for n in range(n_iter):
-            self.alpha, self.beta = self.calc_resp()
+            self.alpha, self.beta = self.calc_params()
             params = [self.alpha, self.beta]
             self.w_cov = np.linalg.inv(I * self.alpha + self.beta * PHI.T @ PHI)
             self.w_ave = self.beta * self.w_cov @ PHI.T @ t
-            if np.allclose(params, self.calc_resp()):
+            if np.allclose(params, self.calc_params()):
                 break
 
 
