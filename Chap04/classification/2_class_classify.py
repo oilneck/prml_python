@@ -19,7 +19,7 @@ X_train = feature.transform(np.vstack((cls1,cls2)))
 
 
 # Creating test data
-X,Y = np.meshgrid(np.linspace(-10,10,100),np.linspace(-10,10,100))
+X,Y = np.meshgrid(np.linspace(-10,10,1000),np.linspace(-10,10,1000))
 test_x = np.array([X.ravel(), Y.ravel()]).reshape(2,-1).T
 X_test = feature.transform(test_x)
 
@@ -42,11 +42,11 @@ z_lr = logistic_regression.predict(X_test)
 
 #plotting training data
 plt.scatter(cls1.T[0],cls1.T[1],c='r',marker='x',label="class1",s=30,linewidth=1.5)
-plt.scatter(cls2.T[0],cls2.T[1], facecolor="none", edgecolor="b",label="class2",s=50,linewidth=1.5)
+plt.scatter(cls2.T[0],cls2.T[1], fc="none", ec="b", label="class2", s=50, lw=1.5)
 
 #plotting test data
-plt.contour(X,Y,z_ls.reshape(X.shape),[0],colors='purple')
-plt.contour(X,Y,z_lr.reshape(X.shape),[0],colors='lime')
+plt.contour(X, Y, z_ls.reshape(X.shape),1,colors='purple')
+plt.contour(X, Y, z_lr.reshape(X.shape),1,colors='lime')
 
 plt.xlim(-6, 9)
 plt.ylim(-10, 6)
