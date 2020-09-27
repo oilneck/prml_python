@@ -71,3 +71,5 @@ class SASampling(object):
             self.states.append(list(self.sample.values()))
             self.energy = self.get_energy(self.sample)
             self.energies.append(self.energy)
+
+        return self.sample

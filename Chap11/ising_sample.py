@@ -1,13 +1,10 @@
 from sampling import SASampling
 import numpy as np
-import random
 
-h = {'a':-1}
-J = {('a','b'):1, ('b','c'):1, ('c','d'):1}
-
-
+h = {'a':-10}# external field
+J = {('a','b'):1, ('b','c'):1, ('c','d'):1}# exchange interaction
 
 sampler = SASampling()
-sampler.sample_ising(h, J, n_iter=100)
+result = sampler.sample_ising(h, J, n_iter=100)
 
-print("optimial result", sampler.sample)
+print("optimum result", result)
