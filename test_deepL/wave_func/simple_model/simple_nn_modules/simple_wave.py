@@ -3,7 +3,7 @@ from scipy import integrate
 from scipy.misc import derivative
 import copy
 import os, joblib
-from activater import Sigmoid, Tanh
+from .activaters import Tanh, Sigmoid
 
 class PredictWaveFunction(object):
     '''Simple NeuralNetwork 1-n_hidden-1
