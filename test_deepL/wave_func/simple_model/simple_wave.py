@@ -26,7 +26,7 @@ class PredictWaveFunction(object):
         self.params = {}
         self.params['W1'] = np.random.random((self.n_hidden, 1))
         self.params['W2'] = np.random.random((1, self.n_hidden))
-        self.params['b1'] = np.ones((self.n_hidden, 1))
+        self.params['b1'] = np.ones((self.n_hidden, 1)) * 1.5
 
 
     def act_func(self, activation:np.ndarray, deriv:bool=False) -> np.ndarray:
@@ -94,9 +94,9 @@ class PredictWaveFunction(object):
             array (np.ndarray): List of model parameter.
         '''
         W1_vect = copy.copy(self.params['W1']).ravel()
-        W2_vect = copy.copy(self.params['W2']).ravel()
         b1_vect = copy.copy(self.params['b1']).ravel()
-        return np.concatenate([W1_vect, W2_vect, b1_vect])
+        W2_vect = copy.copy(self.params['W2']).ravel()
+        return np.concatenate([W1_vect, b1_vect, W2_vect])
 
 
     def set_params(self, vect_params:np.ndarray):
@@ -112,8 +112,9 @@ class PredictWaveFunction(object):
 
         n_hid = self.n_hidden
         self.params['W1'] = vect_params[:n_hid].reshape((n_hid, 1))
-        self.params['W2'] = vect_params[n_hid:2*n_hid].reshape((1, n_hid))
-        self.params['b1'] = vect_params[2*n_hid:].reshape((n_hid, 1))
+        self.params['b1'] = vect_params[n_hid:2*n_hid].reshape((n_hid, 1))
+        self.params['W2'] = vect_params[2*n_hid:].reshape((1, n_hid))
+
 
 
     def phi(self, x:np.ndarray) -> np.ndarray:
@@ -216,29 +217,25 @@ class PredictWaveFunction(object):
         '''
 
         E_H = self.get_energy()
+        n_hidden = self.n_hidden
 
-        params = self.get_params()
-        back = params[self.n_hidden:2*self.n_hidden]
-        bias = params[2*self.n_hidden:]
+        front, bias, back = self.get_params().reshape(3, n_hidden)
+        f_params = np.tile(np.array([front, bias]).T, (3, 1))
+        coef = np.concatenate([np.tile(back, 2), np.ones(n_hidden)])
+        f_params = np.hstack([f_params, coef.reshape(-1, 1)])
+
+        flags = [True] * 2 * n_hidden + [False] * n_hidden
 
         grads = []
-        for n, val in enumerate(params[:self.n_hidden]):
-            s = lambda x: back[n] * x * self.act_func(val * x + bias[n], True)
-            E_sH = self._hamiltonian_operate(s)
-            E_s = self.get_average(s)
+        for n, ((val1, val2, coe), flag) in enumerate(zip(f_params, flags)):
+
+            f = lambda x: coe * self.act_func(val1 * x + val2, flag)
+
+            if n < n_hidden:
+                f = lambda x: coe * self.act_func(val1 * x + val2, flag) * x
+
+            E_s = self.get_average(f)
+            E_sH = self._hamiltonian_operate(f)
             grads.append(E_sH - E_s * E_H)
 
-        for n, val in enumerate(params[:self.n_hidden]):
-            s = lambda x: self.act_func(val * x + bias[n], deriv=False)
-            E_sH = self._hamiltonian_operate(s)
-            E_s = self.get_average(s)
-            grads.append(E_sH - E_s * E_H)
-
-        # update bias param
-        for n, val in enumerate(params[:self.n_hidden]):
-            s = lambda x: back[n] * self.act_func(val * x + bias[n], True)
-            E_sH = self._hamiltonian_operate(s)
-            E_s = self.get_average(s)
-            grads.append(E_sH - E_s * E_H)
-
-        return np.array(grads) * 2
+        return np.asarray(grads) * 2
