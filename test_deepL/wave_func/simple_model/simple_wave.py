@@ -21,11 +21,13 @@ class PredictWaveFunction(object):
         self.x_range = [-5, 5]
         self.info = {'energies':[], 'num_hidden':self.n_hidden}
 
+
     def _init_params(self):
         self.params = {}
         self.params['W1'] = np.random.random((self.n_hidden, 1))
         self.params['W2'] = np.random.random((1, self.n_hidden))
         self.params['b1'] = np.ones((self.n_hidden, 1))
+
 
     def act_func(self, activation:np.ndarray, deriv:bool=False) -> np.ndarray:
 
@@ -108,10 +110,10 @@ class PredictWaveFunction(object):
         if isinstance(vect_params, list):
             vect_params = np.asarray(vect_params)
 
-        n_hidden = self.n_hidden
-        self.params['W1'] = vect_params[:n_hidden].reshape((n_hidden, 1))
-        self.params['W2'] = vect_params[n_hidden:2*n_hidden].reshape((1, n_hidden))
-        self.params['b1'] = vect_params[2*n_hidden:].reshape((n_hidden, 1))
+        n_hid = self.n_hidden
+        self.params['W1'] = vect_params[:n_hid].reshape((n_hid, 1))
+        self.params['W2'] = vect_params[n_hid:2*n_hid].reshape((1, n_hid))
+        self.params['b1'] = vect_params[2*n_hid:].reshape((n_hid, 1))
 
 
     def phi(self, x:np.ndarray) -> np.ndarray:
@@ -199,7 +201,8 @@ class PredictWaveFunction(object):
         Returns:
             value (float): Expectation value.
         '''
-        H_phi = lambda x: (x ** 2 * self.phi(x) - derivative(self.phi, x, dx=1e-3, n=2)) * 0.5
+        deriv_phi = lambda x: - derivative(self.phi, x, dx=1e-3, n=2) * 0.5
+        H_phi = lambda x: 0.5 * x ** 2 * self.phi(x) + deriv_phi(x)
         f = lambda x: self.phi(x) * func(x) * H_phi(x)
         value = integrate.quad(f, *self.x_range)[0]
         return value / self.get_norm()
@@ -216,12 +219,12 @@ class PredictWaveFunction(object):
         E_H = self.get_energy()
 
         params = self.get_params()
-        bl_params = params[self.n_hidden:2*self.n_hidden]
+        back = params[self.n_hidden:2*self.n_hidden]
         bias = params[2*self.n_hidden:]
 
         grads = []
         for n, val in enumerate(params[:self.n_hidden]):
-            s = lambda x: bl_params[n] * x * self.act_func(val * x + bias[n], True)
+            s = lambda x: back[n] * x * self.act_func(val * x + bias[n], True)
             E_sH = self._hamiltonian_operate(s)
             E_s = self.get_average(s)
             grads.append(E_sH - E_s * E_H)
@@ -234,7 +237,7 @@ class PredictWaveFunction(object):
 
         # update bias param
         for n, val in enumerate(params[:self.n_hidden]):
-            s = lambda x: bl_params[n] * self.act_func(val * x + bias[n], True)
+            s = lambda x: back[n] * self.act_func(val * x + bias[n], True)
             E_sH = self._hamiltonian_operate(s)
             E_s = self.get_average(s)
             grads.append(E_sH - E_s * E_H)
