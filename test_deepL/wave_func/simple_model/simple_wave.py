@@ -3,6 +3,7 @@ from scipy import integrate
 from scipy.misc import derivative
 import copy
 import os, joblib
+from activater import Sigmoid, Tanh
 
 class PredictWaveFunction(object):
     '''Simple NeuralNetwork 1-n_hidden-1
@@ -14,12 +15,14 @@ class PredictWaveFunction(object):
         info (dict): Information for wave-func. model
     '''
 
-    def __init__(self, n_hidden:int=2):
+    def __init__(self, n_hidden:int=2, act:str='tanh'):
 
         self.n_hidden = n_hidden
+        self.act_name = act
+        self.layers = {'tanh':Tanh(), 'sigmoid':Sigmoid()}
         self._init_params()
         self.x_range = [-5, 5]
-        self.info = {'energies':[], 'num_hidden':self.n_hidden}
+        self.info = {'energies':[], 'num_hidden':self.n_hidden, 'layer':act}
 
 
     def _init_params(self):
@@ -27,6 +30,7 @@ class PredictWaveFunction(object):
         self.params['W1'] = np.random.random((self.n_hidden, 1))
         self.params['W2'] = np.random.random((1, self.n_hidden))
         self.params['b1'] = np.ones((self.n_hidden, 1)) * 1.5
+        self.acitivation_function = self.layers[self.act_name].forward
 
 
     def act_func(self, activation:np.ndarray, deriv:bool=False) -> np.ndarray:
@@ -41,10 +45,7 @@ class PredictWaveFunction(object):
             output (np.ndarray): The value activated by the activation function.
         '''
 
-        output = np.tanh(activation)
-
-        if deriv:
-            output = 1 - output ** 2
+        output = self.acitivation_function(activation, deriv)
 
         return output
 
@@ -160,6 +161,12 @@ class PredictWaveFunction(object):
 
 
     def save(self, path:str=None, name:str=None):
+        '''save models
+
+        Args:
+            path (str): Where to save the file.
+            name (str): File name.
+        '''
         self.info['params'] = self.get_params()
         if path is None and name is None:
             path = os.path.dirname(os.path.abspath(__file__))
@@ -177,6 +184,11 @@ class PredictWaveFunction(object):
 
 
     def load(self, path:str=None):
+        '''load model.
+
+        Args:
+            path (str): File references.
+        '''
         if path is None:
             path = os.path.dirname(os.path.abspath(__file__))
             path += '/wf_model.pkl'
@@ -186,6 +198,7 @@ class PredictWaveFunction(object):
 
         self.info = info.copy()
         self.n_hidden = self.info['num_hidden']
+        self.act_name = self.info['layer']
         self._init_params()
         self.set_params(self.info['params'])
 
