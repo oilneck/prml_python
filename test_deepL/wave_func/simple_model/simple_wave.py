@@ -131,10 +131,9 @@ class PredictWaveFunction(object):
             if x.ndim == 1:
                 x = x[None,:]
 
-        activation = np.dot(self.params['W1'], x).reshape(self.n_hidden, -1)
-        activation += self.params['b1']
-        z = self.act_func(activation)
-        a_output = self.params['W2'].dot(z)
+        activation = np.dot(self.params['W1'], x) + self.params['b1']
+        z_output = self.act_func(activation)
+        a_output = np.dot(self.params['W2'], z_output)
 
         return np.exp(a_output).ravel()
 
