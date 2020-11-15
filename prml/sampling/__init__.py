@@ -3,3 +3,4 @@ from .sir import *
 from .metropolis import *
 from .metropolis_hastings import *
 from .annealing_sampler import *
+from .boltzmann_machine import *
