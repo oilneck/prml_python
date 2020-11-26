@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from simple_nn_modules import PredictWaveFunction
 
 
+
 x = np.linspace(-5, 5, 100)
 
 
