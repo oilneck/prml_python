@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>test</title>
+<title>tests</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13138,7 +13138,7 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 <li>SGD(確率勾配降下法)によるパラメータ最適化
 <br><br>
 \begin{align*}
-\boldsymbol{w}^{\text{new}}=\boldsymbol{w}^{(\text{old})}-\alpha \frac{\partial \langle \hat{H} \rangle}{\partial \boldsymbol{w}}
+\boldsymbol{w}^{\text{(new)}}=\boldsymbol{w}^{(\text{old})}-\alpha \frac{\partial \langle \hat{H} \rangle}{\partial \boldsymbol{w}}
 \end{align*}
 <br><br>
 以上2~3のステップを繰り返す</li>
@@ -13191,8 +13191,7 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 <h2 id="2-2-Demonstration">2-2 Demonstration<a class="anchor-link" href="#2-2-Demonstration">&#182;</a></h2><h3 id="2-2-1-python-coding">2-2-1 python coding<a class="anchor-link" href="#2-2-1-python-coding">&#182;</a></h3><ul>
 <li>for文</li>
 </ul>
-<p><code>for (変数) in [イテレータ]: 
-    (繰り返す処理)</code></p>
+<p><code>for (変数) in [イテレータ]: (繰り返す処理)</code></p>
 
 </div>
 </div>
@@ -13203,7 +13202,7 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1">#処理部分を改行するときはインデントを忘れずに</span>
 </pre></div>
 
     </div>
@@ -13586,8 +13585,8 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[0.8457843 ],
-       [0.70835471]])</pre>
+<pre>array([[0.50272324],
+       [0.36992821]])</pre>
 </div>
 
 </div>
@@ -13620,7 +13619,7 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([[0.5520996 , 0.27100626]])</pre>
+<pre>array([[0.32585999, 0.09550097]])</pre>
 </div>
 
 </div>
@@ -13653,7 +13652,7 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>array([0.8457843 , 0.70835471, 0.5520996 , 0.27100626, 1.        ,
+<pre>array([0.50272324, 0.36992821, 0.32585999, 0.09550097, 1.        ,
        1.        ])</pre>
 </div>
 
@@ -13814,7 +13813,7 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x25fca995848&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x1356f007b88&gt;]</pre>
 </div>
 
 </div>
@@ -13862,7 +13861,7 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x25fcaa61288&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x135713a0408&gt;]</pre>
 </div>
 
 </div>
@@ -13910,7 +13909,7 @@ w_3\cdot f(w_1x+w_5)+w_4\cdot f(w_2x+w_6)
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x25fcaac4848&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x13571402d08&gt;]</pre>
 </div>
 
 </div>
